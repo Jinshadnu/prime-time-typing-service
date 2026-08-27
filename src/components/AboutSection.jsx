@@ -1,4 +1,5 @@
 import React from 'react';
+import aboutOfficeImg from '../assets/about_office.jpg';
 import {
   Building2,
   ShieldCheck,
@@ -63,7 +64,7 @@ export default function AboutSection({ lang }) {
                 {/* Main Image */}
                 <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-[#D4AF37]/50 transform hover:scale-[1.02] transition-transform duration-500">
                   <img
-                    src="https://images.unsplash.com/photo-1541888946425-d0fbb186a5b3?auto=format&fit=crop&w=800&q=80"
+                    src={aboutOfficeImg}
                     alt="Prime Time Typing Abu Dhabi Office"
                     className="w-full h-[400px] object-cover"
                   />
