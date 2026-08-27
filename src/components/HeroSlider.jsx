@@ -54,9 +54,9 @@ export default function HeroSlider({ lang, onNavigateSection }) {
 
   return (
     <section className="relative bg-[#0A0B0E] text-white overflow-hidden select-none">
-      {/* Main Carousel Viewport with Horizontal Auto-Scroll */}
+      {/* Main Carousel Viewport with Responsive Height & Horizontal Auto-Scroll */}
       <div 
-        className="relative min-h-[600px] md:min-h-[680px] flex items-center overflow-hidden"
+        className="relative min-h-[520px] sm:min-h-[600px] md:min-h-[680px] flex items-center overflow-hidden"
         onMouseEnter={() => setIsPlaying(false)}
         onMouseLeave={() => setIsPlaying(true)}
       >
@@ -74,9 +74,9 @@ export default function HeroSlider({ lang, onNavigateSection }) {
             return (
               <div
                 key={slide.id}
-                className="w-full flex-shrink-0 relative min-h-[600px] md:min-h-[680px] flex items-center"
+                className="w-full flex-shrink-0 relative min-h-[520px] sm:min-h-[600px] md:min-h-[680px] flex items-center"
               >
-                {/* Background Image with Zoom Overlay */}
+                {/* Responsive Background Image */}
                 <div 
                   className={`absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-[7000ms] ease-out ${
                     isActive ? 'scale-105' : 'scale-100'
@@ -84,44 +84,44 @@ export default function HeroSlider({ lang, onNavigateSection }) {
                   style={{ backgroundImage: `url('${slide.image}')` }}
                 ></div>
 
-                {/* Transparent Glass Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-r from-slate-950/85 via-slate-950/45 to-transparent backdrop-blur-[1px]"></div>
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-transparent to-slate-950/40"></div>
+                {/* Mobile Responsive Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-b sm:bg-gradient-to-r from-slate-950/90 via-slate-950/70 sm:via-slate-950/50 to-slate-950/40 sm:to-transparent backdrop-blur-[1px]"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-transparent to-slate-950/50"></div>
 
                 {/* Dynamic Glow Accents */}
                 <div className="glow-gold -top-20 -left-20 opacity-30"></div>
 
                 {/* Slide Content - Positioned Strictly to the Left Side */}
-                <div className="container-custom relative z-20 h-full flex items-center justify-start w-full py-16 md:py-24">
+                <div className="container-custom relative z-20 h-full flex items-center justify-start w-full py-10 sm:py-16 md:py-24">
                   <div className={`max-w-2xl lg:max-w-3xl flex flex-col ${lang === 'ar' ? 'items-end text-right ml-auto mr-0' : 'items-start text-left ml-0 mr-auto'} w-full`}>
                     
                     {/* Badge */}
-                    <div className="inline-flex items-center gap-2 bg-[#D4AF37]/20 border border-[#D4AF37]/60 text-[#F5E5C0] px-4 py-1.5 rounded-full text-xs md:text-sm font-bold mb-6 shadow-lg backdrop-blur-md self-start">
-                      <Sparkles className="w-4 h-4 text-[#D4AF37] animate-spin" style={{ animationDuration: '6s' }} />
+                    <div className="inline-flex items-center gap-2 bg-[#D4AF37]/20 border border-[#D4AF37]/60 text-[#F5E5C0] px-3 sm:px-4 py-1 sm:py-1.5 rounded-full text-[11px] sm:text-xs md:text-sm font-bold mb-4 sm:mb-6 shadow-lg backdrop-blur-md self-start">
+                      <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#D4AF37] animate-spin" style={{ animationDuration: '6s' }} />
                       <span>{slide.badge[lang]}</span>
                     </div>
 
                     {/* Dynamic Title */}
-                    <h1 className={`text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white leading-[1.1] mb-6 tracking-tight font-serif drop-shadow-xl w-full ${lang === 'ar' ? 'text-right' : 'text-left'}`}>
+                    <h1 className={`text-2xl sm:text-4xl md:text-5xl lg:text-7xl font-black text-white leading-[1.15] sm:leading-[1.1] mb-4 sm:mb-6 tracking-tight font-serif drop-shadow-xl w-full ${lang === 'ar' ? 'text-right' : 'text-left'}`}>
                       <span className={`gradient-text-gold block w-full ${lang === 'ar' ? 'text-right' : 'text-left'}`}>{slide.title[lang]}</span>
                     </h1>
 
                     {/* Dynamic Description */}
-                    <p className={`text-base sm:text-lg md:text-xl text-slate-200 leading-relaxed mb-8 font-normal max-w-2xl drop-shadow-md w-full ${lang === 'ar' ? 'text-right' : 'text-left'}`}>
+                    <p className={`text-xs sm:text-base md:text-lg lg:text-xl text-slate-200 leading-relaxed mb-6 sm:mb-8 font-normal max-w-2xl drop-shadow-md w-full ${lang === 'ar' ? 'text-right' : 'text-left'}`}>
                       {slide.description[lang]}
                     </p>
 
                     {/* CTAs */}
-                    <div className={`flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 ${lang === 'ar' ? 'self-end' : 'self-start'}`}>
+                    <div className={`flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-4 w-full sm:w-auto ${lang === 'ar' ? 'self-end' : 'self-start'}`}>
                       <button
                         onClick={() => onNavigateSection('services')}
-                        className="btn-gold text-sm md:text-base px-7 py-3.5 sm:py-4 group cursor-pointer shadow-xl w-full sm:w-auto justify-center"
+                        className="btn-gold text-xs sm:text-sm md:text-base px-5 sm:px-7 py-3 sm:py-4 group cursor-pointer shadow-xl w-full sm:w-auto justify-center"
                       >
                         <span>{t.heroCtaPrimary}</span>
                         {lang === 'ar' ? (
-                          <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
+                          <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5 group-hover:-translate-x-1 transition-transform" />
                         ) : (
-                          <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                          <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
                         )}
                       </button>
 
@@ -129,25 +129,25 @@ export default function HeroSlider({ lang, onNavigateSection }) {
                         href={whatsappUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center justify-center gap-2.5 bg-white/90 hover:bg-white text-slate-900 font-bold px-7 py-3.5 sm:py-4 rounded-xl border border-white/60 transition-all hover:scale-105 cursor-pointer text-sm md:text-base shadow-lg w-full sm:w-auto text-center backdrop-blur-md"
+                        className="flex items-center justify-center gap-2 bg-white/90 hover:bg-white text-slate-900 font-bold px-5 sm:px-7 py-3 sm:py-4 rounded-xl border border-white/60 transition-all hover:scale-105 cursor-pointer text-xs sm:text-sm md:text-base shadow-lg w-full sm:w-auto text-center backdrop-blur-md"
                       >
-                        <MessageSquare className="w-5 h-5 text-[#25D366] fill-[#25D366]" />
+                        <MessageSquare className="w-4 h-4 sm:w-5 sm:h-5 text-[#25D366] fill-[#25D366]" />
                         <span>{t.heroCtaSecondary}</span>
                       </a>
                     </div>
 
                     {/* Trust Highlights */}
-                    <div className="mt-8 sm:mt-10 pt-5 sm:pt-6 border-t border-white/15 flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-6 text-xs md:text-sm text-slate-200">
+                    <div className="mt-6 sm:mt-10 pt-4 sm:pt-6 border-t border-white/15 flex flex-col sm:flex-row flex-wrap gap-2.5 sm:gap-6 text-[11px] sm:text-xs md:text-sm text-slate-200 w-full">
                       <div className="flex items-center gap-2 font-semibold">
-                        <CheckCircle2 className="w-4 h-4 text-[#D4AF37] shrink-0" />
+                        <CheckCircle2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#D4AF37] shrink-0" />
                         <span>{lang === 'ar' ? 'اعتماد 100% من الجهات الحكومية' : '100% Government Portal Verified'}</span>
                       </div>
                       <div className="flex items-center gap-2 font-semibold">
-                        <CheckCircle2 className="w-4 h-4 text-[#D4AF37] shrink-0" />
+                        <CheckCircle2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#D4AF37] shrink-0" />
                         <span>{lang === 'ar' ? 'معالجة عاجلة في نفس اليوم' : 'Same-Day Express Processing'}</span>
                       </div>
                       <div className="flex items-center gap-2 font-semibold">
-                        <CheckCircle2 className="w-4 h-4 text-[#D4AF37] shrink-0" />
+                        <CheckCircle2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#D4AF37] shrink-0" />
                         <span>{lang === 'ar' ? 'فريق مستشارين دائم الخدمة' : 'Dedicated Multilingual Experts'}</span>
                       </div>
                     </div>
@@ -160,8 +160,8 @@ export default function HeroSlider({ lang, onNavigateSection }) {
         </div>
       </div>
 
-      {/* Carousel Navigation Controls - Transparent Glass Floating Bar */}
-      <div className="absolute z-30 bottom-3 right-3 sm:bottom-6 sm:right-6 md:right-12 left-auto flex items-center gap-2 sm:gap-3 bg-slate-950/80 backdrop-blur-xl px-3 sm:px-5 py-2 sm:py-2.5 rounded-full border border-white/20 shadow-2xl max-w-[calc(100vw-1.5rem)] text-white">
+      {/* Carousel Navigation Controls - Mobile Responsive Floating Bar */}
+      <div className="absolute z-30 bottom-2 right-2 sm:bottom-6 sm:right-6 md:right-12 left-auto flex items-center gap-1.5 sm:gap-3 bg-slate-950/85 backdrop-blur-xl px-2.5 sm:px-5 py-1.5 sm:py-2.5 rounded-full border border-white/20 shadow-2xl max-w-[calc(100vw-1rem)] text-white text-xs">
         <button
           onClick={() => setIsPlaying(!isPlaying)}
           className="text-slate-200 hover:text-[#D4AF37] p-1.5 transition-colors cursor-pointer"
