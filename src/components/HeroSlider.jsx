@@ -76,12 +76,12 @@ export default function HeroSlider({ lang, onNavigateSection }) {
                 }`}
                 style={{ backgroundImage: `url('${slide.image}')` }}
               ></div>
-              <div className="absolute inset-0 bg-gradient-to-r from-[#0A0B0E] via-[#0A0B0E]/85 to-[#0A0B0E]/60"></div>
-              {/* White Transparent Glass Overlay for Crisp Reading */}
-              <div className="absolute inset-0 bg-gradient-to-r from-white/95 via-white/85 to-white/50 backdrop-blur-[2px]"></div>
+              {/* Dark Luxury Overlay for Ultra-High Text Contrast */}
+              <div className="absolute inset-0 bg-gradient-to-r from-[#0A0B0E] via-[#0A0B0E]/90 to-[#0A0B0E]/50"></div>
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0A0B0E] via-transparent to-[#0A0B0E]/60"></div>
 
               {/* Dynamic Glow Accents */}
-              <div className="glow-gold -top-20 -left-20 opacity-30"></div>
+              <div className="glow-gold -top-20 -left-20 opacity-40"></div>
 
               {/* Slide Content */}
               <div className="container-custom relative z-20 h-full flex items-center py-16 md:py-24">
@@ -90,18 +90,18 @@ export default function HeroSlider({ lang, onNavigateSection }) {
                   {isActive && (
                     <>
                       {/* Badge */}
-                      <div className="inline-flex items-center gap-2 bg-amber-50 border border-[#D4AF37]/60 text-[#8C6A21] px-4 py-1.5 rounded-full text-xs md:text-sm font-bold mb-6 shadow-sm animate-hero-title">
-                        <Sparkles className="w-4 h-4 text-[#8C6A21] animate-spin" style={{ animationDuration: '6s' }} />
+                      <div className="inline-flex items-center gap-2 bg-[#D4AF37]/15 border border-[#D4AF37]/50 text-[#F5E5C0] px-4 py-1.5 rounded-full text-xs md:text-sm font-bold mb-6 shadow-md backdrop-blur-md animate-hero-title">
+                        <Sparkles className="w-4 h-4 text-[#D4AF37] animate-spin" style={{ animationDuration: '6s' }} />
                         <span>{slide.badge[lang]}</span>
                       </div>
 
                       {/* Dynamic Title */}
-                      <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-slate-900 leading-[1.1] mb-6 tracking-tight animate-hero-title font-serif">
+                      <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white leading-[1.1] mb-6 tracking-tight animate-hero-title font-serif drop-shadow-lg">
                         <span className="gradient-text-gold">{slide.title[lang]}</span>
                       </h1>
 
                       {/* Dynamic Description */}
-                      <p className="text-base sm:text-lg md:text-xl text-slate-700 leading-relaxed mb-8 font-normal max-w-2xl animate-hero-desc">
+                      <p className="text-base sm:text-lg md:text-xl text-slate-200 leading-relaxed mb-8 font-normal max-w-2xl animate-hero-desc drop-shadow">
                         {slide.description[lang]}
                       </p>
 
@@ -123,7 +123,7 @@ export default function HeroSlider({ lang, onNavigateSection }) {
                           href={whatsappUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="flex items-center justify-center gap-2.5 bg-white hover:bg-slate-50 text-slate-900 font-bold px-7 py-3.5 sm:py-4 rounded-xl border border-slate-300 transition-all hover:scale-105 cursor-pointer text-sm md:text-base shadow-sm w-full sm:w-auto text-center"
+                          className="flex items-center justify-center gap-2.5 bg-white hover:bg-slate-100 text-slate-900 font-bold px-7 py-3.5 sm:py-4 rounded-xl border border-slate-200 transition-all hover:scale-105 cursor-pointer text-sm md:text-base shadow-sm w-full sm:w-auto text-center"
                         >
                           <MessageSquare className="w-5 h-5 text-[#25D366] fill-[#25D366]" />
                           <span>{t.heroCtaSecondary}</span>
@@ -131,17 +131,17 @@ export default function HeroSlider({ lang, onNavigateSection }) {
                       </div>
 
                       {/* Trust Highlights */}
-                      <div className="mt-8 sm:mt-10 pt-5 sm:pt-6 border-t border-slate-300/80 flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-6 text-xs md:text-sm text-slate-700 animate-fadeIn" style={{ animationDelay: '0.8s' }}>
+                      <div className="mt-8 sm:mt-10 pt-5 sm:pt-6 border-t border-slate-800/80 flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-6 text-xs md:text-sm text-slate-300 animate-fadeIn" style={{ animationDelay: '0.8s' }}>
                         <div className="flex items-center gap-2 font-semibold">
-                          <CheckCircle2 className="w-4 h-4 text-[#8C6A21] shrink-0" />
+                          <CheckCircle2 className="w-4 h-4 text-[#D4AF37] shrink-0" />
                           <span>{lang === 'ar' ? 'اعتماد 100% من الجهات الحكومية' : '100% Government Portal Verified'}</span>
                         </div>
                         <div className="flex items-center gap-2 font-semibold">
-                          <CheckCircle2 className="w-4 h-4 text-[#8C6A21] shrink-0" />
+                          <CheckCircle2 className="w-4 h-4 text-[#D4AF37] shrink-0" />
                           <span>{lang === 'ar' ? 'معالجة عاجلة في نفس اليوم' : 'Same-Day Express Processing'}</span>
                         </div>
                         <div className="flex items-center gap-2 font-semibold">
-                          <CheckCircle2 className="w-4 h-4 text-[#8C6A21] shrink-0" />
+                          <CheckCircle2 className="w-4 h-4 text-[#D4AF37] shrink-0" />
                           <span>{lang === 'ar' ? 'فريق مستشارين دائم الخدمة' : 'Dedicated Multilingual Experts'}</span>
                         </div>
                       </div>
