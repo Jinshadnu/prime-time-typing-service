@@ -1,5 +1,4 @@
-// Centralized Data & Translation Store for Prime Time Typing Solutions (Abu Dhabi, UAE)
-// Based on official reference: https://laluxtyping.com/
+import primeTimeLogo from '../assets/prime_time_logo.jpeg';
 
 export const siteData = {
   // Global Contact & Branding Settings
@@ -12,7 +11,7 @@ export const siteData = {
       en: "Typing Services — Abu Dhabi",
       ar: "خدمات الطباعة والمعاملات الحكومية - أبوظبي",
     },
-    logo: "/prime_time_logo.jpeg",
+    logo: primeTimeLogo,
     phone: "+971 50 138 5165",
     whatsapp: "+971501385165",
     email: "contact@primetimetyping.com",
