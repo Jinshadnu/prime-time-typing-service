@@ -54,9 +54,9 @@ export default function HeroSlider({ lang, onNavigateSection }) {
 
   return (
     <section className="relative bg-[#0A0B0E] text-white overflow-hidden select-none">
-      {/* Main Carousel Viewport with Responsive Height & Horizontal Auto-Scroll */}
+      {/* Main Carousel Viewport with Mobile Fluid Height & Horizontal Auto-Scroll */}
       <div 
-        className="relative min-h-[520px] sm:min-h-[600px] md:min-h-[680px] flex items-center overflow-hidden"
+        className="relative min-h-0 sm:min-h-[580px] md:min-h-[680px] flex items-center overflow-hidden"
         onMouseEnter={() => setIsPlaying(false)}
         onMouseLeave={() => setIsPlaying(true)}
       >
@@ -74,7 +74,7 @@ export default function HeroSlider({ lang, onNavigateSection }) {
             return (
               <div
                 key={slide.id}
-                className="w-full flex-shrink-0 relative min-h-[520px] sm:min-h-[600px] md:min-h-[680px] flex items-center"
+                className="w-full flex-shrink-0 relative min-h-0 sm:min-h-[580px] md:min-h-[680px] flex items-center"
               >
                 {/* Responsive Background Image */}
                 <div 
@@ -84,38 +84,38 @@ export default function HeroSlider({ lang, onNavigateSection }) {
                   style={{ backgroundImage: `url('${slide.image}')` }}
                 ></div>
 
-                {/* Mobile Responsive Gradient Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-b sm:bg-gradient-to-r from-slate-950/90 via-slate-950/70 sm:via-slate-950/50 to-slate-950/40 sm:to-transparent backdrop-blur-[1px]"></div>
+                {/* Ultra-Crisp Mobile Responsive Overlay */}
+                <div className="absolute inset-0 bg-slate-950/80 sm:bg-transparent sm:bg-gradient-to-r sm:from-slate-950/85 sm:via-slate-950/45 sm:to-transparent backdrop-blur-[1px]"></div>
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-transparent to-slate-950/50"></div>
 
                 {/* Dynamic Glow Accents */}
                 <div className="glow-gold -top-20 -left-20 opacity-30"></div>
 
-                {/* Slide Content - Positioned Strictly to the Left Side */}
-                <div className="container-custom relative z-20 h-full flex items-center justify-start w-full py-10 sm:py-16 md:py-24">
+                {/* Slide Content - Compact & Left-Aligned on Mobile */}
+                <div className="container-custom relative z-20 h-full flex items-center justify-start w-full py-8 sm:py-16 md:py-24">
                   <div className={`max-w-2xl lg:max-w-3xl flex flex-col ${lang === 'ar' ? 'items-end text-right ml-auto mr-0' : 'items-start text-left ml-0 mr-auto'} w-full`}>
                     
                     {/* Badge */}
-                    <div className="inline-flex items-center gap-2 bg-[#D4AF37]/20 border border-[#D4AF37]/60 text-[#F5E5C0] px-3 sm:px-4 py-1 sm:py-1.5 rounded-full text-[11px] sm:text-xs md:text-sm font-bold mb-4 sm:mb-6 shadow-lg backdrop-blur-md self-start">
+                    <div className="inline-flex items-center gap-1.5 bg-[#D4AF37]/20 border border-[#D4AF37]/60 text-[#F5E5C0] px-3 sm:px-4 py-1 sm:py-1.5 rounded-full text-[10px] sm:text-xs md:text-sm font-bold mb-3 sm:mb-6 shadow-lg backdrop-blur-md self-start">
                       <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#D4AF37] animate-spin" style={{ animationDuration: '6s' }} />
                       <span>{slide.badge[lang]}</span>
                     </div>
 
                     {/* Dynamic Title */}
-                    <h1 className={`text-2xl sm:text-4xl md:text-5xl lg:text-7xl font-black text-white leading-[1.15] sm:leading-[1.1] mb-4 sm:mb-6 tracking-tight font-serif drop-shadow-xl w-full ${lang === 'ar' ? 'text-right' : 'text-left'}`}>
+                    <h1 className={`text-xl sm:text-4xl md:text-5xl lg:text-7xl font-black text-white leading-[1.2] sm:leading-[1.1] mb-3 sm:mb-6 tracking-tight font-serif drop-shadow-xl w-full ${lang === 'ar' ? 'text-right' : 'text-left'}`}>
                       <span className={`gradient-text-gold block w-full ${lang === 'ar' ? 'text-right' : 'text-left'}`}>{slide.title[lang]}</span>
                     </h1>
 
                     {/* Dynamic Description */}
-                    <p className={`text-xs sm:text-base md:text-lg lg:text-xl text-slate-200 leading-relaxed mb-6 sm:mb-8 font-normal max-w-2xl drop-shadow-md w-full ${lang === 'ar' ? 'text-right' : 'text-left'}`}>
+                    <p className={`text-xs sm:text-base md:text-lg lg:text-xl text-slate-200 leading-normal sm:leading-relaxed mb-5 sm:mb-8 font-normal max-w-2xl drop-shadow-md w-full ${lang === 'ar' ? 'text-right' : 'text-left'}`}>
                       {slide.description[lang]}
                     </p>
 
                     {/* CTAs */}
-                    <div className={`flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-4 w-full sm:w-auto ${lang === 'ar' ? 'self-end' : 'self-start'}`}>
+                    <div className={`flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-4 w-full sm:w-auto ${lang === 'ar' ? 'self-end' : 'self-start'}`}>
                       <button
                         onClick={() => onNavigateSection('services')}
-                        className="btn-gold text-xs sm:text-sm md:text-base px-5 sm:px-7 py-3 sm:py-4 group cursor-pointer shadow-xl w-full sm:w-auto justify-center"
+                        className="btn-gold text-xs sm:text-sm md:text-base px-5 sm:px-7 py-2.5 sm:py-4 group cursor-pointer shadow-xl w-full sm:w-auto justify-center"
                       >
                         <span>{t.heroCtaPrimary}</span>
                         {lang === 'ar' ? (
@@ -129,7 +129,7 @@ export default function HeroSlider({ lang, onNavigateSection }) {
                         href={whatsappUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center justify-center gap-2 bg-white/90 hover:bg-white text-slate-900 font-bold px-5 sm:px-7 py-3 sm:py-4 rounded-xl border border-white/60 transition-all hover:scale-105 cursor-pointer text-xs sm:text-sm md:text-base shadow-lg w-full sm:w-auto text-center backdrop-blur-md"
+                        className="flex items-center justify-center gap-2 bg-white/90 hover:bg-white text-slate-900 font-bold px-5 sm:px-7 py-2.5 sm:py-4 rounded-xl border border-white/60 transition-all hover:scale-105 cursor-pointer text-xs sm:text-sm md:text-base shadow-lg w-full sm:w-auto text-center backdrop-blur-md"
                       >
                         <MessageSquare className="w-4 h-4 sm:w-5 sm:h-5 text-[#25D366] fill-[#25D366]" />
                         <span>{t.heroCtaSecondary}</span>
@@ -137,7 +137,7 @@ export default function HeroSlider({ lang, onNavigateSection }) {
                     </div>
 
                     {/* Trust Highlights */}
-                    <div className="mt-6 sm:mt-10 pt-4 sm:pt-6 border-t border-white/15 flex flex-col sm:flex-row flex-wrap gap-2.5 sm:gap-6 text-[11px] sm:text-xs md:text-sm text-slate-200 w-full">
+                    <div className="mt-4 sm:mt-10 pt-3 sm:pt-6 border-t border-white/15 flex flex-col sm:flex-row flex-wrap gap-2 sm:gap-6 text-[10px] sm:text-xs md:text-sm text-slate-200 w-full">
                       <div className="flex items-center gap-2 font-semibold">
                         <CheckCircle2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#D4AF37] shrink-0" />
                         <span>{lang === 'ar' ? 'اعتماد 100% من الجهات الحكومية' : '100% Government Portal Verified'}</span>
