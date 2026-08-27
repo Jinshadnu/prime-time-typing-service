@@ -93,7 +93,7 @@ export default function HeroSlider({ lang, onNavigateSection }) {
 
                 {/* Slide Content */}
                 <div className="container-custom relative z-20 h-full flex items-center py-16 md:py-24">
-                  <div className="max-w-3xl text-left flex flex-col items-start">
+                  <div className={`max-w-3xl flex flex-col ${lang === 'ar' ? 'items-end text-right' : 'items-start text-left'} w-full`}>
                     
                     {/* Badge */}
                     <div className="inline-flex items-center gap-2 bg-[#D4AF37]/20 border border-[#D4AF37]/60 text-[#F5E5C0] px-4 py-1.5 rounded-full text-xs md:text-sm font-bold mb-6 shadow-lg backdrop-blur-md">
@@ -102,12 +102,12 @@ export default function HeroSlider({ lang, onNavigateSection }) {
                     </div>
 
                     {/* Dynamic Title */}
-                    <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white leading-[1.1] mb-6 tracking-tight font-serif drop-shadow-xl">
-                      <span className="gradient-text-gold">{slide.title[lang]}</span>
+                    <h1 className={`text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white leading-[1.1] mb-6 tracking-tight font-serif drop-shadow-xl w-full ${lang === 'ar' ? 'text-right' : 'text-left'}`}>
+                      <span className={`gradient-text-gold block w-full ${lang === 'ar' ? 'text-right' : 'text-left'}`}>{slide.title[lang]}</span>
                     </h1>
 
                     {/* Dynamic Description */}
-                    <p className="text-base sm:text-lg md:text-xl text-slate-200 leading-relaxed mb-8 font-normal max-w-2xl drop-shadow-md">
+                    <p className={`text-base sm:text-lg md:text-xl text-slate-200 leading-relaxed mb-8 font-normal max-w-2xl drop-shadow-md w-full ${lang === 'ar' ? 'text-right' : 'text-left'}`}>
                       {slide.description[lang]}
                     </p>
 
