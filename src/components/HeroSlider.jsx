@@ -93,7 +93,7 @@ export default function HeroSlider({ lang, onNavigateSection }) {
 
                 {/* Slide Content */}
                 <div className="container-custom relative z-20 h-full flex items-center py-16 md:py-24">
-                  <div className="max-w-3xl text-start">
+                  <div className="max-w-3xl text-left flex flex-col items-start">
                     
                     {/* Badge */}
                     <div className="inline-flex items-center gap-2 bg-[#D4AF37]/20 border border-[#D4AF37]/60 text-[#F5E5C0] px-4 py-1.5 rounded-full text-xs md:text-sm font-bold mb-6 shadow-lg backdrop-blur-md">

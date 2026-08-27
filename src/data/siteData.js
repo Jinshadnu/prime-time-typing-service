@@ -1,4 +1,7 @@
 import primeTimeLogo from '../assets/prime_time_logo.jpeg';
+import slide1Img from '../assets/banners/slide1.jpg';
+import slide2Img from '../assets/banners/slide2.jpg';
+import slide3Img from '../assets/banners/slide3.jpg';
 
 export const siteData = {
   // Global Contact & Branding Settings
@@ -241,21 +244,21 @@ export const siteData = {
   heroBanners: [
     {
       id: "slide1",
-      image: "/banners/slide1.jpg",
+      image: slide1Img,
       badge: { en: "15+ Years Official UAE Clearance", ar: "15+ عاماً من المعاملات الحكومية المعتمدة" },
       title: { en: "Fast & Accurate Typing Services in Abu Dhabi", ar: "خدمات الطباعة والمعاملات الحكومية الأسرع والأكثر دقة في أبوظبي" },
       description: { en: "Professional handling for ICP Residency, MOHRE Work Permits, TAMM Portal, ADJD Court documents, and Legal Attestations.", ar: "إنهاء احترافي لإقامات ICP، تصاريح MOHRE، منصة تم TAMM، معاملات دائرة القضاء وتصديق الشهادات." }
     },
     {
       id: "slide2",
-      image: "/banners/slide2.jpg",
+      image: slide2Img,
       badge: { en: "Golden Visa & Family Sponsorship", ar: "التأشيرة الذهبية ورعاية كفالة الأسر" },
       title: { en: "Seamless Residency & Labour Visa Processing", ar: "معاملات الإقامة وتصاريح العمل بسرعة وشفافية مطلقة" },
       description: { en: "Full-service visa issuing, medical fitness booking, Emirates ID typing, and status changes for individuals and corporates.", ar: "إصدار التأشيرات، حجز الفحص الطبي، طباعة الهوية الإماراتية، وتعديل الوضع للأفراد والشركات." }
     },
     {
       id: "slide3",
-      image: "/banners/slide3.jpg",
+      image: slide3Img,
       badge: { en: "Corporate Legal Attestation & TAMM", ar: "التصديقات القانونية والمعاملات المؤسسية" },
       title: { en: "Complete Business Setup & Certificate Attestation", ar: "تخليص المعاملات التجارية وتصديق الوثائق الرسمية" },
       description: { en: "MOFA attestation, embassy stampings, commercial license issuance, and corporate document clearance across Abu Dhabi.", ar: "تصديق الخارجية، أختام السفارات، تجديد الرخص التجارية، وتخليص المعاملات للمؤسسات." }
