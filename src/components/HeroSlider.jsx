@@ -91,12 +91,12 @@ export default function HeroSlider({ lang, onNavigateSection }) {
                 {/* Dynamic Glow Accents */}
                 <div className="glow-gold -top-20 -left-20 opacity-30"></div>
 
-                {/* Slide Content */}
-                <div className="container-custom relative z-20 h-full flex items-center py-16 md:py-24">
-                  <div className={`max-w-3xl flex flex-col ${lang === 'ar' ? 'items-end text-right' : 'items-start text-left'} w-full`}>
+                {/* Slide Content - Positioned Strictly to the Left Side */}
+                <div className="container-custom relative z-20 h-full flex items-center justify-start w-full py-16 md:py-24">
+                  <div className={`max-w-2xl lg:max-w-3xl flex flex-col ${lang === 'ar' ? 'items-end text-right ml-auto mr-0' : 'items-start text-left ml-0 mr-auto'} w-full`}>
                     
                     {/* Badge */}
-                    <div className="inline-flex items-center gap-2 bg-[#D4AF37]/20 border border-[#D4AF37]/60 text-[#F5E5C0] px-4 py-1.5 rounded-full text-xs md:text-sm font-bold mb-6 shadow-lg backdrop-blur-md">
+                    <div className="inline-flex items-center gap-2 bg-[#D4AF37]/20 border border-[#D4AF37]/60 text-[#F5E5C0] px-4 py-1.5 rounded-full text-xs md:text-sm font-bold mb-6 shadow-lg backdrop-blur-md self-start">
                       <Sparkles className="w-4 h-4 text-[#D4AF37] animate-spin" style={{ animationDuration: '6s' }} />
                       <span>{slide.badge[lang]}</span>
                     </div>
@@ -112,7 +112,7 @@ export default function HeroSlider({ lang, onNavigateSection }) {
                     </p>
 
                     {/* CTAs */}
-                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
+                    <div className={`flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 ${lang === 'ar' ? 'self-end' : 'self-start'}`}>
                       <button
                         onClick={() => onNavigateSection('services')}
                         className="btn-gold text-sm md:text-base px-7 py-3.5 sm:py-4 group cursor-pointer shadow-xl w-full sm:w-auto justify-center"
