@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,300..800&family=Tajawal:wght@300;400;500;700;800;900&display=swap');
 @import "tailwindcss";
 
 /* Prime Time Typing — Ultra-Luxury Design System */
@@ -6,53 +7,93 @@
   --bg-dark-obsidian: #0A0B0E;
   --bg-dark-charcoal: #121316;
   --bg-dark-surface: #18191D;
-  
+
   --gold-primary: #D4AF37;
   --gold-light: #F5E5C0;
   --gold-cream: #FFF5D0;
   --gold-dark: #9E7D3B;
-  
-  --font-en-heading: 'Cinzel', 'Outfit', 'Inter', serif;
-  --font-en-body: 'Inter', sans-serif;
+
+  --font-en-heading: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
+  --font-en-body: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
   --font-ar: 'Cairo', 'Tajawal', sans-serif;
   --font-code: 'JetBrains Mono', monospace;
 }
 
-/* Global Responsive & Overflow Prevention */
-html, body {
-  overflow-x: hidden;
-  max-width: 100vw;
+@theme {
+  --font-sans: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
+  --font-serif: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
+  --font-heading: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
+  --font-body: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
+  --font-arabic: 'Cairo', 'Tajawal', sans-serif;
 }
 
-img, video, iframe {
+.font-heading,
+.font-sans,
+.font-serif {
+  font-family: var(--font-en-heading) !important;
+}
+
+/* Global Responsive & Overflow Prevention & Typography */
+html,
+body,
+button,
+input,
+select,
+textarea {
+  overflow-x: hidden;
+  max-width: 100vw;
+  font-family: var(--font-en-body);
+}
+
+img,
+video,
+iframe {
   max-width: 100%;
 }
 
 /* RTL / LTR Font Direction Management */
-html[dir="rtl"] body {
-  font-family: var(--font-ar);
-}
-html[dir="ltr"] body {
-  font-family: var(--font-en-body);
-}
-
-html[dir="rtl"] h1, 
-html[dir="rtl"] h2, 
-html[dir="rtl"] h3, 
-html[dir="rtl"] h4, 
-html[dir="rtl"] h5, 
-html[dir="rtl"] h6 {
-  font-family: 'Cairo', var(--font-ar);
+html[dir="rtl"],
+html[dir="rtl"] body,
+html[dir="rtl"] button,
+html[dir="rtl"] input,
+html[dir="rtl"] select,
+html[dir="rtl"] textarea {
+  font-family: var(--font-ar) !important;
 }
 
-html[dir="ltr"] h1, 
-html[dir="ltr"] h2, 
-html[dir="ltr"] h3, 
-html[dir="ltr"] h4, 
-html[dir="ltr"] h5, 
-html[dir="ltr"] h6 {
-  font-family: var(--font-en-heading);
-  letter-spacing: -0.01em;
+html[dir="ltr"],
+html[dir="ltr"] body,
+html[dir="ltr"] button,
+html[dir="ltr"] input,
+html[dir="ltr"] select,
+html[dir="ltr"] textarea {
+  font-family: var(--font-en-body) !important;
+}
+
+html[dir="rtl"] h1,
+html[dir="rtl"] h2,
+html[dir="rtl"] h3,
+html[dir="rtl"] h4,
+html[dir="rtl"] h5,
+html[dir="rtl"] h6,
+html[dir="rtl"] .font-heading,
+html[dir="rtl"] .font-sans,
+html[dir="rtl"] .font-serif {
+  font-family: 'Cairo', 'Tajawal', sans-serif !important;
+  letter-spacing: 0 !important;
+}
+
+html[dir="ltr"] h1,
+html[dir="ltr"] h2,
+html[dir="ltr"] h3,
+html[dir="ltr"] h4,
+html[dir="ltr"] h5,
+html[dir="ltr"] h6,
+html[dir="ltr"] .font-heading,
+html[dir="ltr"] .font-sans,
+html[dir="ltr"] .font-serif {
+  font-family: var(--font-en-heading) !important;
+  letter-spacing: -0.025em;
 }
 
 /* Custom Container Utility for consistent site layout */
@@ -63,12 +104,14 @@ html[dir="ltr"] h6 {
   padding-left: 1.25rem;
   padding-right: 1.25rem;
 }
+
 @media (min-width: 640px) {
   .container-custom {
     padding-left: 2rem;
     padding-right: 2rem;
   }
 }
+
 @media (min-width: 1024px) {
   .container-custom {
     padding-left: 2.5rem;
@@ -90,16 +133,38 @@ html {
 ::-webkit-scrollbar {
   width: 10px;
 }
+
 ::-webkit-scrollbar-track {
   background: #0A0B0E;
 }
+
 ::-webkit-scrollbar-thumb {
   background: linear-gradient(180deg, #D4AF37 0%, #18191D 100%);
   border-radius: 5px;
   border: 2px solid #0A0B0E;
 }
+
 ::-webkit-scrollbar-thumb:hover {
   background: #F5E5C0;
+}
+
+/* Custom Modal Scrollbar Utility */
+.custom-modal-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-modal-scrollbar::-webkit-scrollbar-track {
+  background: #F1F5F9;
+  border-radius: 8px;
+}
+
+.custom-modal-scrollbar::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #D4AF37 0%, #8C6A21 100%);
+  border-radius: 8px;
+}
+
+.custom-modal-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #D4AF37;
 }
 
 /* Glassmorphism Luxury Panels */
@@ -122,6 +187,7 @@ html {
 .luxury-card-hover {
   transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
+
 .luxury-card-hover:hover {
   border-color: rgba(212, 175, 55, 0.65);
   transform: translateY(-6px);
@@ -170,9 +236,20 @@ html {
 /* Keyframe Animations */
 
 @keyframes pulse-ring {
-  0% { transform: scale(0.96); opacity: 0.8; }
-  50% { transform: scale(1.08); opacity: 1; }
-  100% { transform: scale(0.96); opacity: 0.8; }
+  0% {
+    transform: scale(0.96);
+    opacity: 0.8;
+  }
+
+  50% {
+    transform: scale(1.08);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(0.96);
+    opacity: 0.8;
+  }
 }
 
 .pulse-badge {
@@ -181,9 +258,17 @@ html {
 
 /* WhatsApp Heartbeat Pulse */
 @keyframes waPulseAnimation {
-  0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.6); }
-  70% { box-shadow: 0 0 0 14px rgba(37, 211, 102, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+  0% {
+    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.6);
+  }
+
+  70% {
+    box-shadow: 0 0 0 14px rgba(37, 211, 102, 0);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+  }
 }
 
 .pulse-wa {
@@ -192,8 +277,15 @@ html {
 
 /* Floating Badges Animation */
 @keyframes floatSlow {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-8px); }
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
 }
 
 .animate-float {
@@ -206,9 +298,19 @@ html {
 
 /* Modal Spring Entrance */
 @keyframes springIn {
-  0% { opacity: 0; transform: scale(0.9) translateY(30px); }
-  70% { transform: scale(1.02) translateY(-4px); }
-  100% { opacity: 1; transform: scale(1) translateY(0); }
+  0% {
+    opacity: 0;
+    transform: scale(0.9) translateY(30px);
+  }
+
+  70% {
+    transform: scale(1.02) translateY(-4px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }
 
 .animate-springIn {
@@ -216,8 +318,13 @@ html {
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 .animate-fadeIn {
@@ -226,21 +333,34 @@ html {
 
 /* Shimmer Highlight for Gold Cards */
 @keyframes shimmerGlow {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
 }
 
 .shimmer-card {
-  background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(212,175,55,0.18) 50%, rgba(255,255,255,0) 100%);
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(212, 175, 55, 0.18) 50%, rgba(255, 255, 255, 0) 100%);
   background-size: 200% 100%;
   animation: shimmerGlow 4.5s infinite;
 }
 
 /* Recalculate Glow Pulse (For Fee Estimator) */
 @keyframes estimatePulse {
-  0% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.5); }
-  50% { box-shadow: 0 0 25px 6px rgba(212, 175, 55, 0.7); }
-  100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
+  0% {
+    box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.5);
+  }
+
+  50% {
+    box-shadow: 0 0 25px 6px rgba(212, 175, 55, 0.7);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(212, 175, 55, 0);
+  }
 }
 
 .animate-estimate-pulse {
@@ -249,8 +369,15 @@ html {
 
 /* Slide Text Enter Animation for Hero */
 @keyframes heroTextSlideUp {
-  0% { opacity: 0; transform: translateY(24px); }
-  100% { opacity: 1; transform: translateY(0); }
+  0% {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .animate-hero-title {
@@ -279,12 +406,14 @@ html {
   box-shadow: 0 6px 20px 0 rgba(212, 175, 55, 0.35);
   border: 1px solid rgba(245, 229, 192, 0.6);
 }
+
 .btn-gold:hover {
   background: linear-gradient(135deg, #FFFFFF 0%, #F5E5C0 40%, #D4AF37 100%);
   transform: translateY(-2px) scale(1.02);
   box-shadow: 0 10px 30px 0 rgba(212, 175, 55, 0.5);
   color: #0A0B0E;
 }
+
 .btn-gold:active {
   transform: translateY(0) scale(0.98);
 }
@@ -301,6 +430,7 @@ html {
   gap: 0.5rem;
   transition: all 0.3s ease;
 }
+
 .btn-outline-gold:hover {
   background: rgba(212, 175, 55, 0.12);
   border-color: #D4AF37;
@@ -342,13 +472,25 @@ html {
 }
 
 /* Stagger Utilities */
-.stagger-1 { transition-delay: 100ms; }
-.stagger-2 { transition-delay: 200ms; }
-.stagger-3 { transition-delay: 300ms; }
-.stagger-4 { transition-delay: 400ms; }
+.stagger-1 {
+  transition-delay: 100ms;
+}
+
+.stagger-2 {
+  transition-delay: 200ms;
+}
+
+.stagger-3 {
+  transition-delay: 300ms;
+}
+
+.stagger-4 {
+  transition-delay: 400ms;
+}
 
 /* Lenis Kinetic Smooth Scroll Styles */
-html.lenis, html.lenis body {
+html.lenis,
+html.lenis body {
   height: auto;
 }
 
@@ -366,4 +508,165 @@ html.lenis, html.lenis body {
 
 .lenis.lenis-smooth iframe {
   pointer-events: none;
+}
+
+/* ==========================================================================
+   Clyde Template Specific Design Utilities (https://themewagon.github.io/clyde/#)
+   ========================================================================== */
+
+.clyde-subheading {
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  color: #D4AF37;
+  margin-bottom: 0.75rem;
+  display: inline-block;
+}
+
+.clyde-title-span {
+  color: #D4AF37;
+  position: relative;
+}
+
+.clyde-btn-primary {
+  background-color: #D4AF37;
+  color: #0A0B0E;
+  font-weight: 700;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 0.85rem 1.85rem;
+  border-radius: 9999px;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 25px rgba(212, 175, 55, 0.3);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.clyde-btn-primary:hover {
+  background-color: #f5e5c0;
+  color: #0A0B0E;
+  transform: translateY(-3px);
+  box-shadow: 0 15px 30px rgba(212, 175, 55, 0.45);
+}
+
+.clyde-btn-outline {
+  background-color: #FFFFFF;
+  color: #0A0B0E;
+  border: 1.5px solid rgba(0, 0, 0, 0.15);
+  font-weight: 700;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 0.85rem 1.85rem;
+  border-radius: 9999px;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.clyde-btn-outline:hover {
+  border-color: #8C6A21;
+  color: #8C6A21;
+  background-color: #F8FAFC;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Asymmetric Clyde Image Overlay */
+.clyde-img-container {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1.5rem;
+}
+
+.clyde-img-container .clyde-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(10, 11, 14, 0.4) 0%, rgba(10, 11, 14, 0.85) 100%);
+}
+
+.clyde-img-container .clyde-overlay-1 {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 45%;
+  background: linear-gradient(90deg, #0A0B0E 0%, rgba(10, 11, 14, 0) 100%);
+}
+
+/* Clyde Counter Block */
+.clyde-counter-card {
+  background: rgba(18, 19, 22, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 1.25rem;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(12px);
+}
+
+.clyde-counter-card:hover {
+  border-color: rgba(212, 175, 55, 0.4);
+  transform: translateY(-4px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+}
+
+/* Clyde Nav Link Smooth Sliding Underline & Professional Typography */
+.clyde-nav-link {
+  position: relative;
+  font-family: var(--font-en-heading);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.5rem 0.95rem;
+  border-radius: 9999px;
+  color: #334155;
+  outline: none !important;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 1px solid transparent;
+}
+
+.clyde-nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  width: 0%;
+  height: 2.5px;
+  background: linear-gradient(90deg, #F5D77F 0%, #D4AF37 50%, #8C6A21 100%);
+  border-radius: 9999px;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateX(-50%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.clyde-nav-link:hover::after,
+.clyde-nav-link.active::after {
+  width: 60%;
+  opacity: 1;
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.6);
+}
+
+.clyde-nav-link:hover {
+  color: #8C6A21;
+  background-color: rgba(212, 175, 55, 0.08);
+}
+
+.clyde-nav-link.active {
+  color: #8C6A21;
+  background-color: rgba(212, 175, 55, 0.14);
+  font-weight: 800;
+  border-color: rgba(212, 175, 55, 0.35);
+  box-shadow: 0 2px 10px rgba(212, 175, 55, 0.15);
 }

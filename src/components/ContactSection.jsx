@@ -1,19 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Phone, 
-  Mail, 
-  MapPin, 
-  Clock, 
-  Send, 
-  CheckCircle2, 
-  AlertCircle, 
+import {
+  Phone,
+  Mail,
+  MapPin,
+  Clock,
+  Send,
+  CheckCircle2,
+  AlertCircle,
   MessageSquare,
   Building
 } from 'lucide-react';
 import { siteData } from '../data/siteData';
 import AnimatedSection from './AnimatedSection';
+import { addEnquiry } from '../utils/adminStorage';
 
-export default function ContactSection({ lang, preselectedService }) {
+export default function ContactSection({ lang, services = siteData.services, preselectedService }) {
+  const activeServices = services && services.length > 0 ? services : siteData.services;
   const t = siteData.translations[lang];
 
   const [formData, setFormData] = useState({
@@ -21,7 +23,7 @@ export default function ContactSection({ lang, preselectedService }) {
     email: '',
     phone: '',
     category: siteData.categories[0].id,
-    serviceId: siteData.services[0].id,
+    serviceId: activeServices[0]?.id || '',
     message: ''
   });
 
@@ -42,13 +44,15 @@ export default function ContactSection({ lang, preselectedService }) {
   // Handle category change -> auto select first service in category
   const handleCategoryChange = (e) => {
     const newCat = e.target.value;
-    const catServices = siteData.services.filter(s => s.categoryId === newCat);
+    const catServices = activeServices.filter(s => s.categoryId === newCat);
     setFormData(prev => ({
       ...prev,
       category: newCat,
       serviceId: catServices.length > 0 ? catServices[0].id : ''
     }));
   };
+
+  const currentCategoryServices = activeServices.filter(s => s.categoryId === formData.category);
 
   // Strict UAE Phone Validation Regex
   const validateUAEPhone = (phoneStr) => {
@@ -76,19 +80,34 @@ export default function ContactSection({ lang, preselectedService }) {
       return;
     }
     setPhoneError('');
+
+    // Find service title
+    const selectedSrv = activeServices.find(s => s.id === formData.serviceId);
+    const serviceName = selectedSrv ? (selectedSrv.title?.en || selectedSrv.title) : formData.serviceId;
+
+    // Save to Admin Enquiries CRM
+    addEnquiry({
+      name: formData.name,
+      phone: formData.phone,
+      email: formData.email,
+      categoryId: formData.category,
+      serviceId: formData.serviceId,
+      serviceName,
+      message: formData.message,
+      source: 'Website Contact Form'
+    });
+
     setIsSubmitted(true);
   };
 
-  const currentCategoryServices = siteData.services.filter(s => s.categoryId === formData.category);
-
   return (
     <section id="contact" className="py-20 bg-white text-slate-900 relative overflow-hidden">
-      
+
       {/* Background Ambient Glow */}
       <div className="glow-gold bottom-0 left-0 opacity-15"></div>
 
       <div className="container-custom relative z-10">
-        
+
         {/* Section Title */}
         <AnimatedSection animation="fade-up" delay={100}>
           <div className="text-center max-w-3xl mx-auto mb-16">
@@ -96,7 +115,7 @@ export default function ContactSection({ lang, preselectedService }) {
               <MessageSquare className="w-4 h-4 text-[#8C6A21]" />
               <span>{lang === 'ar' ? 'استجابة سريعة خلال 30 دقيقة' : 'Rapid 30-Minute Response'}</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 mb-4 font-serif">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 mb-4 font-heading">
               {t.contactTitle}
             </h2>
             <p className="text-slate-600 text-base sm:text-lg">
@@ -106,10 +125,10 @@ export default function ContactSection({ lang, preselectedService }) {
         </AnimatedSection>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start mb-16">
-          
+
           {/* Direct Contact Details Cards */}
           <div className="lg:col-span-5 space-y-6 text-start">
-            
+
             {/* Phone Card */}
             <AnimatedSection animation="fade-right" delay={150}>
               <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200 shadow-sm flex items-start gap-4 hover:border-[#D4AF37] transition-all duration-300 transform hover:-translate-y-1 hover:shadow-md">
@@ -118,16 +137,16 @@ export default function ContactSection({ lang, preselectedService }) {
                 </div>
                 <div>
                   <div className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">{t.directPhone}</div>
-                  <a 
-                    href={`tel:${siteData.brand.phone.replace(/\s+/g, '')}`} 
-                    className="text-lg font-black text-slate-900 hover:text-[#8C6A21] transition-colors block font-serif"
+                  <a
+                    href={`tel:${siteData.brand.phoneTel || siteData.brand.phone}`}
+                    className="text-lg font-black text-slate-900 hover:text-[#8C6A21] transition-colors block font-heading"
                     dir="ltr"
                   >
                     {siteData.brand.phone}
                   </a>
-                  <a 
-                    href={`https://wa.me/${siteData.brand.whatsapp.replace(/[^0-9]/g, '')}`} 
-                    target="_blank" 
+                  <a
+                    href={`https://wa.me/${siteData.brand.whatsappLink || siteData.brand.whatsapp.replace(/[^0-9]/g, '').replace(/^0/, '971')}`}
+                    target="_blank"
                     rel="noopener noreferrer"
                     className="text-xs text-[#25D366] font-bold hover:underline inline-flex items-center gap-1 mt-1"
                   >
@@ -146,8 +165,8 @@ export default function ContactSection({ lang, preselectedService }) {
                 </div>
                 <div>
                   <div className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">{t.emailUs}</div>
-                  <a 
-                    href={`mailto:${siteData.brand.email}`} 
+                  <a
+                    href={`mailto:${siteData.brand.email}`}
                     className="text-base font-bold text-slate-900 hover:text-[#8C6A21] transition-colors block"
                   >
                     {siteData.brand.email}
@@ -167,7 +186,7 @@ export default function ContactSection({ lang, preselectedService }) {
                 </div>
                 <div>
                   <div className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">{t.officeLocation}</div>
-                  <p className="text-sm font-bold text-slate-900 leading-snug mb-3 font-serif">
+                  <p className="text-sm font-bold text-slate-900 leading-snug mb-3 font-heading">
                     {siteData.brand.address[lang]}
                   </p>
                   <div className="pt-2 border-t border-slate-200 flex items-center gap-2 text-xs text-slate-600">
@@ -184,13 +203,13 @@ export default function ContactSection({ lang, preselectedService }) {
           <div className="lg:col-span-7">
             <AnimatedSection animation="fade-left" delay={200}>
               <div className="bg-white p-8 sm:p-10 rounded-3xl border border-slate-200 shadow-xl text-start relative overflow-hidden">
-                
+
                 {isSubmitted ? (
                   <div className="py-12 text-center space-y-4 animate-springIn">
                     <div className="w-16 h-16 bg-amber-50 text-[#8C6A21] rounded-full flex items-center justify-center mx-auto shadow-sm border border-[#D4AF37]/50">
                       <CheckCircle2 className="w-10 h-10" />
                     </div>
-                    <h3 className="text-2xl font-black text-slate-900 font-serif">
+                    <h3 className="text-2xl font-black text-slate-900 font-heading">
                       {t.formSuccessTitle}
                     </h3>
                     <p className="text-slate-600 max-w-md mx-auto text-sm leading-relaxed">
@@ -215,8 +234,8 @@ export default function ContactSection({ lang, preselectedService }) {
                   </div>
                 ) : (
                   <form onSubmit={handleSubmit} className="space-y-5">
-                    
-                    <h3 className="text-2xl font-black text-slate-900 mb-6 font-serif">
+
+                    <h3 className="text-2xl font-black text-slate-900 mb-6 font-heading">
                       {lang === 'ar' ? 'نموذج تقديم الطلبات والاستفسارات' : 'Official Service Inquiry Form'}
                     </h3>
 
@@ -262,10 +281,9 @@ export default function ContactSection({ lang, preselectedService }) {
                           required
                           value={formData.phone}
                           onChange={handlePhoneChange}
-                          placeholder="+971 50 138 5165"
-                          className={`w-full bg-slate-50 border rounded-xl py-3 px-4 text-sm text-slate-900 placeholder-slate-400 focus:outline-none transition-all shadow-inner ${
-                            phoneError ? 'border-red-500 bg-red-50' : 'border-slate-300 focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37]/50'
-                          }`}
+                          placeholder="+971 50 760 2200"
+                          className={`w-full bg-slate-50 border rounded-xl py-3 px-4 text-sm text-slate-900 placeholder-slate-400 focus:outline-none transition-all shadow-inner ${phoneError ? 'border-red-500 bg-red-50' : 'border-slate-300 focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37]/50'
+                            }`}
                           dir="ltr"
                         />
                         {phoneError && (
@@ -349,13 +367,19 @@ export default function ContactSection({ lang, preselectedService }) {
             <div className="flex items-center justify-between px-4 py-3 border-b border-slate-200 mb-2">
               <div className="flex items-center gap-2">
                 <Building className="w-5 h-5 text-[#8C6A21]" />
-                <span className="text-sm font-bold text-slate-900 font-serif">
-                  {lang === 'ar' ? 'خريطة موقع بناية دار السلام - كورنيش أبوظبي' : 'Dar Al Salam Building Location Map - Abu Dhabi Corniche'}
+                <span className="text-sm font-bold text-slate-900 font-heading">
+                  {lang === 'ar' ? 'خريطة موقع المكتب - مدينة زايد، أبوظبي' : 'Office Location Map - Madinat Zayed, Abu Dhabi'}
                 </span>
               </div>
-              <span className="text-xs text-[#8C6A21] font-semibold">
-                {lang === 'ar' ? 'الطابق الثالث، مكتب 309' : '3rd Floor, Office 309'}
-              </span>
+              <a
+                href={siteData.brand.mapUrl || "https://maps.app.goo.gl/1G3BehJ8dzY6jU2H8?g_st=ac"}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs text-[#8C6A21] hover:underline font-bold flex items-center gap-1"
+              >
+                <span>{lang === 'ar' ? 'فتح في خرائط جوجل' : 'Open in Google Maps'}</span>
+                <MapPin className="w-3.5 h-3.5" />
+              </a>
             </div>
 
             <div className="w-full h-80 rounded-2xl overflow-hidden relative">

@@ -9,7 +9,8 @@ export default function AnimatedSection({
   animation = 'fade-up',
   delay = 0,
   duration = 700,
-  threshold = 0.15,
+  threshold = 0.05,
+  rootMargin = '0px 0px -30px 0px',
   className = '',
   once = true,
   style = {}
@@ -18,6 +19,11 @@ export default function AnimatedSection({
   const sectionRef = useRef(null);
 
   useEffect(() => {
+    if (typeof window === 'undefined' || !('IntersectionObserver' in window)) {
+      setIsVisible(true);
+      return;
+    }
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -29,7 +35,7 @@ export default function AnimatedSection({
           setIsVisible(false);
         }
       },
-      { threshold }
+      { threshold, rootMargin }
     );
 
     const currentRef = sectionRef.current;
@@ -42,28 +48,46 @@ export default function AnimatedSection({
         observer.unobserve(currentRef);
       }
     };
-  }, [threshold, once]);
+  }, [threshold, rootMargin, once]);
 
-  // Animation class map
-  const animationClasses = {
-    'fade-up': isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10',
-    'fade-down': isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-10',
-    'fade-left': isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-12 [dir=rtl]:-translate-x-12',
-    'fade-right': isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-12 [dir=rtl]:translate-x-12',
-    'zoom-in': isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95',
-    'scale-up': isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-90',
-    'fade': isVisible ? 'opacity-100' : 'opacity-0'
+  // Compute inline transform and opacity for hardware-accelerated 60fps animations
+  const getTransformStyles = () => {
+    if (isVisible) {
+      return {
+        opacity: 1,
+        transform: 'translate3d(0, 0, 0) scale(1)',
+      };
+    }
+
+    switch (animation) {
+      case 'fade-up':
+        return { opacity: 0, transform: 'translate3d(0, 36px, 0)' };
+      case 'fade-down':
+        return { opacity: 0, transform: 'translate3d(0, -36px, 0)' };
+      case 'fade-left':
+        return { opacity: 0, transform: 'translate3d(36px, 0, 0)' };
+      case 'fade-right':
+        return { opacity: 0, transform: 'translate3d(-36px, 0, 0)' };
+      case 'zoom-in':
+        return { opacity: 0, transform: 'scale(0.92)' };
+      case 'scale-up':
+        return { opacity: 0, transform: 'scale(0.88)' };
+      case 'fade':
+        return { opacity: 0, transform: 'none' };
+      default:
+        return { opacity: 0, transform: 'translate3d(0, 36px, 0)' };
+    }
   };
 
-  const selectedAnimationClass = animationClasses[animation] || animationClasses['fade-up'];
+  const transformStyles = getTransformStyles();
 
   return (
     <div
       ref={sectionRef}
-      className={`transition-all ease-out ${selectedAnimationClass} ${className}`}
+      className={className}
       style={{
-        transitionDuration: `${duration}ms`,
-        transitionDelay: `${delay}ms`,
+        ...transformStyles,
+        transition: `opacity ${duration}ms cubic-bezier(0.16, 1, 0.3, 1) ${delay}ms, transform ${duration}ms cubic-bezier(0.16, 1, 0.3, 1) ${delay}ms`,
         willChange: 'transform, opacity',
         ...style
       }}

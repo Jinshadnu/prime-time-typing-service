@@ -106,7 +106,7 @@ export default function AboutSection({ lang }) {
                 <span>{t.aboutBadge}</span>
               </div>
 
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 mb-6 leading-tight font-serif">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 mb-6 leading-tight font-heading">
                 {t.aboutHeading}
               </h2>
 
@@ -128,7 +128,7 @@ export default function AboutSection({ lang }) {
                         <div className="w-11 h-11 rounded-xl bg-amber-50 text-[#8C6A21] flex items-center justify-center mb-3.5 border border-[#D4AF37]/30">
                           <Icon className="w-5 h-5 text-[#8C6A21]" />
                         </div>
-                        <h3 className="text-sm font-bold text-slate-900 mb-1 font-serif">{v.title[lang]}</h3>
+                        <h3 className="text-sm font-bold text-slate-900 mb-1 font-heading">{v.title[lang]}</h3>
                         <p className="text-xs text-slate-600 leading-relaxed">{v.desc[lang]}</p>
                       </div>
                     </AnimatedSection>
@@ -143,31 +143,31 @@ export default function AboutSection({ lang }) {
         {/* Counter Stats Banner Section - White Transparent Glass */}
         <AnimatedSection animation="fade-up" delay={200}>
           <div className="bg-white/80 backdrop-blur-xl rounded-3xl p-8 sm:p-10 text-slate-900 shadow-xl mb-24 border border-slate-200/90 relative overflow-hidden shimmer-card">
-            
+
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center divide-y lg:divide-y-0 lg:divide-x divide-slate-200 [dir=rtl]:lg:divide-x-reverse">
               <div className="p-4">
-                <div className="text-3xl sm:text-5xl font-black text-[#8C6A21] mb-2 tracking-tight font-serif gradient-text-gold">
+                <div className="text-3xl sm:text-5xl font-black text-[#8C6A21] mb-2 tracking-tight font-heading gradient-text-gold">
                   <AnimatedCounter value="15+" />
                 </div>
                 <div className="text-xs sm:text-sm text-slate-700 font-bold">{t.yearsExp}</div>
               </div>
-              
+
               <div className="p-4">
-                <div className="text-3xl sm:text-5xl font-black text-[#8C6A21] mb-2 tracking-tight font-serif gradient-text-gold">
+                <div className="text-3xl sm:text-5xl font-black text-[#8C6A21] mb-2 tracking-tight font-heading gradient-text-gold">
                   <AnimatedCounter value="50,000+" />
                 </div>
                 <div className="text-xs sm:text-sm text-slate-700 font-bold">{t.appsProcessed}</div>
               </div>
 
               <div className="p-4">
-                <div className="text-3xl sm:text-5xl font-black text-[#8C6A21] mb-2 tracking-tight font-serif gradient-text-gold">
+                <div className="text-3xl sm:text-5xl font-black text-[#8C6A21] mb-2 tracking-tight font-heading gradient-text-gold">
                   <AnimatedCounter value="99.8%" />
                 </div>
                 <div className="text-xs sm:text-sm text-slate-700 font-bold">{t.clientSatisfaction}</div>
               </div>
 
               <div className="p-4">
-                <div className="text-3xl sm:text-5xl font-black text-[#8C6A21] mb-2 tracking-tight font-serif gradient-text-gold">
+                <div className="text-3xl sm:text-5xl font-black text-[#8C6A21] mb-2 tracking-tight font-heading gradient-text-gold">
                   <AnimatedCounter value="10+" />
                 </div>
                 <div className="text-xs sm:text-sm text-slate-700 font-bold">{t.govtPartners}</div>
@@ -179,10 +179,10 @@ export default function AboutSection({ lang }) {
 
         {/* Interactive Milestones Timeline */}
         <div className="max-w-4xl mx-auto">
-          
+
           <AnimatedSection animation="fade-up" delay={100}>
             <div className="text-center mb-16">
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 mb-3 font-serif">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 mb-3 font-heading">
                 {t.milestonesTitle}
               </h2>
               <p className="text-slate-600 text-sm sm:text-base max-w-xl mx-auto">
@@ -195,9 +195,9 @@ export default function AboutSection({ lang }) {
             {siteData.milestones.map((m, idx) => {
               const IconComp = milestoneIcons[m.iconName] || Building2;
               return (
-                <AnimatedSection 
-                  key={idx} 
-                  animation="fade-up" 
+                <AnimatedSection
+                  key={idx}
+                  animation="fade-up"
                   delay={150 + idx * 120}
                 >
                   <div className="relative ps-8 group">
@@ -212,7 +212,7 @@ export default function AboutSection({ lang }) {
                       <span className="inline-block bg-[#0F172A] text-[#F5E5C0] text-xs font-bold px-3 py-1 rounded-full mb-3 shadow-sm">
                         {m.year}
                       </span>
-                      <h3 className="text-lg font-bold text-slate-900 mb-2 group-hover:text-[#8C6A21] transition-colors font-serif">
+                      <h3 className="text-lg font-bold text-slate-900 mb-2 group-hover:text-[#8C6A21] transition-colors font-heading">
                         {m.title[lang]}
                       </h3>
                       <p className="text-sm text-slate-600 leading-relaxed">

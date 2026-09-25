@@ -1,0 +1,64 @@
+# ==============================================================================
+# Hostinger & Apache Production Configuration for Vite Single Page Apps (SPA)
+# Prime Time Typing & Corporate Services - Abu Dhabi (https://primetimetypingservice.com)
+# ==============================================================================
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # 1. Force HTTPS on Hostinger (Handles reverse proxy & SSL headers safely)
+  RewriteCond %{HTTPS} off
+  RewriteCond %{HTTP:X-Forwarded-Proto} !https
+  RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+  # 2. Direct access to physical files, directories, and PHP API backend
+  RewriteCond %{REQUEST_URI} ^/api/ [NC]
+  RewriteRule ^ - [L]
+
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d [OR]
+  RewriteCond %{REQUEST_FILENAME} -l
+  RewriteRule ^ - [L]
+
+  # 3. SPA Route Fallback: Route all client routes (/admin, /login, etc.) to index.html
+  RewriteRule ^ index.html [QSA,L]
+</IfModule>
+
+# Ensure correct MIME types for ESM JavaScript & Modern Web Assets
+<IfModule mod_mime.c>
+  AddType application/javascript .js .mjs
+  AddType text/css .css
+  AddType image/svg+xml .svg
+  AddType image/webp .webp
+  AddType font/woff2 .woff2
+</IfModule>
+
+# Enable Gzip Compression for High Speed Loading on Hostinger
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/x-javascript application/json image/svg+xml
+</IfModule>
+
+# Cache-Control Strategy for Hostinger Deployment (Prevents mobile blank page caching issues)
+<IfModule mod_headers.c>
+  # Never cache index.html so visitors instantly receive updated JS/CSS bundle hashes
+  <FilesMatch "index\.html$">
+    Header set Cache-Control "no-cache, no-store, must-revalidate, max-age=0"
+    Header set Pragma "no-cache"
+    Header set Expires "0"
+  </FilesMatch>
+
+  # Immutable long-term caching for hashed Vite static assets (JS, CSS, images)
+  <FilesMatch "\.(js|css|png|jpg|jpeg|gif|ico|svg|webp|woff2)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+
+  # Security Headers
+  Header set X-Content-Type-Options "nosniff"
+  Header set X-Frame-Options "SAMEORIGIN"
+  Header set X-XSS-Protection "1; mode=block"
+  Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# Disable Directory Browsing
+Options -Indexes

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { ShieldCheck, Sparkles, CheckCircle2 } from 'lucide-react';
 import { siteData } from '../data/siteData';
 
@@ -6,8 +6,27 @@ export default function SplashScreen({ lang, onComplete }) {
   const [progress, setProgress] = useState(0);
   const [isFadingOut, setIsFadingOut] = useState(false);
   const [statusText, setStatusText] = useState('');
+  const completedRef = useRef(false);
 
   const t = siteData.translations[lang] || siteData.translations.en;
+
+  const triggerDismiss = useRef(() => {
+    if (completedRef.current) return;
+    completedRef.current = true;
+    setIsFadingOut(true);
+    setTimeout(() => {
+      if (onComplete) onComplete();
+    }, 400);
+  }).current;
+
+  // Maximum fallback timeout: guarantee splash screen dissolves after 2.5s no matter what
+  useEffect(() => {
+    const hardTimeout = setTimeout(() => {
+      triggerDismiss();
+    }, 2500);
+
+    return () => clearTimeout(hardTimeout);
+  }, [triggerDismiss]);
 
   useEffect(() => {
     // Phase status messages
@@ -31,7 +50,7 @@ export default function SplashScreen({ lang, onComplete }) {
           return 100;
         }
 
-        const next = prev + Math.floor(Math.random() * 8) + 4;
+        const next = prev + Math.floor(Math.random() * 12) + 8;
         
         if (next > 40 && next < 85) {
           setStatusText(statuses[1]);
@@ -41,7 +60,7 @@ export default function SplashScreen({ lang, onComplete }) {
 
         return next > 100 ? 100 : next;
       });
-    }, 60);
+    }, 40);
 
     return () => clearInterval(interval);
   }, [lang]);
@@ -49,21 +68,17 @@ export default function SplashScreen({ lang, onComplete }) {
   useEffect(() => {
     if (progress === 100) {
       const timeout = setTimeout(() => {
-        setIsFadingOut(true);
-        // Delay to allow fade out animation to finish before calling onComplete
-        const completeTimeout = setTimeout(() => {
-          if (onComplete) onComplete();
-        }, 700);
-        return () => clearTimeout(completeTimeout);
-      }, 400);
+        triggerDismiss();
+      }, 300);
 
       return () => clearTimeout(timeout);
     }
-  }, [progress, onComplete]);
+  }, [progress, triggerDismiss]);
 
   return (
     <div
-      className={`fixed inset-0 z-[100] bg-white text-slate-900 flex flex-col items-center justify-center transition-all duration-700 ease-in-out select-none ${
+      onClick={triggerDismiss}
+      className={`fixed inset-0 z-[100] bg-white text-slate-900 flex flex-col items-center justify-center transition-all duration-500 ease-in-out select-none cursor-pointer ${
         isFadingOut ? 'opacity-0 scale-105 pointer-events-none' : 'opacity-100 scale-100'
       }`}
     >
@@ -97,7 +112,7 @@ export default function SplashScreen({ lang, onComplete }) {
 
         {/* Brand Titles */}
         <div className="space-y-2 mb-8">
-          <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-slate-900 flex items-center justify-center gap-2 font-serif">
+          <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-slate-900 flex items-center justify-center gap-2 font-heading">
             <span className="gradient-text-gold">
               {siteData.brand.name[lang]}
             </span>
@@ -109,7 +124,7 @@ export default function SplashScreen({ lang, onComplete }) {
 
           <div className="flex items-center justify-center gap-2 pt-1 text-[11px] text-slate-500">
             <CheckCircle2 className="w-3.5 h-3.5 text-[#8C6A21]" />
-            <span>{lang === 'ar' ? 'أبوظبي - بناية دار السلام، الكورنيش' : 'Abu Dhabi Corniche - Official Hub'}</span>
+            <span>{lang === 'ar' ? 'أبوظبي - بالقرب من ميت مارت، مدينة زايد' : 'Abu Dhabi - Near Meat Mart, Madinat Zayed'}</span>
           </div>
         </div>
 

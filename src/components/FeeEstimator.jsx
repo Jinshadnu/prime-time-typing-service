@@ -3,15 +3,16 @@ import { Calculator, Clock, DollarSign, FileCheck, ArrowRight, ArrowLeft } from 
 import { siteData } from '../data/siteData';
 import AnimatedSection from './AnimatedSection';
 
-export default function FeeEstimator({ lang, onSelectServiceForInquiry }) {
-  const [selectedServiceId, setSelectedServiceId] = useState(siteData.services[0].id);
+export default function FeeEstimator({ lang, services = siteData.services, onSelectServiceForInquiry }) {
+  const activeServices = services && services.length > 0 ? services : siteData.services;
+  const [selectedServiceId, setSelectedServiceId] = useState(activeServices[0]?.id || 'residency-new');
   const [applicantCount, setApplicantCount] = useState(1);
   const [urgency, setUrgency] = useState('standard');
   const [isRecalculating, setIsRecalculating] = useState(false);
 
   const t = siteData.translations[lang];
 
-  const currentService = siteData.services.find(s => s.id === selectedServiceId) || siteData.services[0];
+  const currentService = activeServices.find(s => s.id === selectedServiceId) || activeServices[0];
 
   // Trigger brief pulse animation whenever estimation params change
   useEffect(() => {
@@ -22,12 +23,12 @@ export default function FeeEstimator({ lang, onSelectServiceForInquiry }) {
 
   return (
     <section id="estimator" className="py-20 bg-slate-50 text-slate-900 relative overflow-hidden">
-      
+
       {/* Background Ambient Glow */}
       <div className="glow-gold top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-15"></div>
 
       <div className="container-custom relative z-10">
-        
+
         {/* Section Header */}
         <AnimatedSection animation="fade-up" delay={100}>
           <div className="text-center max-w-3xl mx-auto mb-16">
@@ -35,23 +36,23 @@ export default function FeeEstimator({ lang, onSelectServiceForInquiry }) {
               <Calculator className="w-4 h-4 text-[#8C6A21]" />
               <span>{t.estimatorBadge}</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 mb-4 font-serif">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 mb-4 font-heading">
               {t.estimatorTitle}
             </h2>
-            <p className="text-slate-600 text-sm sm:text-base">
+            <p className="text-slate-600 text-base sm:text-lg">
               {t.estimatorSubtitle}
             </p>
           </div>
         </AnimatedSection>
 
-        <AnimatedSection animation="zoom-in" delay={150}>
-          <div className="max-w-4xl mx-auto bg-white rounded-3xl p-6 sm:p-10 border border-slate-200 shadow-xl relative overflow-hidden">
-            
+        {/* Estimator Main Card */}
+        <AnimatedSection animation="fade-up" delay={200}>
+          <div className="card-luxury p-6 sm:p-10 max-w-4xl mx-auto border border-slate-200/80 shadow-2xl bg-white relative">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
-              
+
               {/* Input Controls */}
               <div className="space-y-6 text-start">
-                
+
                 {/* Select Service Dropdown */}
                 <div>
                   <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-2">
@@ -62,9 +63,9 @@ export default function FeeEstimator({ lang, onSelectServiceForInquiry }) {
                     onChange={(e) => setSelectedServiceId(e.target.value)}
                     className="w-full bg-slate-50 border border-slate-300 rounded-xl py-3.5 px-4 text-sm text-slate-900 font-bold focus:outline-none focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37]/50 transition-colors shadow-inner"
                   >
-                    {siteData.services.map((s) => (
+                    {activeServices.map((s) => (
                       <option key={s.id} value={s.id} className="bg-white">
-                        {s.title[lang]}
+                        {s.title?.[lang] || s.title?.en}
                       </option>
                     ))}
                   </select>
@@ -99,11 +100,10 @@ export default function FeeEstimator({ lang, onSelectServiceForInquiry }) {
                     <button
                       type="button"
                       onClick={() => setUrgency('standard')}
-                      className={`py-3.5 px-4 rounded-xl text-xs font-extrabold border text-start transition-all duration-300 cursor-pointer ${
-                        urgency === 'standard'
-                          ? 'bg-[#D4AF37] text-slate-900 border-[#D4AF37] shadow-sm'
-                          : 'bg-slate-50 text-slate-700 border-slate-300 hover:border-[#D4AF37]'
-                      }`}
+                      className={`py-3.5 px-4 rounded-xl text-xs font-extrabold border text-start transition-all duration-300 cursor-pointer ${urgency === 'standard'
+                        ? 'bg-[#D4AF37] text-slate-900 border-[#D4AF37] shadow-sm'
+                        : 'bg-slate-50 text-slate-700 border-slate-300 hover:border-[#D4AF37]'
+                        }`}
                     >
                       {t.standardSpeed}
                     </button>
@@ -111,11 +111,10 @@ export default function FeeEstimator({ lang, onSelectServiceForInquiry }) {
                     <button
                       type="button"
                       onClick={() => setUrgency('express')}
-                      className={`py-3.5 px-4 rounded-xl text-xs font-extrabold border text-start transition-all duration-300 cursor-pointer flex items-center justify-between ${
-                        urgency === 'express'
-                          ? 'bg-gradient-to-r from-[#F5E5C0] via-[#D4AF37] to-[#9E7D3B] text-slate-900 border-[#D4AF37] shadow-sm'
-                          : 'bg-slate-50 text-slate-700 border-slate-300 hover:border-[#D4AF37]'
-                      }`}
+                      className={`py-3.5 px-4 rounded-xl text-xs font-extrabold border text-start transition-all duration-300 cursor-pointer flex items-center justify-between ${urgency === 'express'
+                        ? 'bg-gradient-to-r from-[#F5E5C0] via-[#D4AF37] to-[#9E7D3B] text-slate-900 border-[#D4AF37] shadow-sm'
+                        : 'bg-slate-50 text-slate-700 border-slate-300 hover:border-[#D4AF37]'
+                        }`}
                     >
                       <span>{t.expressSpeed}</span>
                       <span className="text-[10px] bg-red-600 text-white font-extrabold px-2.5 py-0.5 rounded-full shadow-sm">VIP</span>
@@ -126,27 +125,32 @@ export default function FeeEstimator({ lang, onSelectServiceForInquiry }) {
               </div>
 
               {/* Estimation Output Card - White Transparent Glass */}
-              <div 
-                className={`bg-white/80 rounded-2xl p-7 border border-slate-200/90 flex flex-col justify-between h-full text-start shadow-xl relative overflow-hidden backdrop-blur-xl ${
-                  isRecalculatePulse(isRecalculating)
-                }`}
+              <div
+                className={`bg-white/80 rounded-2xl p-7 border border-slate-200/90 flex flex-col justify-between h-full text-start shadow-xl relative overflow-hidden backdrop-blur-xl ${isRecalculatePulse(isRecalculating)
+                  }`}
               >
                 <div>
-                  <div className="text-xs text-[#8C6A21] font-black tracking-wider uppercase mb-1 flex items-center justify-between font-serif">
-                    <span>{currentService.title[lang]}</span>
+                  <div className="text-xs text-[#8C6A21] font-black tracking-wider uppercase mb-1 flex items-center justify-between font-heading">
+                    <span>{currentService?.title?.[lang] || currentService?.title?.en || ''}</span>
                     {isRecalculating && (
                       <span className="text-[10px] text-[#8C6A21] animate-pulse">
                         {lang === 'ar' ? 'جاري الحساب...' : 'Updating...'}
                       </span>
                     )}
                   </div>
-                  
+
                   {/* Cost Estimation */}
                   <div className="my-4 pb-4 border-b border-slate-200">
                     <div className="text-xs text-slate-500 mb-1">{t.estimatedCostRange}</div>
-                    <div className="text-3xl sm:text-4xl font-black text-slate-900 flex items-baseline gap-1 font-serif">
+                    <div className="text-3xl sm:text-4xl font-black text-slate-900 flex items-baseline gap-1 font-heading">
                       <span className="gradient-text-gold transition-all">
-                        {currentService.govtFeeRange[lang]}
+                        {urgency === 'express'
+                          ? (lang === 'ar'
+                              ? `${((currentService?.estimatedCostExpress || (currentService?.estimatedCostStandard ? currentService.estimatedCostStandard + 100 : 350))) * applicantCount} درهم`
+                              : `AED ${((currentService?.estimatedCostExpress || (currentService?.estimatedCostStandard ? currentService.estimatedCostStandard + 100 : 350))) * applicantCount}`)
+                          : (lang === 'ar'
+                              ? `${(currentService?.estimatedCostStandard || currentService?.govtFee || 250) * applicantCount} درهم`
+                              : `AED ${(currentService?.estimatedCostStandard || currentService?.govtFee || 250) * applicantCount}`)}
                       </span>
                     </div>
                     {applicantCount > 1 && (
@@ -162,7 +166,7 @@ export default function FeeEstimator({ lang, onSelectServiceForInquiry }) {
                     <div>
                       <div className="text-xs text-slate-500">{t.estimatedDuration}</div>
                       <div className="text-sm font-bold text-slate-900">
-                        {urgency === 'express' ? (lang === 'ar' ? 'نفس اليوم (في غضون ساعات قليلة)' : 'Same Day (Within 2-4 Hours)') : currentService.processingTime[lang]}
+                        {urgency === 'express' ? (lang === 'ar' ? 'نفس اليوم (في غضون ساعات قليلة)' : 'Same Day (Within 2-4 Hours)') : (currentService?.processingTime?.[lang] || currentService?.processingTime?.en || '')}
                       </div>
                     </div>
                   </div>
@@ -174,7 +178,7 @@ export default function FeeEstimator({ lang, onSelectServiceForInquiry }) {
                       <span>{t.keyRequirements}:</span>
                     </div>
                     <ul className="space-y-1.5 text-xs text-slate-700 max-h-32 overflow-y-auto pr-2">
-                      {currentService.requirements[lang].map((req, i) => (
+                      {(currentService?.requirements?.[lang] || currentService?.requirements?.en || []).map((req, i) => (
                         <li key={i} className="flex items-center gap-2">
                           <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37]"></span>
                           <span>{req}</span>

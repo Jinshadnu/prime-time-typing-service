@@ -3,7 +3,7 @@ import { MapPin, Mail, Phone, ArrowUp, ShieldCheck } from 'lucide-react';
 import { FacebookIcon, InstagramIcon } from './SocialIcons';
 import { siteData } from '../data/siteData';
 
-export default function Footer({ lang, onNavigate }) {
+export default function Footer({ lang, onNavigate, onOpenAdmin }) {
   const t = siteData.translations[lang];
 
   const scrollToTop = () => {
@@ -17,10 +17,10 @@ export default function Footer({ lang, onNavigate }) {
   return (
     <footer id="footer" className="bg-slate-50 text-slate-800 pt-16 pb-12 border-t border-slate-200/80">
       <div className="container-custom">
-        
+
         {/* Top 3 Info Cards Grid - White Transparent Glass */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pb-12 border-b border-slate-200">
-          
+
           {/* Address Box */}
           <div className="bg-white/80 backdrop-blur-xl p-6 rounded-2xl border border-slate-200 shadow-sm flex items-start gap-4 hover:border-[#D4AF37] transition-all">
             <div className="w-12 h-12 rounded-xl bg-amber-50 text-[#8C6A21] flex items-center justify-center shrink-0 border border-[#D4AF37]/30 shadow-sm">
@@ -28,7 +28,7 @@ export default function Footer({ lang, onNavigate }) {
             </div>
             <div>
               <h4 className="text-slate-900 font-bold text-sm mb-1">{t.officeLocation}</h4>
-              <p className="text-xs text-slate-600 leading-relaxed font-serif">
+              <p className="text-xs text-slate-600 leading-relaxed font-heading">
                 {siteData.brand.address[lang]}
               </p>
             </div>
@@ -41,9 +41,12 @@ export default function Footer({ lang, onNavigate }) {
             </div>
             <div>
               <h4 className="text-slate-900 font-bold text-sm mb-1">{t.emailUs}</h4>
-              <p className="text-xs text-slate-600 leading-relaxed">
+              <a
+                href={`mailto:${siteData.brand.email}`}
+                className="text-xs text-slate-600 hover:text-[#8C6A21] transition-colors leading-relaxed block"
+              >
                 {siteData.brand.email}
-              </p>
+              </a>
             </div>
           </div>
 
@@ -54,9 +57,22 @@ export default function Footer({ lang, onNavigate }) {
             </div>
             <div>
               <h4 className="text-slate-900 font-bold text-sm mb-1">{t.directPhone}</h4>
-              <p className="text-xs text-slate-800 font-bold leading-relaxed font-serif" dir="ltr">
+              <a
+                href={`tel:${siteData.brand.phoneTel || siteData.brand.phone}`}
+                className="text-xs text-slate-800 hover:text-[#8C6A21] font-bold leading-relaxed font-heading block"
+                dir="ltr"
+              >
                 {siteData.brand.phone}
-              </p>
+              </a>
+              <a
+                href={`https://wa.me/${siteData.brand.whatsappLink || siteData.brand.whatsapp.replace(/[^0-9]/g, '').replace(/^0/, '971')}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs text-[#25D366] hover:underline font-bold mt-1 inline-flex items-center gap-1"
+                dir="ltr"
+              >
+                <span>WhatsApp: {siteData.brand.whatsapp}</span>
+              </a>
             </div>
           </div>
 
@@ -66,14 +82,14 @@ export default function Footer({ lang, onNavigate }) {
         <div className="py-10 flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 rounded-xl overflow-hidden border-2 border-[#D4AF37] bg-black shadow-lg shadow-[#D4AF37]/20 flex items-center justify-center p-0.5">
-              <img 
-                src={siteData.brand.logo} 
+              <img
+                src={siteData.brand.logo}
                 alt="Prime Time Typing Logo"
-                className="w-full h-full object-cover rounded-lg" 
+                className="w-full h-full object-cover rounded-lg"
               />
             </div>
             <div>
-              <h3 className="text-xl font-extrabold text-slate-900 font-serif">
+              <h3 className="text-xl font-extrabold text-slate-900 font-heading">
                 {siteData.brand.name[lang]}
               </h3>
               <p className="text-xs text-[#8C6A21] font-bold">
@@ -119,9 +135,23 @@ export default function Footer({ lang, onNavigate }) {
           <p className="text-[11px] text-slate-500 max-w-4xl mx-auto leading-relaxed">
             {t.footerDisclaimer}
           </p>
-          <p className="text-xs text-[#8C6A21] font-bold">
-            {t.footerCopyright}
-          </p>
+          <div className="flex items-center justify-center gap-4 text-xs">
+            <span className="text-[#8C6A21] font-bold">
+              {t.footerCopyright}
+            </span>
+            {onOpenAdmin && (
+              <>
+                <span className="text-slate-300">•</span>
+                <button
+                  onClick={onOpenAdmin}
+                  className="text-slate-600 hover:text-slate-900 font-medium underline flex items-center gap-1 cursor-pointer"
+                >
+                  <ShieldCheck className="w-3.5 h-3.5 text-[#8C6A21]" />
+                  <span>{lang === 'ar' ? 'لوحة التحكم' : 'Admin Portal'}</span>
+                </button>
+              </>
+            )}
+          </div>
         </div>
 
       </div>

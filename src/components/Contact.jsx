@@ -20,11 +20,11 @@ export default function Contact() {
 
   return (
     <section id="contact" className="py-24 bg-[#070A12] relative overflow-hidden">
-      
+
       <div className="glow-cyan top-1/3 left-10"></div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        
+
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
           <div className="inline-flex items-center gap-2 bg-slate-900 border border-cyan-500/30 px-3.5 py-1.5 rounded-full text-xs font-mono text-cyan-400 mb-4">
@@ -40,10 +40,10 @@ export default function Contact() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start max-w-6xl mx-auto">
-          
+
           {/* Direct Details Column */}
           <div className="lg:col-span-5 space-y-6 text-start">
-            
+
             <div className="glass-panel p-6 rounded-3xl border border-white/10 flex items-start gap-4">
               <div className="w-12 h-12 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 flex items-center justify-center shrink-0">
                 <Mail className="w-6 h-6" />
@@ -107,7 +107,7 @@ export default function Contact() {
 
           {/* Form Column */}
           <div className="lg:col-span-7 glass-panel p-8 sm:p-10 rounded-3xl border border-white/10 text-start shadow-2xl relative">
-            
+
             {isSubmitted ? (
               <div className="py-12 text-center space-y-4">
                 <div className="w-16 h-16 bg-emerald-500/20 text-emerald-400 rounded-full flex items-center justify-center mx-auto border border-emerald-500/40">
@@ -131,7 +131,7 @@ export default function Contact() {
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-5">
-                
+
                 <h3 className="text-2xl font-bold text-white mb-6 font-heading">
                   Send Direct Message
                 </h3>
