@@ -86,7 +86,7 @@ export default function AboutSection({ lang, aboutData = {} }) {
                   <img
                     src={imageSrc}
                     alt="Prime Time Typing Abu Dhabi Office"
-                    className="w-full h-[400px] object-cover"
+                    className="w-full h-[440px] sm:h-[480px] lg:h-[520px] object-cover object-top"
                     onError={(e) => {
                       if (e.currentTarget.src !== aboutOfficeImg) {
                         e.currentTarget.src = aboutOfficeImg;
