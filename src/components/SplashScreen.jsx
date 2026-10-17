@@ -51,7 +51,7 @@ export default function SplashScreen({ lang, onComplete }) {
         }
 
         const next = prev + Math.floor(Math.random() * 12) + 8;
-        
+
         if (next > 40 && next < 85) {
           setStatusText(statuses[1]);
         } else if (next >= 85) {
@@ -78,28 +78,27 @@ export default function SplashScreen({ lang, onComplete }) {
   return (
     <div
       onClick={triggerDismiss}
-      className={`fixed inset-0 z-[100] bg-white text-slate-900 flex flex-col items-center justify-center transition-all duration-500 ease-in-out select-none cursor-pointer ${
-        isFadingOut ? 'opacity-0 scale-105 pointer-events-none' : 'opacity-100 scale-100'
-      }`}
+      className={`fixed inset-0 z-[100] bg-white text-slate-900 flex flex-col items-center justify-center transition-all duration-500 ease-in-out select-none cursor-pointer ${isFadingOut ? 'opacity-0 scale-105 pointer-events-none' : 'opacity-100 scale-100'
+        }`}
     >
       {/* Ambient Background Glows */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-radial from-[#D4AF37]/20 via-amber-50/40 to-transparent rounded-full blur-3xl pointer-events-none"></div>
 
       <div className="relative z-10 flex flex-col items-center max-w-md px-6 text-center">
-        
+
         {/* Animated Brand Emblem */}
         <div className="relative mb-8 group">
-          
+
           {/* Pulsing Outer Rings */}
           <div className="absolute -inset-4 rounded-3xl bg-gradient-to-r from-[#D4AF37]/30 via-[#F5E5C0]/40 to-[#D4AF37]/30 blur-md animate-pulse"></div>
-          
+
           {/* Outer Shield Box with Logo Image */}
           <div className="relative w-28 h-28 sm:w-32 sm:h-32 rounded-3xl bg-gradient-to-br from-[#F5E5C0] via-[#D4AF37] to-[#9E7D3B] p-1 shadow-2xl flex items-center justify-center transform hover:scale-105 transition-transform duration-500">
             <div className="w-full h-full bg-slate-900 rounded-[22px] flex items-center justify-center relative overflow-hidden">
-              <img 
-                src={siteData.brand.logo} 
+              <img
+                src={siteData.brand.logo}
                 alt="Prime Time Typing Logo"
-                className="w-full h-full object-cover rounded-[20px]" 
+                className="w-full h-full object-cover rounded-[20px]"
               />
             </div>
           </div>

@@ -10,7 +10,8 @@ import {
   Calendar,
   User,
   Image as ImageIcon,
-  ExternalLink
+  ExternalLink,
+  Upload
 } from 'lucide-react';
 import MediaPickerModal from './MediaPickerModal';
 import DeleteConfirmModal from './DeleteConfirmModal';
@@ -352,7 +353,7 @@ export default function BlogTab({
                 <div className="flex items-center gap-3">
                   <input
                     type="text"
-                    placeholder="Image URL or choose from Media Library"
+                    placeholder="Upload from device, media library, or image URL"
                     value={formData.image}
                     onChange={e => setFormData({ ...formData, image: e.target.value })}
                     className="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-[#D4AF37]"
@@ -360,10 +361,10 @@ export default function BlogTab({
                   <button
                     type="button"
                     onClick={() => setIsMediaPickerOpen(true)}
-                    className="px-3 py-2 text-xs font-semibold text-slate-300 bg-slate-800 hover:bg-slate-700 rounded-xl flex items-center gap-1.5 shrink-0"
+                    className="px-3.5 py-2 text-xs font-bold text-slate-950 bg-[#D4AF37] hover:bg-[#e0bc42] rounded-xl flex items-center gap-1.5 shrink-0 shadow-md transition-all"
                   >
-                    <ImageIcon className="w-4 h-4 text-[#D4AF37]" />
-                    <span>Media Library</span>
+                    <Upload className="w-3.5 h-3.5" />
+                    <span>Upload / Media</span>
                   </button>
                 </div>
               </div>

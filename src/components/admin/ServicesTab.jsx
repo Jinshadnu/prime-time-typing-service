@@ -25,7 +25,8 @@ import {
   Clock,
   ChevronDown,
   LayoutGrid,
-  List
+  List,
+  Upload
 } from 'lucide-react';
 import MediaPickerModal from './MediaPickerModal';
 import DeleteConfirmModal from './DeleteConfirmModal';
@@ -136,41 +137,48 @@ export default function ServicesTab({
     const tFee = service.typingFee !== undefined ? Number(service.typingFee) : Math.round(stdCost * 0.3);
     const expCost = Number(service.estimatedCostExpress) || (stdCost + 100);
 
+    const titleEn = typeof service.title === 'object' ? (service.title?.en || '') : (service.title || '');
+    const titleAr = typeof service.title === 'object' ? (service.title?.ar || '') : '';
+    const shortDescEn = typeof service.shortDesc === 'object' ? (service.shortDesc?.en || '') : (typeof service.desc === 'object' ? (service.desc?.en || '') : (service.desc || ''));
+    const shortDescAr = typeof service.shortDesc === 'object' ? (service.shortDesc?.ar || '') : (typeof service.desc === 'object' ? (service.desc?.ar || '') : '');
+    const descEn = typeof service.desc === 'object' ? (service.desc?.en || '') : (service.desc || '');
+    const descAr = typeof service.desc === 'object' ? (service.desc?.ar || '') : '';
+
     setEditingService(service);
     setFormData({
       categoryId: service.categoryId || categories[0]?.id || 'tasheel',
       subcategoryId: service.subcategoryId || '',
-      titleEn: service.title?.en || '',
-      titleAr: service.title?.ar || '',
+      titleEn,
+      titleAr: titleAr || titleEn,
       slug: service.slug || service.id,
-      shortDescEn: service.shortDesc?.en || service.desc?.en || '',
-      shortDescAr: service.shortDesc?.ar || service.desc?.ar || '',
-      descEn: service.desc?.en || '',
-      descAr: service.desc?.ar || '',
-      detailedDescEn: service.detailedDesc?.en || service.desc?.en || '',
-      detailedDescAr: service.detailedDesc?.ar || service.desc?.ar || '',
+      shortDescEn,
+      shortDescAr: shortDescAr || shortDescEn,
+      descEn,
+      descAr: descAr || descEn,
+      detailedDescEn: typeof service.detailedDesc === 'object' ? (service.detailedDesc?.en || '') : (service.detailedDesc || descEn),
+      detailedDescAr: typeof service.detailedDesc === 'object' ? (service.detailedDesc?.ar || '') : (service.detailedDesc || descAr),
       icon: service.icon || 'Briefcase',
       image: service.image || '',
       govtFee: gFee,
       typingFee: tFee,
       estimatedCostStandard: stdCost,
       estimatedCostExpress: expCost,
-      govtFeeRangeEn: service.govtFeeRange?.en || `AED ${stdCost}`,
-      govtFeeRangeAr: service.govtFeeRange?.ar || `${stdCost} درهم`,
-      processingTimeEn: service.processingTime?.en || '24-48 Hours',
-      processingTimeAr: service.processingTime?.ar || '24 - 48 ساعة',
-      eligibilityEn: service.eligibility?.en || '',
-      eligibilityAr: service.eligibility?.ar || '',
-      procedureEn: service.procedure?.en || '',
-      procedureAr: service.procedure?.ar || '',
-      importantNotesEn: service.importantNotes?.en || '',
-      importantNotesAr: service.importantNotes?.ar || '',
+      govtFeeRangeEn: typeof service.govtFeeRange === 'object' ? (service.govtFeeRange?.en || `AED ${stdCost}`) : (service.govtFeeRange || `AED ${stdCost}`),
+      govtFeeRangeAr: typeof service.govtFeeRange === 'object' ? (service.govtFeeRange?.ar || `${stdCost} درهم`) : `${stdCost} درهم`,
+      processingTimeEn: typeof service.processingTime === 'object' ? (service.processingTime?.en || '24-48 Hours') : (service.processingTime || '24-48 Hours'),
+      processingTimeAr: typeof service.processingTime === 'object' ? (service.processingTime?.ar || '24 - 48 ساعة') : '24 - 48 ساعة',
+      eligibilityEn: typeof service.eligibility === 'object' ? (service.eligibility?.en || '') : (service.eligibility || ''),
+      eligibilityAr: typeof service.eligibility === 'object' ? (service.eligibility?.ar || '') : '',
+      procedureEn: typeof service.procedure === 'object' ? (service.procedure?.en || '') : (service.procedure || ''),
+      procedureAr: typeof service.procedure === 'object' ? (service.procedure?.ar || '') : '',
+      importantNotesEn: typeof service.importantNotes === 'object' ? (service.importantNotes?.en || '') : (service.importantNotes || ''),
+      importantNotesAr: typeof service.importantNotes === 'object' ? (service.importantNotes?.ar || '') : '',
       requirementsEn: Array.isArray(service.requirements?.en)
         ? service.requirements.en
-        : (service.requirements?.en ? service.requirements.en.split('\n') : []),
+        : (Array.isArray(service.requirements) ? service.requirements : (service.requirements?.en ? service.requirements.en.split('\n').filter(Boolean) : [])),
       requirementsAr: Array.isArray(service.requirements?.ar)
         ? service.requirements.ar
-        : (service.requirements?.ar ? service.requirements.ar.split('\n') : []),
+        : (service.requirements?.ar ? service.requirements.ar.split('\n').filter(Boolean) : []),
       faqs: Array.isArray(service.faqs) ? service.faqs : [],
       featured: Boolean(service.featured),
       popular: Boolean(service.popular),
@@ -182,13 +190,29 @@ export default function ServicesTab({
   };
 
   const handleFormSubmit = (e) => {
-    e.preventDefault();
-    if (!formData.titleEn && !formData.titleAr) return;
+    if (e && e.preventDefault) e.preventDefault();
+    const titleEn = (formData.titleEn || '').trim();
+    const titleAr = (formData.titleAr || '').trim();
+
+    if (!titleEn && !titleAr) {
+      alert('Please enter at least a Service Title in English or Arabic.');
+      return;
+    }
+
+    const payload = {
+      ...formData,
+      titleEn: titleEn || titleAr,
+      titleAr: titleAr || titleEn,
+      shortDescEn: (formData.shortDescEn || '').trim() || (formData.descEn || '').trim() || titleEn,
+      shortDescAr: (formData.shortDescAr || '').trim() || (formData.descAr || '').trim() || titleAr,
+      descEn: (formData.descEn || '').trim() || (formData.shortDescEn || '').trim() || titleEn,
+      descAr: (formData.descAr || '').trim() || (formData.shortDescAr || '').trim() || titleAr,
+    };
 
     if (editingService) {
-      onUpdateService(editingService.id, formData);
+      onUpdateService(editingService.id, payload);
     } else {
-      onAddService(formData);
+      onAddService(payload);
     }
     setIsFormOpen(false);
   };
@@ -669,7 +693,7 @@ export default function ServicesTab({
             </div>
 
             {/* Form Body */}
-            <form onSubmit={handleFormSubmit} className="p-5 overflow-y-auto flex-1 space-y-4 text-xs">
+            <form id="serviceEditForm" onSubmit={handleFormSubmit} className="p-5 overflow-y-auto flex-1 space-y-4 text-xs">
               
               {/* TAB 1: BASIC INFO */}
               {activeFormTab === 'basic' && (
@@ -680,7 +704,6 @@ export default function ServicesTab({
                     <div>
                       <label className="block font-semibold text-slate-300 mb-1">Main Government Department *</label>
                       <select
-                        required
                         value={formData.categoryId}
                         onChange={e => setFormData({ ...formData, categoryId: e.target.value, subcategoryId: '' })}
                         className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-sm text-white focus:outline-none focus:border-[#D4AF37]"
@@ -712,7 +735,6 @@ export default function ServicesTab({
                       <label className="block font-semibold text-slate-300 mb-1">Service Title (English) *</label>
                       <input
                         type="text"
-                        required
                         placeholder="e.g. Work Permit & Labour Card Renewal"
                         value={formData.titleEn}
                         onChange={e => {
@@ -727,10 +749,9 @@ export default function ServicesTab({
                       />
                     </div>
                     <div>
-                      <label className="block font-semibold text-slate-300 mb-1">Service Title (Arabic) *</label>
+                      <label className="block font-semibold text-slate-300 mb-1">Service Title (Arabic)</label>
                       <input
                         type="text"
-                        required
                         dir="rtl"
                         placeholder="مثال: تجديد تصريح وبطاقة العمل"
                         value={formData.titleAr}
@@ -822,7 +843,7 @@ export default function ServicesTab({
                     <div className="flex items-center gap-3">
                       <input
                         type="text"
-                        placeholder="Image URL or choose from Media Library"
+                        placeholder="Upload from device, media library, or image URL"
                         value={formData.image}
                         onChange={e => setFormData({ ...formData, image: e.target.value })}
                         className="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-[#D4AF37]"
@@ -830,10 +851,10 @@ export default function ServicesTab({
                       <button
                         type="button"
                         onClick={() => setIsMediaPickerOpen(true)}
-                        className="px-3 py-2 text-xs font-semibold text-slate-300 bg-slate-800 hover:bg-slate-700 rounded-xl flex items-center gap-1.5 shrink-0"
+                        className="px-3.5 py-2 text-xs font-bold text-slate-950 bg-[#D4AF37] hover:bg-[#e0bc42] rounded-xl flex items-center gap-1.5 shrink-0 shadow-md transition-all"
                       >
-                        <ImageIcon className="w-4 h-4 text-[#D4AF37]" />
-                        <span>Media Library</span>
+                        <Upload className="w-3.5 h-3.5" />
+                        <span>Upload / Media</span>
                       </button>
                     </div>
                   </div>
@@ -1238,25 +1259,31 @@ export default function ServicesTab({
                 </div>
               )}
 
-              {/* Form Footer */}
-              <div className="pt-4 border-t border-slate-800 flex justify-end gap-3">
+            </form>
+
+            {/* Pinned Sticky Form Footer */}
+            <div className="p-4 border-t border-slate-800 bg-slate-900/95 flex items-center justify-between shrink-0">
+              <span className="text-[11px] text-slate-400">
+                {editingService ? `Editing: ${editingService.title?.en || editingService.title || editingService.id}` : 'Creating New Government Service'}
+              </span>
+              <div className="flex items-center gap-3">
                 <button
                   type="button"
                   onClick={() => setIsFormOpen(false)}
-                  className="px-4 py-2 font-semibold text-slate-400 hover:text-white bg-slate-800 rounded-xl"
+                  className="px-4 py-2 font-semibold text-slate-400 hover:text-white bg-slate-800 rounded-xl transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-6 py-2 font-bold text-slate-950 bg-[#D4AF37] hover:bg-[#e0bc42] rounded-xl shadow-lg flex items-center gap-2"
+                  form="serviceEditForm"
+                  className="px-6 py-2 font-bold text-slate-950 bg-[#D4AF37] hover:bg-[#e0bc42] rounded-xl shadow-lg flex items-center gap-2 transition-all hover:scale-[1.01]"
                 >
                   <Check className="w-4 h-4" />
                   <span>{editingService ? 'Save Service Changes' : 'Create Live Service'}</span>
                 </button>
               </div>
-
-            </form>
+            </div>
 
           </div>
         </div>

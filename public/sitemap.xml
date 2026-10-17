@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://primetimetypingservice.com/</loc>
+    <lastmod>2026-10-11</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://primetimetypingservice.com/" />
+    <xhtml:link rel="alternate" hreflang="ar" href="https://primetimetypingservice.com/?lang=ar" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://primetimetypingservice.com/" />
+  </url>
+  <url>
+    <loc>https://primetimetypingservice.com/#services</loc>
+    <lastmod>2026-10-11</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://primetimetypingservice.com/#services" />
+    <xhtml:link rel="alternate" hreflang="ar" href="https://primetimetypingservice.com/?lang=ar#services" />
+  </url>
+  <url>
+    <loc>https://primetimetypingservice.com/#about</loc>
+    <lastmod>2026-10-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://primetimetypingservice.com/#about" />
+    <xhtml:link rel="alternate" hreflang="ar" href="https://primetimetypingservice.com/?lang=ar#about" />
+  </url>
+  <url>
+    <loc>https://primetimetypingservice.com/#calculator</loc>
+    <lastmod>2026-10-11</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://primetimetypingservice.com/#calculator" />
+    <xhtml:link rel="alternate" hreflang="ar" href="https://primetimetypingservice.com/?lang=ar#calculator" />
+  </url>
+  <url>
+    <loc>https://primetimetypingservice.com/#faq</loc>
+    <lastmod>2026-10-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://primetimetypingservice.com/#faq" />
+    <xhtml:link rel="alternate" hreflang="ar" href="https://primetimetypingservice.com/?lang=ar#faq" />
+  </url>
+  <url>
+    <loc>https://primetimetypingservice.com/#contact</loc>
+    <lastmod>2026-10-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://primetimetypingservice.com/#contact" />
+    <xhtml:link rel="alternate" hreflang="ar" href="https://primetimetypingservice.com/?lang=ar#contact" />
+  </url>
+</urlset>

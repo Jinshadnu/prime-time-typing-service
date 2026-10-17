@@ -6,13 +6,19 @@ import Navbar from './components/Navbar';
 import HeroSlider from './components/HeroSlider';
 import AboutSection from './components/AboutSection';
 import ServicesSection from './components/ServicesSection';
-import FeeEstimator from './components/FeeEstimator';
 import Testimonials from './components/Testimonials';
 import FaqSection from './components/FaqSection';
 import ContactSection from './components/ContactSection';
 import Footer from './components/Footer';
 import AdminPanel from './components/AdminPanel';
-import { getStoredServices, subscribeToAdminData } from './utils/adminStorage';
+import {
+  getStoredServices,
+  getStoredCategories,
+  getStoredBanners,
+  getStoredAbout,
+  getStoredSeo,
+  subscribeToAdminData
+} from './utils/adminStorage';
 
 export default function App() {
   const [lang, setLang] = useState('en');
@@ -38,11 +44,19 @@ export default function App() {
 
   // Dynamic Services & Admin Portal state
   const [services, setServices] = useState(() => getStoredServices());
+  const [categories, setCategories] = useState(() => getStoredCategories());
+  const [banners, setBanners] = useState(() => getStoredBanners());
+  const [aboutData, setAboutData] = useState(() => getStoredAbout());
+  const [seoData, setSeoData] = useState(() => getStoredSeo());
   const [isAdminOpen, setIsAdminOpen] = useState(() => checkIsAdminUrl());
 
   useEffect(() => {
     const unsubscribe = subscribeToAdminData(() => {
       setServices(getStoredServices());
+      setCategories(getStoredCategories());
+      setBanners(getStoredBanners());
+      setAboutData(getStoredAbout());
+      setSeoData(getStoredSeo());
     });
     return unsubscribe;
   }, []);
@@ -99,6 +113,20 @@ export default function App() {
     }
   };
 
+  // Manage body scroll & Lenis when Admin Panel is open to prevent background bleed/scroll
+  useEffect(() => {
+    if (isAdminOpen) {
+      document.body.style.overflow = 'hidden';
+      if (lenisRef.current) lenisRef.current.stop();
+    } else {
+      document.body.style.overflow = '';
+      if (lenisRef.current) lenisRef.current.start();
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isAdminOpen]);
+
   // Initialize Lenis Smooth Scroll Engine (Only on desktop to prevent mobile touch scrolling freeze)
   useEffect(() => {
     const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0 || window.matchMedia('(pointer: coarse)').matches;
@@ -131,14 +159,75 @@ export default function App() {
     };
   }, []);
 
-  // Sync document title and direction (RTL for Arabic, LTR for English)
+  // Sync SEO metadata, document title, and direction (RTL for Arabic, LTR for English)
   useEffect(() => {
     document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
     document.documentElement.lang = lang;
-    document.title = lang === 'ar'
-      ? 'برايم تايم للطباعة | خدمات الطباعة والمعاملات الحكومية - أبوظبي'
-      : 'Prime Time Typing | Professional Typing & Document Clearing - Abu Dhabi';
-  }, [lang]);
+
+    const defaultArTitle = 'برايم تايم للطباعة | خدمات الطباعة والمعاملات الحكومية - أبوظبي';
+    const defaultEnTitle = 'Prime Time Typing Services | Professional Typing & Document Clearing - Abu Dhabi';
+    const defaultArDesc = 'مركز طباعة وتخليص معاملات حكومية معتمد في أبوظبي. إنجاز فوري لمعاملات تسهيل، وزارة الموارد البشرية، الهيئة الاتحادية للهوية والجنسية، تم، والتوثيق.';
+    const defaultEnDesc = 'Authorized UAE government typing and corporate document clearance center in Abu Dhabi. Fast processing for Tasheel, MOHRE Labour Permits, ICP Residency Visas, Emirates ID, Tamm Portal, ADJD, Medical Fitness & MOFA Attestation.';
+
+    const pageTitle = lang === 'ar' ? defaultArTitle : (seoData?.globalTitle || defaultEnTitle);
+    const metaDesc = lang === 'ar' ? defaultArDesc : (seoData?.globalDescription || defaultEnDesc);
+    const keywords = seoData?.keywords || 'typing center abu dhabi, prime time typing, tasheel abu dhabi, mohre labour card, emirates id typing, icp visa residency, tamm services, medical fitness typing, document clearing uae, madinat zayed typing center';
+    const ogImage = seoData?.ogImage || 'https://primetimetypingservice.com/prime_time_logo.jpeg';
+
+    document.title = pageTitle;
+
+    const updateMetaTag = (selector, content) => {
+      if (!content) return;
+      const el = document.querySelector(selector);
+      if (el) {
+        el.setAttribute('content', content);
+      }
+    };
+
+    updateMetaTag('meta[name="description"]', metaDesc);
+    updateMetaTag('meta[id="seo-meta-desc"]', metaDesc);
+    updateMetaTag('meta[name="keywords"]', keywords);
+    updateMetaTag('meta[id="seo-meta-keywords"]', keywords);
+    updateMetaTag('meta[property="og:title"]', pageTitle);
+    updateMetaTag('meta[id="seo-og-title"]', pageTitle);
+    updateMetaTag('meta[property="og:description"]', metaDesc);
+    updateMetaTag('meta[id="seo-og-desc"]', metaDesc);
+    updateMetaTag('meta[property="og:image"]', ogImage);
+    updateMetaTag('meta[id="seo-og-image"]', ogImage);
+    updateMetaTag('meta[name="twitter:title"]', pageTitle);
+    updateMetaTag('meta[id="seo-twitter-title"]', pageTitle);
+    updateMetaTag('meta[name="twitter:description"]', metaDesc);
+    updateMetaTag('meta[id="seo-twitter-desc"]', metaDesc);
+    updateMetaTag('meta[name="twitter:image"]', ogImage);
+    updateMetaTag('meta[id="seo-twitter-image"]', ogImage);
+
+    if (seoData?.googleSearchConsole) {
+      updateMetaTag('meta[name="google-site-verification"]', seoData.googleSearchConsole);
+      updateMetaTag('meta[id="seo-google-verification"]', seoData.googleSearchConsole);
+    }
+
+    // Google Analytics 4 Script Injection if Measurement ID configured
+    if (seoData?.googleAnalyticsId && typeof window !== 'undefined') {
+      const gaId = seoData.googleAnalyticsId.trim();
+      if (/^G-[A-Z0-9]+$/i.test(gaId) && !document.getElementById('google-analytics-script')) {
+        const script = document.createElement('script');
+        script.id = 'google-analytics-script';
+        script.async = true;
+        script.src = `https://www.googletagmanager.com/gtag/js?id=${gaId}`;
+        document.head.appendChild(script);
+
+        const inlineScript = document.createElement('script');
+        inlineScript.id = 'google-analytics-config';
+        inlineScript.innerHTML = `
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', '${gaId}');
+        `;
+        document.head.appendChild(inlineScript);
+      }
+    }
+  }, [lang, seoData]);
 
   const handleNavigate = (sectionId) => {
     setActiveSection(sectionId);
@@ -169,22 +258,24 @@ export default function App() {
     <div className="min-h-screen bg-white text-slate-900 flex flex-col font-sans selection:bg-[#D4AF37] selection:text-slate-900">
 
       {/* Brand Luxury Splash Screen */}
-      {showSplash && (
+      {showSplash && !isAdminOpen && (
         <SplashScreen
           lang={lang}
           onComplete={handleSplashComplete}
         />
       )}
 
-      {/* Sticky Header & Navbar */}
-      <Navbar
-        lang={lang}
-        setLang={setLang}
-        activeSection={activeSection}
-        setActiveSection={setActiveSection}
-        onOpenContactModal={() => handleNavigate('contact')}
-        onOpenAdmin={handleOpenAdmin}
-      />
+      {/* Sticky Header & Navbar (Hidden when Admin Panel is open) */}
+      {!isAdminOpen && (
+        <Navbar
+          lang={lang}
+          setLang={setLang}
+          activeSection={activeSection}
+          setActiveSection={setActiveSection}
+          onOpenContactModal={() => handleNavigate('contact')}
+          onOpenAdmin={handleOpenAdmin}
+        />
+      )}
 
       {/* Main Website Content Sections */}
       <main className="flex-grow">
@@ -192,25 +283,21 @@ export default function App() {
         {/* Hero Slider with Quick Action Cards */}
         <HeroSlider
           lang={lang}
+          banners={banners}
           onNavigateSection={handleNavigate}
         />
 
         {/* About Company & Key Milestones */}
         <AboutSection
           lang={lang}
+          aboutData={aboutData}
         />
 
         {/* Complete Categorized Services Catalog */}
         <ServicesSection
           lang={lang}
           services={services}
-          onSelectServiceForInquiry={handleSelectServiceForInquiry}
-        />
-
-        {/* Interactive Fee & Time Estimator */}
-        <FeeEstimator
-          lang={lang}
-          services={services}
+          categories={categories}
           onSelectServiceForInquiry={handleSelectServiceForInquiry}
         />
 
@@ -228,6 +315,7 @@ export default function App() {
         <ContactSection
           lang={lang}
           services={services}
+          categories={categories}
           preselectedService={preselectedServiceForInquiry}
         />
 

@@ -2,9 +2,13 @@ import React from 'react';
 import { MapPin, Mail, Phone, ArrowUp, ShieldCheck } from 'lucide-react';
 import { FacebookIcon, InstagramIcon } from './SocialIcons';
 import { siteData } from '../data/siteData';
+import { getStoredSettings } from '../utils/adminStorage';
 
 export default function Footer({ lang, onNavigate, onOpenAdmin }) {
   const t = siteData.translations[lang];
+  const settings = getStoredSettings();
+  const instagramUrl = settings?.socials?.instagram || siteData?.brand?.socials?.instagram || "https://www.instagram.com/primetime_typing?stkn=b2RrcHNiM3BkcjZs";
+  const facebookUrl = settings?.socials?.facebook || siteData?.brand?.socials?.facebook || "https://www.facebook.com/share/19o6d1XPGY/";
 
   const scrollToTop = () => {
     if (onNavigate) {
@@ -28,9 +32,17 @@ export default function Footer({ lang, onNavigate, onOpenAdmin }) {
             </div>
             <div>
               <h4 className="text-slate-900 font-bold text-sm mb-1">{t.officeLocation}</h4>
-              <p className="text-xs text-slate-600 leading-relaxed font-heading">
-                {siteData.brand.address[lang]}
-              </p>
+              <a
+                href={settings?.mapUrl || siteData.brand.mapUrl || "https://maps.app.goo.gl/mAX4dx7Cygb8LGGD7"}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs text-slate-600 hover:text-[#8C6A21] leading-relaxed font-heading block group"
+              >
+                <span>{siteData.brand.address[lang]}</span>
+                <span className="block text-[11px] text-[#8C6A21] font-bold mt-1 group-hover:underline">
+                  {lang === 'ar' ? 'عرض على الخريطة ←' : 'View on Google Maps →'}
+                </span>
+              </a>
             </div>
           </div>
 
@@ -80,16 +92,16 @@ export default function Footer({ lang, onNavigate, onOpenAdmin }) {
 
         {/* Center Brand & Navigation */}
         <div className="py-10 flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl overflow-hidden border-2 border-[#D4AF37] bg-black shadow-lg shadow-[#D4AF37]/20 flex items-center justify-center p-0.5">
+          <div className="flex items-center gap-3.5">
+            <div className="w-14 h-14 sm:w-16 sm:h-16 flex items-center justify-center shrink-0 bg-transparent">
               <img
-                src={siteData.brand.logo}
+                src={siteData.brand.emblem || siteData.brand.logo}
                 alt="Prime Time Typing Logo"
-                className="w-full h-full object-cover rounded-lg"
+                className="w-full h-full object-contain drop-shadow-sm"
               />
             </div>
             <div>
-              <h3 className="text-xl font-extrabold text-slate-900 font-heading">
+              <h3 className="text-xl sm:text-2xl font-extrabold text-slate-900 font-heading">
                 {siteData.brand.name[lang]}
               </h3>
               <p className="text-xs text-[#8C6A21] font-bold">
@@ -101,7 +113,7 @@ export default function Footer({ lang, onNavigate, onOpenAdmin }) {
           {/* Social Icons */}
           <div className="flex items-center gap-4">
             <a
-              href={siteData.brand.socials.facebook}
+              href={facebookUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="w-10 h-10 rounded-full bg-slate-200 hover:bg-[#D4AF37] text-slate-800 hover:text-slate-900 flex items-center justify-center transition-colors shadow-sm"
@@ -110,7 +122,7 @@ export default function Footer({ lang, onNavigate, onOpenAdmin }) {
               <FacebookIcon className="w-5 h-5" />
             </a>
             <a
-              href={siteData.brand.socials.instagram}
+              href={instagramUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="w-10 h-10 rounded-full bg-slate-200 hover:bg-[#D4AF37] text-slate-800 hover:text-slate-900 flex items-center justify-center transition-colors shadow-sm"

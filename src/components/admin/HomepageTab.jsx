@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Home,
   Save,
@@ -16,7 +16,14 @@ export default function HomepageTab({
   onSaveHomepage,
   lang = 'en'
 }) {
-  const [formData, setFormData] = useState(homepageData);
+  const [formData, setFormData] = useState(homepageData || {});
+
+  useEffect(() => {
+    if (homepageData && Object.keys(homepageData).length > 0) {
+      setFormData(homepageData);
+    }
+  }, [homepageData]);
+
   const [saveSuccess, setSaveSuccess] = useState(false);
 
   const handleSave = (e) => {

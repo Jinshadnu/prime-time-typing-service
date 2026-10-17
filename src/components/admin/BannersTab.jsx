@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Image as ImageIcon,
   Plus,
@@ -9,17 +9,24 @@ import {
   Calendar,
   ExternalLink,
   Layers,
-  ArrowUpDown
+  ArrowUpDown,
+  Upload
 } from 'lucide-react';
 import MediaPickerModal from './MediaPickerModal';
 import DeleteConfirmModal from './DeleteConfirmModal';
 
 export default function BannersTab({
-  banners,
+  banners = [],
   onSaveBanners,
   lang = 'en'
 }) {
-  const [bannerList, setBannerList] = useState(banners);
+  const [bannerList, setBannerList] = useState(banners || []);
+
+  useEffect(() => {
+    if (banners && Array.isArray(banners)) {
+      setBannerList(banners);
+    }
+  }, [banners]);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingBanner, setEditingBanner] = useState(null);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
@@ -27,8 +34,8 @@ export default function BannersTab({
   const [isMediaPickerOpen, setIsMediaPickerOpen] = useState(false);
 
   const initialFormState = {
-    badgeEn: '15+ Years Official UAE Clearance',
-    badgeAr: '15+ عاماً من المعاملات الحكومية المعتمدة',
+    badgeEn: 'Since 25th Sep 2026 • Official UAE Clearance',
+    badgeAr: 'منذ 25 سبتمبر 2026 • معاملات حكومية معتمدة',
     titleEn: '',
     titleAr: '',
     descEn: '',
@@ -56,16 +63,25 @@ export default function BannersTab({
 
   const handleOpenEdit = (banner) => {
     setEditingBanner(banner);
+    const titleEn = typeof banner.title === 'object' ? (banner.title?.en || '') : (banner.title || '');
+    const titleAr = typeof banner.title === 'object' ? (banner.title?.ar || '') : '';
+    const badgeEn = typeof banner.badge === 'object' ? (banner.badge?.en || '') : (banner.badge || '');
+    const badgeAr = typeof banner.badge === 'object' ? (banner.badge?.ar || '') : '';
+    const descEn = typeof banner.description === 'object' ? (banner.description?.en || '') : (banner.description || (typeof banner.desc === 'object' ? banner.desc?.en : banner.desc) || '');
+    const descAr = typeof banner.description === 'object' ? (banner.description?.ar || '') : (typeof banner.desc === 'object' ? banner.desc?.ar : '');
+    const ctaTextEn = typeof banner.ctaText === 'object' ? (banner.ctaText?.en || 'Explore Services') : (banner.ctaText || 'Explore Services');
+    const ctaTextAr = typeof banner.ctaText === 'object' ? (banner.ctaText?.ar || 'استكشف الخدمات') : (banner.ctaText || 'استكشف الخدمات');
+
     setFormData({
-      badgeEn: banner.badge?.en || '',
-      badgeAr: banner.badge?.ar || '',
-      titleEn: banner.title?.en || '',
-      titleAr: banner.title?.ar || '',
-      descEn: banner.description?.en || banner.desc?.en || '',
-      descAr: banner.description?.ar || banner.desc?.ar || '',
+      badgeEn,
+      badgeAr: badgeAr || badgeEn,
+      titleEn,
+      titleAr: titleAr || titleEn,
+      descEn,
+      descAr: descAr || descEn,
       image: banner.image || '',
-      ctaTextEn: banner.ctaText?.en || 'Explore Services',
-      ctaTextAr: banner.ctaText?.ar || 'استكشف الخدمات',
+      ctaTextEn,
+      ctaTextAr,
       ctaUrl: banner.ctaUrl || '#services',
       displayOrder: banner.displayOrder || 1,
       status: banner.status || 'active',
@@ -76,8 +92,39 @@ export default function BannersTab({
   };
 
   const handleFormSubmit = (e) => {
-    e.preventDefault();
-    if (!formData.titleEn && !formData.titleAr) return;
+    if (e && e.preventDefault) e.preventDefault();
+    const titleEn = (formData.titleEn || '').trim();
+    const titleAr = (formData.titleAr || '').trim();
+
+    if (!titleEn && !titleAr) {
+      alert('Please enter at least a Banner Title in English or Arabic.');
+      return;
+    }
+
+    const payload = {
+      badge: {
+        en: (formData.badgeEn || '').trim() || (formData.badgeAr || '').trim() || 'Since 25th Sep 2026 • Official UAE Clearance',
+        ar: (formData.badgeAr || '').trim() || (formData.badgeEn || '').trim() || 'منذ 25 سبتمبر 2026 • معاملات حكومية معتمدة'
+      },
+      title: {
+        en: titleEn || titleAr,
+        ar: titleAr || titleEn
+      },
+      description: {
+        en: (formData.descEn || '').trim() || (formData.descAr || '').trim() || titleEn,
+        ar: (formData.descAr || '').trim() || (formData.descEn || '').trim() || titleAr
+      },
+      image: formData.image || '',
+      ctaText: {
+        en: (formData.ctaTextEn || '').trim() || 'Explore Services',
+        ar: (formData.ctaTextAr || '').trim() || 'استكشف الخدمات'
+      },
+      ctaUrl: (formData.ctaUrl || '').trim() || '#services',
+      displayOrder: Number(formData.displayOrder) || bannerList.length + 1,
+      status: formData.status || 'active',
+      startDate: formData.startDate || '',
+      endDate: formData.endDate || ''
+    };
 
     let updated;
     if (editingBanner) {
@@ -85,16 +132,7 @@ export default function BannersTab({
         if (b.id === editingBanner.id) {
           return {
             ...b,
-            badge: { en: formData.badgeEn, ar: formData.badgeAr },
-            title: { en: formData.titleEn, ar: formData.titleAr },
-            description: { en: formData.descEn, ar: formData.descAr },
-            image: formData.image,
-            ctaText: { en: formData.ctaTextEn, ar: formData.ctaTextAr },
-            ctaUrl: formData.ctaUrl,
-            displayOrder: Number(formData.displayOrder),
-            status: formData.status,
-            startDate: formData.startDate,
-            endDate: formData.endDate
+            ...payload
           };
         }
         return b;
@@ -102,22 +140,15 @@ export default function BannersTab({
     } else {
       const newBanner = {
         id: `slide-${Date.now()}`,
-        badge: { en: formData.badgeEn, ar: formData.badgeAr },
-        title: { en: formData.titleEn, ar: formData.titleAr },
-        description: { en: formData.descEn, ar: formData.descAr },
-        image: formData.image,
-        ctaText: { en: formData.ctaTextEn, ar: formData.ctaTextAr },
-        ctaUrl: formData.ctaUrl,
-        displayOrder: Number(formData.displayOrder),
-        status: formData.status,
-        startDate: formData.startDate,
-        endDate: formData.endDate
+        ...payload
       };
-      updated = [newBanner, ...bannerList];
+      updated = [...bannerList, newBanner];
     }
 
+    updated.sort((a, b) => (Number(a.displayOrder) || 0) - (Number(b.displayOrder) || 0));
+
     setBannerList(updated);
-    onSaveBanners(updated);
+    if (onSaveBanners) onSaveBanners(updated);
     setIsFormOpen(false);
   };
 
@@ -130,7 +161,7 @@ export default function BannersTab({
     if (bannerToDelete) {
       const updated = bannerList.filter(b => b.id !== bannerToDelete.id);
       setBannerList(updated);
-      onSaveBanners(updated);
+      if (onSaveBanners) onSaveBanners(updated);
       setIsDeleteOpen(false);
       setBannerToDelete(null);
     }
@@ -218,12 +249,14 @@ export default function BannersTab({
                 <button
                   onClick={() => handleOpenEdit(banner)}
                   className="p-1.5 rounded-lg bg-slate-800 text-slate-300 hover:text-white"
+                  title="Edit Banner"
                 >
                   <Edit2 className="w-3.5 h-3.5" />
                 </button>
                 <button
                   onClick={() => handleOpenDelete(banner)}
                   className="p-1.5 rounded-lg bg-red-500/10 text-red-400 hover:text-red-300"
+                  title="Delete Banner"
                 >
                   <Trash2 className="w-3.5 h-3.5" />
                 </button>
@@ -251,7 +284,7 @@ export default function BannersTab({
               </button>
             </div>
 
-            <form onSubmit={handleFormSubmit} className="p-5 overflow-y-auto flex-1 space-y-4 text-xs">
+            <form id="bannerEditForm" onSubmit={handleFormSubmit} className="p-5 overflow-y-auto flex-1 space-y-4 text-xs">
               
               {/* Badges */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -282,7 +315,6 @@ export default function BannersTab({
                   <label className="block font-semibold text-slate-300 mb-1">Banner Title (English) *</label>
                   <input
                     type="text"
-                    required
                     value={formData.titleEn}
                     onChange={e => setFormData({ ...formData, titleEn: e.target.value })}
                     className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-sm text-white focus:outline-none focus:border-[#D4AF37]"
@@ -292,7 +324,6 @@ export default function BannersTab({
                   <label className="block font-semibold text-slate-300 mb-1">Banner Title (Arabic) *</label>
                   <input
                     type="text"
-                    required
                     dir="rtl"
                     value={formData.titleAr}
                     onChange={e => setFormData({ ...formData, titleAr: e.target.value })}
@@ -326,12 +357,11 @@ export default function BannersTab({
 
               {/* Image Picker */}
               <div>
-                <label className="block font-semibold text-slate-300 mb-1">Banner Image *</label>
+                <label className="block font-semibold text-slate-300 mb-1">Banner Image URL</label>
                 <div className="flex items-center gap-3">
                   <input
                     type="text"
-                    required
-                    placeholder="Image URL or choose from Media Library"
+                    placeholder="Upload from device, media library, or image URL"
                     value={formData.image}
                     onChange={e => setFormData({ ...formData, image: e.target.value })}
                     className="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-[#D4AF37]"
@@ -339,10 +369,10 @@ export default function BannersTab({
                   <button
                     type="button"
                     onClick={() => setIsMediaPickerOpen(true)}
-                    className="px-3 py-2 text-xs font-semibold text-slate-300 bg-slate-800 hover:bg-slate-700 rounded-xl flex items-center gap-1.5 shrink-0"
+                    className="px-3.5 py-2 text-xs font-bold text-slate-950 bg-[#D4AF37] hover:bg-[#e0bc42] rounded-xl flex items-center gap-1.5 shrink-0 shadow-md transition-all"
                   >
-                    <ImageIcon className="w-4 h-4 text-[#D4AF37]" />
-                    <span>Media Library</span>
+                    <Upload className="w-3.5 h-3.5" />
+                    <span>Upload / Media</span>
                   </button>
                 </div>
               </div>
@@ -380,24 +410,31 @@ export default function BannersTab({
                 </div>
               </div>
 
-              <div className="pt-4 border-t border-slate-800 flex justify-end gap-3">
+            </form>
+
+            {/* Pinned Sticky Form Footer */}
+            <div className="p-4 border-t border-slate-800 bg-slate-900/95 flex items-center justify-between shrink-0">
+              <span className="text-[11px] text-slate-400">
+                {editingBanner ? `Editing: ${editingBanner.title?.en || editingBanner.title || editingBanner.id}` : 'Creating New Slide Banner'}
+              </span>
+              <div className="flex items-center gap-3">
                 <button
                   type="button"
                   onClick={() => setIsFormOpen(false)}
-                  className="px-4 py-2 font-semibold text-slate-400 hover:text-white bg-slate-800 rounded-xl"
+                  className="px-4 py-2 font-semibold text-slate-400 hover:text-white bg-slate-800 rounded-xl transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 font-bold text-slate-950 bg-[#D4AF37] hover:bg-[#e0bc42] rounded-xl shadow-lg flex items-center gap-2"
+                  form="bannerEditForm"
+                  className="px-6 py-2 font-bold text-slate-950 bg-[#D4AF37] hover:bg-[#e0bc42] rounded-xl shadow-lg flex items-center gap-2 transition-all hover:scale-[1.01]"
                 >
                   <Check className="w-4 h-4" />
-                  <span>{editingBanner ? 'Save Banner' : 'Create Banner'}</span>
+                  <span>{editingBanner ? 'Save Banner Changes' : 'Create Slide Banner'}</span>
                 </button>
               </div>
-
-            </form>
+            </div>
 
           </div>
         </div>
@@ -416,7 +453,7 @@ export default function BannersTab({
         isOpen={isDeleteOpen}
         title="Delete Hero Banner"
         message="Are you sure you want to delete this slide banner?"
-        itemName={bannerToDelete?.title?.en}
+        itemName={typeof bannerToDelete?.title === 'object' ? (bannerToDelete?.title?.en || bannerToDelete?.title?.ar) : bannerToDelete?.title}
         onConfirm={handleConfirmDelete}
         onCancel={() => {
           setIsDeleteOpen(false);

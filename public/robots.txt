@@ -1,0 +1,9 @@
+# Prime Time Typing Services Abu Dhabi - robots.txt
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /api/
+Disallow: /uploads/
+
+# Sitemaps
+Sitemap: https://primetimetypingservice.com/sitemap.xml

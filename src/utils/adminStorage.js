@@ -10,14 +10,14 @@ const STORAGE_KEYS = {
   BANNERS: 'primetime_banners_v5',
   ABOUT: 'primetime_about_v5',
   FAQS: 'primetime_faqs_v5',
-  TESTIMONIALS: 'primetime_testimonials_v5',
+  TESTIMONIALS: 'primetime_testimonials_v7',
   BLOGS: 'primetime_blogs_v5',
   NAVIGATION: 'primetime_navigation_v5',
   CUSTOMERS: 'primetime_customers_v5',
   ENQUIRIES: 'primetime_enquiries_v5',
   MEDIA: 'primetime_media_v5',
   SEO: 'primetime_seo_v5',
-  SETTINGS: 'primetime_settings_v5',
+  SETTINGS: 'primetime_settings_v8',
   USERS: 'primetime_users_v5',
   ACTIVITY_LOGS: 'primetime_activity_logs_v5'
 };
@@ -119,13 +119,16 @@ const INITIAL_SETTINGS = {
     ar: "الإثنين - السبت: 8:00 صباحاً - 9:00 مساءً | الأحد: مغلق"
   },
   emergencyContact: "+971 50 760 2200",
-  mapUrl: "https://maps.app.goo.gl/1G3BehJ8dzY6jU2H8?g_st=ac",
-  gmapEmbed: "https://maps.google.com/maps?q=24.4811347,54.3629116&hl=en&z=17&output=embed",
+  mapUrl: "https://maps.app.goo.gl/mAX4dx7Cygb8LGGD7",
+  gmapEmbed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3631.1186!2d54.3628903!3d24.4813418!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5e67349ce91883%3A0x59b228d8c4737c2e!2sPrime%20Time%20typing!5e0!3m2!1sen!2sae!4v1700000000000!5m2!1sen!2sae",
+  googleReviewsUrl: "https://maps.app.goo.gl/fXYcpkeP2NwUp9cH8",
+  googleRating: "5.0",
+  googleReviewCount: 6,
   whatsappTemplate: "Hello Prime Time Typing Services,\nI am interested in:\nCategory: {category_name}\nService: {service_name}\nCustomer Name: {customer_name}\nPlease provide more information.",
   socials: {
-    facebook: "https://www.facebook.com/share/1BKK9TWd9H/?mibextid=wwXIfr",
+    facebook: "https://www.facebook.com/share/19o6d1XPGY/",
     facebookEnabled: true,
-    instagram: "https://www.instagram.com/lalux_typing?igsh=a282bDZqdnh2bHVr",
+    instagram: "https://www.instagram.com/primetime_typing?stkn=b2RrcHNiM3BkcjZs",
     instagramEnabled: true,
     linkedin: "https://linkedin.com",
     linkedinEnabled: false,
@@ -258,12 +261,12 @@ const INITIAL_SEO = {
   globalTitle: "Prime Time Typing Services | Professional Typing & Document Clearing - Abu Dhabi",
   globalDescription: "Authorized UAE government typing and corporate document clearance center in Abu Dhabi. Fast processing for Tasheel, MOHRE, ICP Residency, Emirates ID, Tamm, ADJD, and MOFA Attestation.",
   keywords: "typing center abu dhabi, tasheel services abu dhabi, residency visa typing, emirates id center, tamm portal assistance, mofa attestation uae, prime time typing",
-  ogImage: "https://primetimetypingservice.com/assets/prime_time_logo.jpeg",
+  ogImage: "https://primetimetypingservice.com/prime_time_logo.jpeg",
   googleAnalyticsId: "G-PTT9042UAE",
   googleSearchConsole: "google-site-verification=ptt-adm-99214-verification",
   pages: {
     home: { title: "Home | Prime Time Typing Services", metaDesc: "Official typing center in Abu Dhabi offering comprehensive government application clearance.", slug: "/" },
-    about: { title: "About Us | Prime Time Typing Services", metaDesc: "15+ years experience in UAE documentation and corporate clearance services.", slug: "/#about" },
+    about: { title: "About Us | Prime Time Typing Services", metaDesc: "Trusted official UAE documentation and corporate clearance services in Abu Dhabi.", slug: "/#about" },
     services: { title: "Government Services Catalog | Prime Time Typing", metaDesc: "Explore over 70+ UAE government typing services with fee estimates and document checklists.", slug: "/#services" },
     estimator: { title: "Interactive Fee Estimator | Prime Time Typing", metaDesc: "Calculate government fees and processing times for UAE visas, permits and licenses.", slug: "/#calculator" },
     contact: { title: "Contact & Location | Prime Time Typing Abu Dhabi", metaDesc: "Visit our office in Madinat Zayed Abu Dhabi or contact us via WhatsApp 050 760 2200.", slug: "/#contact" }
@@ -333,16 +336,38 @@ const INITIAL_HOMEPAGE = {
     ar: "استفسار فوري عبر واتساب"
   },
   stats: [
-    { id: 'stat-1', value: '15+', label: { en: 'Years Official Experience', ar: 'عاماً من الخبرة والاعتماد' } },
-    { id: 'stat-2', value: '75,000+', label: { en: 'Applications Cleared', ar: 'معاملة حكومية منجزة' } },
-    { id: 'stat-3', value: '99.8%', label: { en: 'Accuracy & Client Approval', ar: 'نسبة الدقة ورضا العملاء' } },
-    { id: 'stat-4', value: '26+', label: { en: 'Govt. Portals Supported', ar: 'بوابة ودائرة حكومية معتمدة' } }
+    { id: 'stat-1', value: '2026', label: { en: 'Since 25th Sep 2026', ar: 'منذ 25 سبتمبر 2026' } },
+    { id: 'stat-2', value: '100%', label: { en: 'Legal Precision', ar: 'دقة قانونية معتمدة' } },
+    { id: 'stat-3', value: '99.8%', label: { en: 'Satisfaction Rate', ar: 'نسبة رضا المتعاملين' } },
+    { id: 'stat-4', value: '10+', label: { en: 'Govt Portals Supported', ar: 'بوابات ودوائر حكومية معتمدة' } }
   ],
   whyChooseUs: [
     { id: 'why-1', title: { en: 'Official Govt Portals Authorization', ar: 'ربط مباشر بالبوابات الحكومية' }, desc: { en: 'Direct access to ICP, MOHRE, TAMM, and ADJD court portals for rapid clearance.', ar: 'وصول مباشر ومعتمد لكافة البوابات الرسمية لإنجاز المعاملات دون وسيط.' } },
     { id: 'why-2', title: { en: '100% Error-Free Guarantee', ar: 'ضمان الدقة وتفادي الرفض' }, desc: { en: 'Certified document specialists review all attachments to prevent government rejection or delays.', ar: 'مراجعة دقيقة لكافة المستندات والمرفقات لتفادي أي تأخير أو رفض.' } },
     { id: 'why-3', title: { en: 'VIP Express Fast-Tracking', ar: 'خدمة VIP السريعة والمستعجلة' }, desc: { en: 'Urgent typing and same-day priority submissions for urgent visa and residency cases.', ar: 'إنجاز عاجل وأولوية قصوى للحالات المستعجلة والتأشيرات الطارئة في نفس اليوم.' } },
     { id: 'why-4', title: { en: 'Transparent UAE Government Fees', ar: 'شفافية كاملة في الرسوم' }, desc: { en: 'Clear itemized fee breakdowns with zero hidden costs and official payment receipts.', ar: 'تفصيل دقيق للرسوم الحكومية ورسوم الطباعة دون أي تكاليف خفية.' } }
+  ]
+};
+
+const INITIAL_ABOUT = {
+  badgeEn: 'Trusted Government Typing Hub',
+  badgeAr: 'مركز طباعة حكومي معتمد',
+  headingEn: 'Accurate Typing Solutions at Prime Time Typing',
+  headingAr: 'خدمات طباعة سريعة ودقيقة لدى برايم تايم',
+  desc1En: 'Prime Time Typing Services is a trusted provider of professional typing and corporate services, dedicated to addressing the diverse needs of individuals and businesses across the UAE. Conveniently located Near Meat Mart, Madinat Zayed, Abu Dhabi, Prime Time has built a reputation for reliability, accuracy, and efficiency.',
+  desc1Ar: 'برايم تايم لخدمات الطباعة هو مركزك الموثوق لإنجاز وتخليص كافة المعاملات الحكومية والمؤسسية في دولة الإمارات العربية المتحدة. يقع مركزنا بالقرب من ميت مارت، مدينة زايد، أبوظبي، حيث نفخر بتقديم حلول توثيق تمتاز بالدقة المتناهية والسرعة الفائقة والاحترافية العالية.',
+  desc2En: 'Providing flawless, certified documentation and support solutions, we stand as a dependable partner for clients seeking hassle-free services tailored to their unique requirements.',
+  desc2Ar: 'نلتزم بتقديم حلول تخليص معاملات حكومية تمتاز بالدقة والسرعة لمرافقة عملائنا لإنهاء كافة الإجراءات بكل سلاسة ويسر.',
+  image: '',
+  missionEn: 'To deliver flawless, transparent, and prompt government application clearances for businesses and individuals.',
+  missionAr: 'تقديم خدمات تخليص معاملات حكومية دقيقة وشفافة وسريعة للأفراد والشركات بأعلى معايير الجودة.',
+  visionEn: 'To be the most preferred and technologically integrated corporate documentation partner in the Emirate of Abu Dhabi.',
+  visionAr: 'أن نكون المركز الرائد والأكثر كفاءة واعتماداً في مجال تخليص المعاملات والخدمات المؤسسية في إمارة أبوظبي.',
+  stats: [
+    { id: 'stat-1', value: '2026', label: { en: 'Since 25th Sep 2026', ar: 'منذ 25 سبتمبر 2026' } },
+    { id: 'stat-2', value: '100%', label: { en: 'Legal Precision', ar: 'دقة قانونية معتمدة' } },
+    { id: 'stat-3', value: '99.8%', label: { en: 'Satisfaction Rate', ar: 'نسبة رضا المتعاملين' } },
+    { id: 'stat-4', value: '10+', label: { en: 'Govt Portals Supported', ar: 'بوابات ودوائر حكومية معتمدة' } }
   ]
 };
 
@@ -395,24 +420,37 @@ export function saveCategories(categories) {
 
 export function addCategory(categoryData) {
   const current = getStoredCategories();
-  const id = categoryData.slug || `cat-${Date.now()}`;
+  const rawNameEn = typeof categoryData.name === 'object' ? categoryData.name?.en : categoryData.name;
+  const rawNameAr = typeof categoryData.name === 'object' ? categoryData.name?.ar : '';
+  const nameEn = (rawNameEn || categoryData.nameEn || categoryData.nameAr || 'New Category').trim();
+  const nameAr = (rawNameAr || categoryData.nameAr || nameEn || 'فئة جديدة').trim();
+
+  const generatedSlug = (categoryData.slug || nameEn).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+  const id = generatedSlug || `cat-${Date.now()}`;
+
+  const rawDescEn = typeof categoryData.desc === 'object' ? categoryData.desc?.en : categoryData.desc;
+  const rawDescAr = typeof categoryData.desc === 'object' ? categoryData.desc?.ar : '';
+  const descEn = (categoryData.descEn !== undefined ? categoryData.descEn : (rawDescEn || '')).trim();
+  const descAr = (categoryData.descAr !== undefined ? categoryData.descAr : (rawDescAr || descEn || '')).trim();
+
   const newCat = {
     id,
     name: {
-      en: categoryData.nameEn || 'New Category',
-      ar: categoryData.nameAr || categoryData.nameEn || 'فئة جديدة'
+      en: nameEn,
+      ar: nameAr
     },
-    slug: categoryData.slug || id,
+    slug: generatedSlug || id,
     desc: {
-      en: categoryData.descEn || '',
-      ar: categoryData.descAr || categoryData.descEn || ''
+      en: descEn,
+      ar: descAr
     },
-    icon: categoryData.icon || 'FileText',
+    icon: categoryData.icon || 'Briefcase',
     image: categoryData.image || '',
     displayOrder: Number(categoryData.displayOrder) || current.length + 1,
     featured: Boolean(categoryData.featured),
     status: categoryData.status || 'active'
   };
+
   const updated = [newCat, ...current];
   saveCategories(updated);
   logActivity('Created New Category', 'Categories', newCat.name.en);
@@ -423,18 +461,36 @@ export function updateCategory(id, data) {
   const current = getStoredCategories();
   const updated = current.map(c => {
     if (c.id === id) {
+      const existingNameEn = typeof c.name === 'object' ? (c.name?.en || '') : (c.name || '');
+      const existingNameAr = typeof c.name === 'object' ? (c.name?.ar || '') : '';
+
+      const passedNameEn = data.nameEn !== undefined ? data.nameEn : (typeof data.name === 'object' ? data.name?.en : data.name);
+      const passedNameAr = data.nameAr !== undefined ? data.nameAr : (typeof data.name === 'object' ? data.name?.ar : undefined);
+
+      const resolvedNameEn = (passedNameEn !== undefined ? passedNameEn : existingNameEn) || existingNameAr || 'Category';
+      const resolvedNameAr = (passedNameAr !== undefined ? passedNameAr : existingNameAr) || resolvedNameEn || 'فئة';
+
+      const existingDescEn = typeof c.desc === 'object' ? (c.desc?.en || '') : (c.desc || '');
+      const existingDescAr = typeof c.desc === 'object' ? (c.desc?.ar || '') : '';
+
+      const passedDescEn = data.descEn !== undefined ? data.descEn : (typeof data.desc === 'object' ? data.desc?.en : data.desc);
+      const passedDescAr = data.descAr !== undefined ? data.descAr : (typeof data.desc === 'object' ? data.desc?.ar : undefined);
+
+      const resolvedDescEn = passedDescEn !== undefined ? passedDescEn : existingDescEn;
+      const resolvedDescAr = passedDescAr !== undefined ? passedDescAr : existingDescAr;
+
       return {
         ...c,
         name: {
-          en: data.nameEn !== undefined ? data.nameEn : c.name.en,
-          ar: data.nameAr !== undefined ? data.nameAr : c.name.ar
+          en: String(resolvedNameEn).trim(),
+          ar: String(resolvedNameAr).trim()
         },
         desc: {
-          en: data.descEn !== undefined ? data.descEn : c.desc?.en || '',
-          ar: data.descAr !== undefined ? data.descAr : c.desc?.ar || ''
+          en: String(resolvedDescEn || '').trim(),
+          ar: String(resolvedDescAr || '').trim()
         },
         slug: data.slug || c.slug || c.id,
-        icon: data.icon || c.icon,
+        icon: data.icon || c.icon || 'Briefcase',
         image: data.image !== undefined ? data.image : c.image,
         displayOrder: data.displayOrder !== undefined ? Number(data.displayOrder) : c.displayOrder,
         featured: data.featured !== undefined ? Boolean(data.featured) : c.featured,
@@ -443,6 +499,7 @@ export function updateCategory(id, data) {
     }
     return c;
   });
+
   saveCategories(updated);
   logActivity('Updated Category Details', 'Categories', id);
   return updated;
@@ -641,9 +698,9 @@ export function getStoredServices() {
       govtFeeRange: typeof item.govtFeeRange === 'object' && item.govtFeeRange !== null && (item.govtFeeRange.en || item.govtFeeRange.ar)
         ? item.govtFeeRange
         : {
-            en: `AED ${stdCost}`,
-            ar: `${stdCost} درهم`
-          }
+          en: `AED ${stdCost}`,
+          ar: `${stdCost} درهم`
+        }
     };
   });
 }
@@ -652,7 +709,7 @@ export function saveServices(services) {
   setStoredItem(STORAGE_KEYS.SERVICES, services);
   try {
     localStorage.setItem('prime_time_services_v4', JSON.stringify(services));
-  } catch (e) {}
+  } catch (e) { }
   broadcastChange(STORAGE_KEYS.SERVICES, services);
   return services;
 }
@@ -664,6 +721,9 @@ export function addService(data) {
   const tFee = Number(data.typingFee) || 0;
   const stdCost = Number(data.estimatedCostStandard) || (gFee + tFee) || 250;
   const expCost = Number(data.estimatedCostExpress) || (stdCost + 100);
+
+  const titleEn = ((typeof data.title === 'object' ? data.title?.en : data.title) || data.titleEn || 'New Service').trim();
+  const titleAr = ((typeof data.title === 'object' ? data.title?.ar : '') || data.titleAr || titleEn || 'خدمة جديدة').trim();
 
   const feeRangeEn = data.govtFeeRangeEn && data.govtFeeRangeEn.trim() !== ''
     ? data.govtFeeRangeEn
@@ -684,20 +744,20 @@ export function addService(data) {
     status: data.status || 'active',
     displayOrder: Number(data.displayOrder) || current.length + 1,
     title: {
-      en: data.titleEn || 'New Service',
-      ar: data.titleAr || data.titleEn || 'خدمة جديدة'
+      en: titleEn,
+      ar: titleAr
     },
     shortDesc: {
-      en: data.shortDescEn || data.descEn || '',
-      ar: data.shortDescAr || data.descAr || data.shortDescEn || ''
+      en: data.shortDescEn || data.descEn || titleEn,
+      ar: data.shortDescAr || data.descAr || titleAr
     },
     desc: {
-      en: data.descEn || '',
-      ar: data.descAr || data.descEn || ''
+      en: data.descEn || data.shortDescEn || titleEn,
+      ar: data.descAr || data.shortDescAr || titleAr
     },
     detailedDesc: {
-      en: data.detailedDescEn || data.descEn || '',
-      ar: data.detailedDescAr || data.descAr || ''
+      en: data.detailedDescEn || data.descEn || titleEn,
+      ar: data.detailedDescAr || data.descAr || titleAr
     },
     eligibility: {
       en: data.eligibilityEn || 'Valid UAE Resident or Registered Entity',
@@ -746,12 +806,15 @@ export function updateService(id, data) {
     if (item.id === id) {
       const gFee = data.govtFee !== undefined ? Number(data.govtFee) : (item.govtFee || 0);
       const tFee = data.typingFee !== undefined ? Number(data.typingFee) : (item.typingFee || 0);
-      const stdCost = data.estimatedCostStandard !== undefined 
-        ? Number(data.estimatedCostStandard) 
+      const stdCost = data.estimatedCostStandard !== undefined
+        ? Number(data.estimatedCostStandard)
         : ((gFee + tFee) || item.estimatedCostStandard || 250);
-      const expCost = data.estimatedCostExpress !== undefined 
-        ? Number(data.estimatedCostExpress) 
+      const expCost = data.estimatedCostExpress !== undefined
+        ? Number(data.estimatedCostExpress)
         : (item.estimatedCostExpress || (stdCost + 100));
+
+      const titleEn = ((data.titleEn !== undefined ? data.titleEn : (typeof item.title === 'object' ? item.title?.en : item.title)) || 'Service').trim();
+      const titleAr = ((data.titleAr !== undefined ? data.titleAr : (typeof item.title === 'object' ? item.title?.ar : titleEn)) || titleEn || 'خدمة').trim();
 
       const feeRangeEn = data.govtFeeRangeEn !== undefined && data.govtFeeRangeEn.trim() !== ''
         ? data.govtFeeRangeEn
@@ -772,36 +835,36 @@ export function updateService(id, data) {
         status: data.status || item.status || 'active',
         displayOrder: data.displayOrder !== undefined ? Number(data.displayOrder) : item.displayOrder,
         title: {
-          en: data.titleEn !== undefined ? data.titleEn : item.title?.en || '',
-          ar: data.titleAr !== undefined ? data.titleAr : item.title?.ar || ''
+          en: titleEn,
+          ar: titleAr
         },
         shortDesc: {
-          en: data.shortDescEn !== undefined ? data.shortDescEn : item.shortDesc?.en || item.desc?.en || '',
-          ar: data.shortDescAr !== undefined ? data.shortDescAr : item.shortDesc?.ar || item.desc?.ar || ''
+          en: data.shortDescEn !== undefined ? data.shortDescEn : (typeof item.shortDesc === 'object' ? item.shortDesc?.en : (item.shortDesc || item.desc?.en || titleEn)),
+          ar: data.shortDescAr !== undefined ? data.shortDescAr : (typeof item.shortDesc === 'object' ? item.shortDesc?.ar : (item.shortDesc || item.desc?.ar || titleAr))
         },
         desc: {
-          en: data.descEn !== undefined ? data.descEn : item.desc?.en || '',
-          ar: data.descAr !== undefined ? data.descAr : item.desc?.ar || ''
+          en: data.descEn !== undefined ? data.descEn : (typeof item.desc === 'object' ? item.desc?.en : (item.desc || titleEn)),
+          ar: data.descAr !== undefined ? data.descAr : (typeof item.desc === 'object' ? item.desc?.ar : (item.desc || titleAr))
         },
         detailedDesc: {
-          en: data.detailedDescEn !== undefined ? data.detailedDescEn : item.detailedDesc?.en || item.desc?.en || '',
-          ar: data.detailedDescAr !== undefined ? data.detailedDescAr : item.detailedDesc?.ar || item.desc?.ar || ''
+          en: data.detailedDescEn !== undefined ? data.detailedDescEn : (typeof item.detailedDesc === 'object' ? item.detailedDesc?.en : (item.detailedDesc || item.desc?.en || titleEn)),
+          ar: data.detailedDescAr !== undefined ? data.detailedDescAr : (typeof item.detailedDesc === 'object' ? item.detailedDesc?.ar : (item.detailedDesc || item.desc?.ar || titleAr))
         },
         eligibility: {
-          en: data.eligibilityEn !== undefined ? data.eligibilityEn : item.eligibility?.en || '',
-          ar: data.eligibilityAr !== undefined ? data.eligibilityAr : item.eligibility?.ar || ''
+          en: data.eligibilityEn !== undefined ? data.eligibilityEn : (item.eligibility?.en || 'Valid UAE Resident or Registered Entity'),
+          ar: data.eligibilityAr !== undefined ? data.eligibilityAr : (item.eligibility?.ar || 'مقيم داخل الدولة أو منشأة مسجلة أصولاً')
         },
         procedure: {
-          en: data.procedureEn !== undefined ? data.procedureEn : item.procedure?.en || '',
-          ar: data.procedureAr !== undefined ? data.procedureAr : item.procedure?.ar || ''
+          en: data.procedureEn !== undefined ? data.procedureEn : (item.procedure?.en || ''),
+          ar: data.procedureAr !== undefined ? data.procedureAr : (item.procedure?.ar || '')
         },
         importantNotes: {
-          en: data.importantNotesEn !== undefined ? data.importantNotesEn : item.importantNotes?.en || '',
-          ar: data.importantNotesAr !== undefined ? data.importantNotesAr : item.importantNotes?.ar || ''
+          en: data.importantNotesEn !== undefined ? data.importantNotesEn : (item.importantNotes?.en || ''),
+          ar: data.importantNotesAr !== undefined ? data.importantNotesAr : (item.importantNotes?.ar || '')
         },
         processingTime: {
-          en: data.processingTimeEn !== undefined ? data.processingTimeEn : item.processingTime?.en || '24-48 Hours',
-          ar: data.processingTimeAr !== undefined ? data.processingTimeAr : item.processingTime?.ar || '24 - 48 ساعة'
+          en: data.processingTimeEn !== undefined ? data.processingTimeEn : (item.processingTime?.en || '24-48 Hours'),
+          ar: data.processingTimeAr !== undefined ? data.processingTimeAr : (item.processingTime?.ar || '24 - 48 ساعة')
         },
         govtFee: gFee,
         typingFee: tFee,
@@ -819,7 +882,7 @@ export function updateService(id, data) {
             ? data.requirementsAr
             : (data.requirementsAr !== undefined ? data.requirementsAr.split('\n').filter(Boolean) : (item.requirements?.ar || []))
         },
-        faqs: Array.isArray(data.faqs) ? data.faqs : item.faqs || []
+        faqs: Array.isArray(data.faqs) ? data.faqs : (item.faqs || [])
       };
     }
     return item;
@@ -870,13 +933,66 @@ export function bulkUpdateServicesStatus(ids, status) {
 // HOMEPAGE, BANNERS, ABOUT & CONTENT
 // -------------------------------------------------------------
 
+function sanitizeStats(stats) {
+  if (!Array.isArray(stats)) return stats;
+  return stats.map(s => {
+    if (s.id === 'stat-1' && (s.value === '15+' || s.value === '18+' || s.label?.en?.includes('Years'))) {
+      return { id: 'stat-1', value: '2026', label: { en: 'Since 25th Sep 2026', ar: 'منذ 25 سبتمبر 2026' } };
+    }
+    if (s.id === 'stat-2' && (s.value === '50,000+' || s.value === '75,000+' || s.value === '95,000+' || s.label?.en?.includes('Applications') || s.label?.en?.includes('Clearances'))) {
+      return { id: 'stat-2', value: '100%', label: { en: 'Legal Precision', ar: 'دقة قانونية معتمدة' } };
+    }
+    return s;
+  });
+}
+
 export function getStoredHomepage() {
-  return getStoredItem(STORAGE_KEYS.HOMEPAGE, INITIAL_HOMEPAGE);
+  const data = getStoredItem(STORAGE_KEYS.HOMEPAGE, INITIAL_HOMEPAGE);
+  if (!data.stats || !Array.isArray(data.stats) || data.stats.length === 0) {
+    const about = getStoredItem(STORAGE_KEYS.ABOUT, INITIAL_ABOUT);
+    data.stats = (about && Array.isArray(about.stats) && about.stats.length > 0) ? about.stats : INITIAL_HOMEPAGE.stats;
+  }
+  data.stats = sanitizeStats(data.stats);
+  return data;
 }
 
 export function saveHomepage(data) {
   setStoredItem(STORAGE_KEYS.HOMEPAGE, data);
+  if (data.stats && Array.isArray(data.stats)) {
+    try {
+      const about = getStoredAbout();
+      setStoredItem(STORAGE_KEYS.ABOUT, { ...about, stats: data.stats });
+    } catch (_) { }
+  }
   logActivity('Updated Homepage Content', 'Website Content', 'Hero, stats, or why choose us');
+  return data;
+}
+
+export function getStoredAbout() {
+  const data = getStoredItem(STORAGE_KEYS.ABOUT, INITIAL_ABOUT);
+  if (!data.stats || !Array.isArray(data.stats) || data.stats.length === 0) {
+    const hp = getStoredHomepage();
+    data.stats = (hp && Array.isArray(hp.stats) && hp.stats.length > 0) ? hp.stats : INITIAL_ABOUT.stats;
+  }
+  data.stats = sanitizeStats(data.stats);
+  if (data.desc2En && data.desc2En.includes('15 years')) {
+    data.desc2En = INITIAL_ABOUT.desc2En;
+  }
+  if (data.desc2Ar && data.desc2Ar.includes('15')) {
+    data.desc2Ar = INITIAL_ABOUT.desc2Ar;
+  }
+  return data;
+}
+
+export function saveAbout(data) {
+  setStoredItem(STORAGE_KEYS.ABOUT, data);
+  if (data.stats && Array.isArray(data.stats)) {
+    try {
+      const hp = getStoredHomepage();
+      setStoredItem(STORAGE_KEYS.HOMEPAGE, { ...hp, stats: data.stats });
+    } catch (_) { }
+  }
+  logActivity('Updated About Us Content', 'Website Content', 'Company profile, stats, and story');
   return data;
 }
 
@@ -936,37 +1052,14 @@ export function saveFaqs(faqs) {
 }
 
 export function getStoredTestimonials() {
-  const fallback = siteData.testimonials || [
-    {
-      id: 'test-1',
-      name: 'Eng. Khalid Al Suwaidi',
-      role: 'Corporate HR Director',
-      rating: 5,
-      service: 'MOHRE & Tasheel Quotas',
-      review: {
-        en: 'Prime Time Typing cleared our 40+ work permits with zero error and exceptional speed. Truly the best typing center in Madinat Zayed!',
-        ar: 'أفضل مركز طباعة في أبوظبي. أنجزوا أكثر من 40 تصريح عمل لشركتنا بدقة متناهية وسرعة قياسية.'
-      },
-      status: 'active'
-    },
-    {
-      id: 'test-2',
-      name: 'Mariam Al Hosani',
-      role: 'Family Visa Applicant',
-      rating: 5,
-      service: 'Golden Visa & Family Sponsorship',
-      review: {
-        en: 'Super smooth family sponsorship process. Medical booking and Emirates ID typing took less than 24 hours.',
-        ar: 'خدمة راقية جداً في كفالة إقامة العائلة، تم حجز الفحص الطبي وطباعة الهوية في نفس اليوم.'
-      },
-      status: 'active'
-    }
-  ];
+  const fallback = siteData.testimonials || [];
   return getStoredItem(STORAGE_KEYS.TESTIMONIALS, fallback);
 }
 
 export function saveTestimonials(testimonials) {
   setStoredItem(STORAGE_KEYS.TESTIMONIALS, testimonials);
+  broadcastChange('testimonials', testimonials);
+  logActivity('Updated Client Testimonials & Google Reviews', 'Website Content', `${testimonials.length} reviews`);
   return testimonials;
 }
 
@@ -1100,7 +1193,34 @@ function syncCustomerFromEnquiry(enquiry) {
 // -------------------------------------------------------------
 
 export function getStoredSettings() {
-  return getStoredItem(STORAGE_KEYS.SETTINGS, INITIAL_SETTINGS);
+  const settings = getStoredItem(STORAGE_KEYS.SETTINGS, INITIAL_SETTINGS);
+  let updated = false;
+  if (settings?.socials?.instagram && settings.socials.instagram.includes('lalux_typing')) {
+    settings.socials.instagram = "https://www.instagram.com/primetime_typing?stkn=b2RrcHNiM3BkcjZs";
+    updated = true;
+  }
+  if (settings?.socials && (!settings.socials.facebook || settings.socials.facebook.includes('1BKK9TWd9H'))) {
+    settings.socials.facebook = "https://www.facebook.com/share/19o6d1XPGY/";
+    updated = true;
+  }
+  if (!settings?.mapUrl || settings.mapUrl.includes('1G3BehJ8dzY6jU2H8') || settings.mapUrl.includes('v1bF5jzKNLqsYxLY7')) {
+    settings.mapUrl = "https://maps.app.goo.gl/mAX4dx7Cygb8LGGD7";
+    updated = true;
+  }
+  if (!settings?.gmapEmbed || settings.gmapEmbed.includes('24.4811347') || !settings.gmapEmbed.includes('0x3e5e67349ce91883')) {
+    settings.gmapEmbed = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3631.1186!2d54.3628903!3d24.4813418!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5e67349ce91883%3A0x59b228d8c4737c2e!2sPrime%20Time%20typing!5e0!3m2!1sen!2sae!4v1700000000000!5m2!1sen!2sae";
+    updated = true;
+  }
+  if (!settings?.googleReviewsUrl) {
+    settings.googleReviewsUrl = "https://maps.app.goo.gl/fXYcpkeP2NwUp9cH8";
+    settings.googleRating = "5.0";
+    settings.googleReviewCount = 6;
+    updated = true;
+  }
+  if (updated) {
+    setStoredItem(STORAGE_KEYS.SETTINGS, settings);
+  }
+  return settings;
 }
 
 export function saveSettings(settings) {
@@ -1249,7 +1369,7 @@ export function resetAllAdminStorageToDefault() {
 
 // Subscribe to storage update events across components
 export function subscribeToAdminData(callback) {
-  if (typeof window === 'undefined') return () => {};
+  if (typeof window === 'undefined') return () => { };
   const handler = (event) => {
     callback(event.detail);
   };

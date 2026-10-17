@@ -6,8 +6,10 @@ import {
   Search,
   ExternalLink,
   Code,
-  Sparkles
+  Sparkles,
+  Upload
 } from 'lucide-react';
+import MediaPickerModal from './MediaPickerModal';
 
 export default function SeoTab({
   seoData,
@@ -16,6 +18,7 @@ export default function SeoTab({
 }) {
   const [formData, setFormData] = useState(seoData);
   const [saveSuccess, setSaveSuccess] = useState(false);
+  const [isMediaPickerOpen, setIsMediaPickerOpen] = useState(false);
 
   const handleSave = (e) => {
     e.preventDefault();
@@ -90,12 +93,23 @@ export default function SeoTab({
 
           <div>
             <label className="block font-semibold text-slate-300 mb-1">OpenGraph Social Share Image URL</label>
-            <input
-              type="text"
-              value={formData.ogImage}
-              onChange={e => setFormData({ ...formData, ogImage: e.target.value })}
-              className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-white font-mono focus:outline-none focus:border-[#D4AF37]"
-            />
+            <div className="flex items-center gap-3">
+              <input
+                type="text"
+                placeholder="Upload from device, media library, or image URL"
+                value={formData.ogImage}
+                onChange={e => setFormData({ ...formData, ogImage: e.target.value })}
+                className="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-white font-mono focus:outline-none focus:border-[#D4AF37]"
+              />
+              <button
+                type="button"
+                onClick={() => setIsMediaPickerOpen(true)}
+                className="px-3.5 py-2 text-xs font-bold text-slate-950 bg-[#D4AF37] hover:bg-[#e0bc42] rounded-xl flex items-center gap-1.5 shrink-0 shadow-md transition-all"
+              >
+                <Upload className="w-3.5 h-3.5" />
+                <span>Upload / Media</span>
+              </button>
+            </div>
           </div>
         </div>
 
@@ -152,6 +166,16 @@ export default function SeoTab({
         </div>
 
       </form>
+
+      {/* Media Picker Modal */}
+      <MediaPickerModal
+        isOpen={isMediaPickerOpen}
+        onClose={() => setIsMediaPickerOpen(false)}
+        onSelectImage={(url) => setFormData(prev => ({ ...prev, ogImage: url }))}
+        currentImage={formData.ogImage}
+        title="Select OpenGraph Share Image"
+        category="Branding"
+      />
 
     </div>
   );

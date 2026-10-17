@@ -304,11 +304,11 @@ CREATE TABLE `activity_logs` (
 
 -- -------------------------------------------------------------
 -- SEED DATA: DEFAULT ADMINISTRATOR USER
--- Password hash for '1234' and 'admin123'
+-- Password hash for 'Pr!meadm!n@2026'
 -- -------------------------------------------------------------
 INSERT INTO `users` (`id`, `name`, `email`, `username`, `password_hash`, `role`, `status`) VALUES
-(1, 'Super Administrator', 'admin@primetimetyping.com', 'admin', '$2y$10$8g4kU54F0WqC2w0k8Hw0ueW.j4XGv4mF5fWqC2w0k8Hw0ueW.j4XG', 'Super Admin', 'active'),
-(2, 'Operations Manager', 'operations@primetimetyping.com', 'zayed_ops', '$2y$10$8g4kU54F0WqC2w0k8Hw0ueW.j4XGv4mF5fWqC2w0k8Hw0ueW.j4XG', 'Admin', 'active');
+(1, 'Super Administrator', 'admin@primetimetyping.com', 'admin', '$2y$12$VeYtKkXMkvLWB.v3tIKu5eLPI2T7Q.FAmpfF0Jxjh8vj2T9WhBrM2', 'Super Admin', 'active'),
+(2, 'Operations Manager', 'operations@primetimetyping.com', 'zayed_ops', '$2y$12$VeYtKkXMkvLWB.v3tIKu5eLPI2T7Q.FAmpfF0Jxjh8vj2T9WhBrM2', 'Admin', 'active');
 
 -- -------------------------------------------------------------
 -- SEED DATA: MASTER REQUIRED DOCUMENTS BANK

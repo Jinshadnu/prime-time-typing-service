@@ -13,7 +13,8 @@ import {
   Filter,
   Eye,
   Check,
-  X
+  X,
+  Upload
 } from 'lucide-react';
 import MediaPickerModal from './MediaPickerModal';
 import DeleteConfirmModal from './DeleteConfirmModal';
@@ -67,13 +68,18 @@ export default function CategoriesTab({
   };
 
   const handleOpenEdit = (category) => {
+    const nameEn = typeof category.name === 'object' ? (category.name?.en || '') : (category.name || '');
+    const nameAr = typeof category.name === 'object' ? (category.name?.ar || '') : '';
+    const descEn = typeof category.desc === 'object' ? (category.desc?.en || '') : (category.desc || '');
+    const descAr = typeof category.desc === 'object' ? (category.desc?.ar || '') : '';
+
     setEditingCategory(category);
     setFormData({
-      nameEn: category.name?.en || '',
-      nameAr: category.name?.ar || '',
+      nameEn,
+      nameAr: nameAr || nameEn,
       slug: category.slug || category.id,
-      descEn: category.desc?.en || '',
-      descAr: category.desc?.ar || '',
+      descEn,
+      descAr: descAr || descEn,
       icon: category.icon || 'Briefcase',
       image: category.image || '',
       displayOrder: category.displayOrder || 1,
@@ -84,13 +90,28 @@ export default function CategoriesTab({
   };
 
   const handleFormSubmit = (e) => {
-    e.preventDefault();
-    if (!formData.nameEn && !formData.nameAr) return;
+    if (e && e.preventDefault) e.preventDefault();
+    const nameEn = (formData.nameEn || '').trim();
+    const nameAr = (formData.nameAr || '').trim();
+
+    if (!nameEn && !nameAr) {
+      alert('Please enter at least a Category Name in English or Arabic.');
+      return;
+    }
+
+    const payload = {
+      ...formData,
+      nameEn: nameEn || nameAr,
+      nameAr: nameAr || nameEn,
+      descEn: (formData.descEn || '').trim(),
+      descAr: (formData.descAr || '').trim() || (formData.descEn || '').trim(),
+      slug: (formData.slug || '').trim() || (nameEn || nameAr).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
+    };
 
     if (editingCategory) {
-      onUpdateCategory(editingCategory.id, formData);
+      onUpdateCategory(editingCategory.id, payload);
     } else {
-      onAddCategory(formData);
+      onAddCategory(payload);
     }
     setIsFormOpen(false);
   };
@@ -334,15 +355,14 @@ export default function CategoriesTab({
               </button>
             </div>
 
-            <form onSubmit={handleFormSubmit} className="p-5 overflow-y-auto flex-1 space-y-4 text-xs">
+            <form id="categoryEditForm" onSubmit={handleFormSubmit} className="p-5 overflow-y-auto flex-1 space-y-4 text-xs">
               
               {/* Names */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block font-semibold text-slate-300 mb-1">Category Name (English) *</label>
+                  <label className="block font-semibold text-slate-300 mb-1">Category Name (English)</label>
                   <input
                     type="text"
-                    required
                     placeholder="e.g. Tasheel Services"
                     value={formData.nameEn}
                     onChange={e => {
@@ -357,10 +377,9 @@ export default function CategoriesTab({
                   />
                 </div>
                 <div>
-                  <label className="block font-semibold text-slate-300 mb-1">Category Name (Arabic) *</label>
+                  <label className="block font-semibold text-slate-300 mb-1">Category Name (Arabic)</label>
                   <input
                     type="text"
-                    required
                     dir="rtl"
                     placeholder="مثال: خدمات تسهيل"
                     value={formData.nameAr}
@@ -464,7 +483,7 @@ export default function CategoriesTab({
                 <div className="flex items-center gap-3">
                   <input
                     type="text"
-                    placeholder="Image URL or choose from Media Library"
+                    placeholder="Upload from device, media library, or image URL"
                     value={formData.image}
                     onChange={e => setFormData({ ...formData, image: e.target.value })}
                     className="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-[#D4AF37]"
@@ -472,32 +491,39 @@ export default function CategoriesTab({
                   <button
                     type="button"
                     onClick={() => setIsMediaPickerOpen(true)}
-                    className="px-3 py-2 text-xs font-semibold text-slate-300 bg-slate-800 hover:bg-slate-700 rounded-xl flex items-center gap-1.5 shrink-0"
+                    className="px-3.5 py-2 text-xs font-bold text-slate-950 bg-[#D4AF37] hover:bg-[#e0bc42] rounded-xl flex items-center gap-1.5 shrink-0 shadow-md transition-all"
                   >
-                    <ImageIcon className="w-4 h-4 text-[#D4AF37]" />
-                    <span>Media Library</span>
+                    <Upload className="w-3.5 h-3.5" />
+                    <span>Upload / Media</span>
                   </button>
                 </div>
               </div>
 
-              <div className="pt-4 border-t border-slate-800 flex justify-end gap-3">
+            </form>
+
+            {/* Pinned Sticky Form Footer */}
+            <div className="p-4 border-t border-slate-800 bg-slate-900/95 flex items-center justify-between shrink-0">
+              <span className="text-[11px] text-slate-400">
+                {editingCategory ? `Editing: ${editingCategory.name?.en || editingCategory.name || editingCategory.id}` : 'Creating New Main Department'}
+              </span>
+              <div className="flex items-center gap-3">
                 <button
                   type="button"
                   onClick={() => setIsFormOpen(false)}
-                  className="px-4 py-2 font-semibold text-slate-400 hover:text-white bg-slate-800 rounded-xl"
+                  className="px-4 py-2 font-semibold text-slate-400 hover:text-white bg-slate-800 rounded-xl transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 font-bold text-slate-950 bg-[#D4AF37] hover:bg-[#e0bc42] rounded-xl shadow-lg flex items-center gap-2"
+                  form="categoryEditForm"
+                  className="px-6 py-2 font-bold text-slate-950 bg-[#D4AF37] hover:bg-[#e0bc42] rounded-xl shadow-lg flex items-center gap-2 transition-all hover:scale-[1.01]"
                 >
                   <Check className="w-4 h-4" />
-                  <span>{editingCategory ? 'Update Category' : 'Create Category'}</span>
+                  <span>{editingCategory ? 'Save Category Changes' : 'Create Category'}</span>
                 </button>
               </div>
-
-            </form>
+            </div>
 
           </div>
         </div>

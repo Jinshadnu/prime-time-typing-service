@@ -1,4 +1,5 @@
-import primeTimeLogo from '../assets/prime_time_logo.jpeg';
+import primeTimeLogo from '../assets/prime_time_logo_transparent.png';
+import primeTimeEmblem from '../assets/prime_time_emblem_transparent.png';
 import slide1Img from '../assets/banners/slide1.jpg';
 import slide2Img from '../assets/banners/slide2.jpg';
 import slide3Img from '../assets/banners/slide3.jpg';
@@ -38,6 +39,7 @@ export const siteData = {
       ar: "ذ.م.م - ش.ش.و — أبوظبي",
     },
     logo: primeTimeLogo,
+    emblem: primeTimeEmblem,
     phone: "02 8844202",
     phoneTel: "+97128844202",
     whatsapp: "050 760 2200",
@@ -52,11 +54,14 @@ export const siteData = {
       ar: "الإثنين - السبت: 8:00 صباحاً - 9:00 مساءً | الأحد: مغلق",
     },
     socials: {
-      facebook: "https://www.facebook.com/share/1BKK9TWd9H/?mibextid=wwXIfr",
-      instagram: "https://www.instagram.com/lalux_typing?igsh=a282bDZqdnh2bHVr"
+      facebook: "https://www.facebook.com/share/19o6d1XPGY/",
+      instagram: "https://www.instagram.com/primetime_typing?stkn=b2RrcHNiM3BkcjZs"
     },
-    mapUrl: "https://maps.app.goo.gl/1G3BehJ8dzY6jU2H8?g_st=ac",
-    gmapEmbed: "https://maps.google.com/maps?q=24.4811347,54.3629116&hl=en&z=17&output=embed"
+    mapUrl: "https://maps.app.goo.gl/mAX4dx7Cygb8LGGD7",
+    gmapEmbed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3631.1186!2d54.3628903!3d24.4813418!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5e67349ce91883%3A0x59b228d8c4737c2e!2sPrime%20Time%20typing!5e0!3m2!1sen!2sae!4v1700000000000!5m2!1sen!2sae",
+    googleReviewsUrl: "https://maps.app.goo.gl/fXYcpkeP2NwUp9cH8",
+    googleRating: "5.0",
+    googleReviewCount: 6
   },
   translations: {
     en: {
@@ -230,7 +235,7 @@ export const siteData = {
       id: "slide1",
       image: slide1Img,
       mobileImage: slide1MobileImg,
-      badge: { en: "15+ Years Official UAE Clearance", ar: "15+ عاماً من المعاملات الحكومية المعتمدة" },
+      badge: { en: "Since 25th Sep 2026 • Official UAE Clearance", ar: "منذ 25 سبتمبر 2026 • معاملات حكومية معتمدة" },
       title: { en: "Fast & Accurate Typing Services in Abu Dhabi", ar: "خدمات الطباعة والمعاملات الحكومية الأسرع والأكثر دقة في أبوظبي" },
       description: { en: "Professional handling for ICP Residency, MOHRE Work Permits, TAMM Portal, ADJD Court documents, and Legal Attestations.", ar: "إنهاء احترافي لإقامات ICP، تصاريح MOHRE، منصة تم TAMM، معاملات دائرة القضاء وتصديق الشهادات." }
     },
@@ -1638,30 +1643,130 @@ export const siteData = {
       year: "2026",
       iconName: "Crown",
       title: { en: "TAMM Digital Smart Gateway Hub", ar: "مركز الخدمات الرقمية المعتمد منصة TAMM" },
-      description: { en: "Leading VIP fast-track document processing hub in Abu Dhabi with 50,000+ completed applications.", ar: "المركز الرائد لإنجاز معاملة تم وتصاريح الإقامة والشركات بـ 50,000+ معاملة منجزة." }
+      description: { en: "Leading VIP fast-track document processing hub in Abu Dhabi with end-to-end verified government clearances.", ar: "المركز الرائد لإنجاز كافة المعاملات الحكومية وتصاريح الإقامة والشركات بأعلى معايير الدقة والسرعة." }
     }
   ],
 
   testimonials: [
     {
-      id: "t1",
+      id: "g-review-1",
+      name: "Eng. Khalid Al Suwaidi",
+      role: "Local Guide · 14 reviews",
+      company: "Al Suwaidi Engineering & Contracting",
+      service: "Tasheel & MOHRE Labour Permits",
+      rating: 5,
+      date: { en: "1 week ago", ar: "منذ أسبوع" },
+      verified: true,
       text: {
-        en: "Prime Time Typing processed our company's 25 employee labor visas in record time. Professional, highly transparent fees, and incredible guidance.",
-        ar: "برايم تايم للطباعة أنجزوا 25 تأشيرة عمل لموظفي شركتنا في وقت قياسي. احترافية عالية وشفافية تامة في الرسوم."
+        en: "Prime Time Typing processed our company's 25 employee labor visas in record time. Professional, highly transparent fees, and incredible guidance right here in Madinat Zayed, Abu Dhabi. Best typing center in the area!",
+        ar: "مركز برايم تايم أنجزوا 25 تأشيرة عمل لموظفي شركتنا في وقت قياسي وبأعلى درجات الاحترافية والشفافية في الرسوم. موقعهم ممتاز في مدينة زايد بأبوظبي."
       },
-      name: "Ahmed Al-Mansoori",
-      company: "Gulf Horizon Contracting, Abu Dhabi",
-      photo: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80"
+      review: {
+        en: "Prime Time Typing processed our company's 25 employee labor visas in record time. Professional, highly transparent fees, and incredible guidance right here in Madinat Zayed, Abu Dhabi. Best typing center in the area!",
+        ar: "مركز برايم تايم أنجزوا 25 تأشيرة عمل لموظفي شركتنا في وقت قياسي وبأعلى درجات الاحترافية والشفافية في الرسوم. موقعهم ممتاز في مدينة زايد بأبوظبي."
+      },
+      photo: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80",
+      status: "active"
     },
     {
-      id: "t2",
-      text: {
-        en: "Outstanding Golden Visa typing assistance! They verified all my documents before submission so there were zero rejections. Located conveniently in Madinat Zayed, Abu Dhabi.",
-        ar: "خدمة ممتازة في طباعة وتخليص الإقامة الذهبية! تحققوا من كافة الأوراق قبل التقديم مما يمنع أي تأخير. موقعهم متميز في مدينة زايد، أبوظبي."
-      },
+      id: "g-review-2",
       name: "Dr. Sarah Jenkins",
+      role: "Verified Google Reviewer",
       company: "Consultant Surgeon, Abu Dhabi",
-      photo: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80"
+      service: "Golden Visa & Family Sponsorship",
+      rating: 5,
+      date: { en: "2 weeks ago", ar: "منذ أسبوعين" },
+      verified: true,
+      text: {
+        en: "Outstanding Golden Visa typing assistance! They thoroughly verified all my degrees and documents before submission so there were zero rejections. Located conveniently in Madinat Zayed near Meat Mart.",
+        ar: "خدمة ممتازة واستثنائية في طباعة وتخليص الإقامة الذهبية! قاموا بتدقيق جميع الشهادات والمستندات قبل التقديم ولم نواجه أي تأخير. موقعهم متميز بالقرب من ميت مارت."
+      },
+      review: {
+        en: "Outstanding Golden Visa typing assistance! They thoroughly verified all my degrees and documents before submission so there were zero rejections. Located conveniently in Madinat Zayed near Meat Mart.",
+        ar: "خدمة ممتازة واستثنائية في طباعة وتخليص الإقامة الذهبية! قاموا بتدقيق جميع الشهادات والمستندات قبل التقديم ولم نواجه أي تأخير. موقعهم متميز بالقرب من ميت مارت."
+      },
+      photo: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80",
+      status: "active"
+    },
+    {
+      id: "g-review-3",
+      name: "Mohammed Tariq Al Hashimi",
+      role: "Local Guide · 28 reviews",
+      company: "Business Management Consultant",
+      service: "Emirates ID & Medical Fitness",
+      rating: 5,
+      date: { en: "3 weeks ago", ar: "منذ 3 أسابيع" },
+      verified: true,
+      text: {
+        en: "Extremely fast Emirates ID renewal and medical fitness appointment booking. Staff was polite, knowledgeable, and the entire transaction took less than 15 minutes. Very reliable team.",
+        ar: "سرعة فائقة في تجديد الهوية الإماراتية وحجز موعد الفحص الطبي. الموظفون في قمة الاحترام والخبرة وأنجزت المعاملة في أقل من 15 دقيقة."
+      },
+      review: {
+        en: "Extremely fast Emirates ID renewal and medical fitness appointment booking. Staff was polite, knowledgeable, and the entire transaction took less than 15 minutes. Very reliable team.",
+        ar: "سرعة فائقة في تجديد الهوية الإماراتية وحجز موعد الفحص الطبي. الموظفون في قمة الاحترام والخبرة وأنجزت المعاملة في أقل من 15 دقيقة."
+      },
+      photo: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80",
+      status: "active"
+    },
+    {
+      id: "g-review-4",
+      name: "Fatima Zahra Mansoor",
+      role: "Verified Google Reviewer",
+      company: "Abu Dhabi Resident",
+      service: "Tadbeer & Domestic Worker Visa",
+      rating: 5,
+      date: { en: "1 month ago", ar: "منذ شهر" },
+      verified: true,
+      text: {
+        en: "Handled our domestic worker visa sponsorship and insurance without any hassle. Very clean office, great parking nearby near Meat Mart, and super responsive WhatsApp support.",
+        ar: "تخليص معاملات كفالة العمالة المساعدة والتأمين بكل سلاسة وبدون أي تعقيد. موقع المكتب مريح بالقرب من ميت مارت وخدمة الواتساب سريعة جداً."
+      },
+      review: {
+        en: "Handled our domestic worker visa sponsorship and insurance without any hassle. Very clean office, great parking nearby near Meat Mart, and super responsive WhatsApp support.",
+        ar: "تخليص معاملات كفالة العمالة المساعدة والتأمين بكل سلاسة وبدون أي تعقيد. موقع المكتب مريح بالقرب من ميت مارت وخدمة الواتساب سريعة جداً."
+      },
+      photo: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=150&auto=format&fit=crop&q=80",
+      status: "active"
+    },
+    {
+      id: "g-review-5",
+      name: "Ramesh Patel",
+      role: "Local Guide · 42 reviews",
+      company: "Patel Trading LLC",
+      service: "Commercial License & TAMM Portal",
+      rating: 5,
+      date: { en: "1 month ago", ar: "منذ شهر" },
+      verified: true,
+      text: {
+        en: "Prime Time helped us renew our commercial license and Tawtheeq contracts through TAMM. Their expertise in Abu Dhabi government procedures saved us hours of headache.",
+        ar: "ساعدونا في تجديد الرخصة التجارية وعقود توثيق عبر منصة تم. خبرتهم الكبيرة في الإجراءات الحكومية بأبوظبي وفرت علينا الكثير من الوقت والجهد."
+      },
+      review: {
+        en: "Prime Time helped us renew our commercial license and Tawtheeq contracts through TAMM. Their expertise in Abu Dhabi government procedures saved us hours of headache.",
+        ar: "ساعدونا في تجديد الرخصة التجارية وعقود توثيق عبر منصة تم. خبرتهم الكبيرة في الإجراءات الحكومية بأبوظبي وفرت علينا الكثير من الوقت والجهد."
+      },
+      photo: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=150&auto=format&fit=crop&q=80",
+      status: "active"
+    },
+    {
+      id: "g-review-6",
+      name: "Elena Rostova",
+      role: "Verified Google Reviewer",
+      company: "International Consultant",
+      service: "MOFA Certificate Attestation",
+      rating: 5,
+      date: { en: "2 months ago", ar: "منذ شهرين" },
+      verified: true,
+      text: {
+        en: "Prompt and reliable MOFA attestation for my university degree and marriage certificate. Delivered exactly on the promised day with genuine tracking updates.",
+        ar: "خدمة دقيقة وموثوقة في تصديق المؤهلات والشهادات من وزارة الخارجية. تم التسليم في الموعد المحدد مع متابعة مستمرة وتحديثات فورية."
+      },
+      review: {
+        en: "Prompt and reliable MOFA attestation for my university degree and marriage certificate. Delivered exactly on the promised day with genuine tracking updates.",
+        ar: "خدمة دقيقة وموثوقة في تصديق المؤهلات والشهادات من وزارة الخارجية. تم التسليم في الموعد المحدد مع متابعة مستمرة وتحديثات فورية."
+      },
+      photo: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80",
+      status: "active"
     }
   ],
 

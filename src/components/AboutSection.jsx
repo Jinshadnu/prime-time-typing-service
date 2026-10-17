@@ -9,14 +9,34 @@ import {
   Award,
   Users,
   Clock,
-  CheckCircle
+  CheckCircle,
+  Calendar
 } from 'lucide-react';
 import { siteData } from '../data/siteData';
 import AnimatedSection from './AnimatedSection';
 import AnimatedCounter from './AnimatedCounter';
 
-export default function AboutSection({ lang }) {
+export default function AboutSection({ lang, aboutData = {} }) {
   const t = siteData.translations[lang];
+
+  const badge = (lang === 'ar' ? aboutData?.badgeAr : aboutData?.badgeEn) || aboutData?.badgeEn || aboutData?.badgeAr || t.aboutBadge;
+  const heading = (lang === 'ar' ? aboutData?.headingAr : aboutData?.headingEn) || aboutData?.headingEn || aboutData?.headingAr || t.aboutHeading;
+  const desc1 = (lang === 'ar' ? aboutData?.desc1Ar : aboutData?.desc1En) || aboutData?.desc1En || aboutData?.desc1Ar || t.aboutDesc1;
+  const desc2 = (lang === 'ar' ? aboutData?.desc2Ar : aboutData?.desc2En) || aboutData?.desc2En || aboutData?.desc2Ar || t.aboutDesc2;
+  const imageSrc = aboutData?.image || aboutOfficeImg;
+  const mission = (lang === 'ar' ? aboutData?.missionAr : aboutData?.missionEn) || aboutData?.missionEn || aboutData?.missionAr;
+  const vision = (lang === 'ar' ? aboutData?.visionAr : aboutData?.visionEn) || aboutData?.visionEn || aboutData?.visionAr;
+
+  const defaultStats = [
+    { id: 'stat-1', value: '2026', label: { en: 'Since 25th Sep 2026', ar: 'منذ 25 سبتمبر 2026' } },
+    { id: 'stat-2', value: '100%', label: { en: 'Legal Precision', ar: 'دقة قانونية معتمدة' } },
+    { id: 'stat-3', value: '99.8%', label: { en: 'Satisfaction Rate', ar: 'نسبة رضا المتعاملين' } },
+    { id: 'stat-4', value: '10+', label: { en: 'Govt Portals Supported', ar: 'بوابات ودوائر حكومية معتمدة' } }
+  ];
+
+  const statsList = (aboutData?.stats && Array.isArray(aboutData.stats) && aboutData.stats.length > 0)
+    ? aboutData.stats
+    : defaultStats;
 
   const milestoneIcons = {
     Building2,
@@ -64,33 +84,29 @@ export default function AboutSection({ lang }) {
                 {/* Main Image */}
                 <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-[#D4AF37]/50 transform hover:scale-[1.02] transition-transform duration-500">
                   <img
-                    src={aboutOfficeImg}
+                    src={imageSrc}
                     alt="Prime Time Typing Abu Dhabi Office"
                     className="w-full h-[400px] object-cover"
+                    onError={(e) => {
+                      if (e.currentTarget.src !== aboutOfficeImg) {
+                        e.currentTarget.src = aboutOfficeImg;
+                      }
+                    }}
                   />
                 </div>
 
-                {/* Floating Badge 1 (15+ Years) */}
+                {/* Floating Badge (Since 25th Sep 2026) */}
                 <div className="absolute -bottom-4 right-0 sm:-bottom-6 sm:right-6 bg-white text-slate-900 p-4 sm:p-5 rounded-2xl shadow-2xl border-2 border-[#D4AF37] flex items-center gap-3 sm:gap-4 animate-float z-20 max-w-[90%]">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-[#F5E5C0] via-[#D4AF37] to-[#9E7D3B] text-[#0A0B0E] font-black text-xl sm:text-2xl flex items-center justify-center shadow-md shrink-0">
-                    <AnimatedCounter value="15+" />
+                  <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-[#F5E5C0] via-[#D4AF37] to-[#9E7D3B] text-[#0A0B0E] flex items-center justify-center shadow-md shrink-0">
+                    <Calendar className="w-6 h-6 text-[#0A0B0E]" />
                   </div>
                   <div>
-                    <div className="text-xs sm:text-sm font-bold text-[#8C6A21]">{t.yearsExp}</div>
-                    <div className="text-[10px] sm:text-xs text-slate-500">{lang === 'ar' ? 'منذ 2010 في أبوظبي' : 'Operating Since 2010'}</div>
-                  </div>
-                </div>
-
-                {/* Floating Badge 2 (50,000+ Apps) */}
-                <div className="absolute -top-4 left-0 sm:-top-6 sm:left-6 bg-white p-3 sm:p-4 rounded-2xl shadow-xl border border-[#D4AF37]/50 flex items-center gap-2.5 sm:gap-3 animate-float-delayed z-20 max-w-[90%]">
-                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-amber-50 text-[#8C6A21] flex items-center justify-center border border-[#D4AF37]/30 shrink-0">
-                    <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-[#D4AF37]" />
-                  </div>
-                  <div>
-                    <div className="text-xs sm:text-sm font-extrabold text-slate-900">
-                      <AnimatedCounter value="50,000+" />
+                    <div className="text-sm sm:text-base font-black text-[#8C6A21] font-heading tracking-tight">
+                      {lang === 'ar' ? 'منذ 25 سبتمبر 2026' : 'Since 25th Sep 2026'}
                     </div>
-                    <div className="text-[10px] sm:text-xs text-slate-500">{t.appsProcessed}</div>
+                    <div className="text-[10px] sm:text-xs text-slate-500 font-medium">
+                      {lang === 'ar' ? 'مركز معاملات حكومية معتمد • أبوظبي' : 'Official Government Clearance • Abu Dhabi'}
+                    </div>
                   </div>
                 </div>
 
@@ -103,20 +119,44 @@ export default function AboutSection({ lang }) {
             <AnimatedSection animation="fade-left" delay={150}>
               <div className="badge-gold mb-4">
                 <Award className="w-4 h-4 text-[#8C6A21]" />
-                <span>{t.aboutBadge}</span>
+                <span>{badge}</span>
               </div>
 
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 mb-6 leading-tight font-heading">
-                {t.aboutHeading}
+                {heading}
               </h2>
 
               <p className="text-slate-600 text-base sm:text-lg mb-4 leading-relaxed">
-                {t.aboutDesc1}
+                {desc1}
               </p>
 
-              <p className="text-slate-600 text-base sm:text-lg mb-8 leading-relaxed">
-                {t.aboutDesc2}
+              <p className="text-slate-600 text-base sm:text-lg mb-6 leading-relaxed">
+                {desc2}
               </p>
+
+              {/* Mission & Vision Statements */}
+              {(mission || vision) && (
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+                  {mission && (
+                    <div className="p-4 rounded-2xl bg-amber-500/5 border border-[#D4AF37]/30 text-start shadow-sm">
+                      <div className="text-xs font-bold uppercase tracking-wider text-[#8C6A21] mb-1.5 flex items-center gap-1.5">
+                        <Sparkles className="w-3.5 h-3.5 text-[#D4AF37]" />
+                        <span>{lang === 'ar' ? 'رسالتنا' : 'Our Mission'}</span>
+                      </div>
+                      <p className="text-xs text-slate-700 leading-relaxed font-medium">{mission}</p>
+                    </div>
+                  )}
+                  {vision && (
+                    <div className="p-4 rounded-2xl bg-slate-900 text-white border border-slate-800 text-start shadow-sm">
+                      <div className="text-xs font-bold uppercase tracking-wider text-[#D4AF37] mb-1.5 flex items-center gap-1.5">
+                        <Crown className="w-3.5 h-3.5 text-[#D4AF37]" />
+                        <span>{lang === 'ar' ? 'رؤيتنا' : 'Our Vision'}</span>
+                      </div>
+                      <p className="text-xs text-slate-300 leading-relaxed font-medium">{vision}</p>
+                    </div>
+                  )}
+                </div>
+              )}
 
               {/* Core Values Cards */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -145,33 +185,21 @@ export default function AboutSection({ lang }) {
           <div className="bg-white/80 backdrop-blur-xl rounded-3xl p-8 sm:p-10 text-slate-900 shadow-xl mb-24 border border-slate-200/90 relative overflow-hidden shimmer-card">
 
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center divide-y lg:divide-y-0 lg:divide-x divide-slate-200 [dir=rtl]:lg:divide-x-reverse">
-              <div className="p-4">
-                <div className="text-3xl sm:text-5xl font-black text-[#8C6A21] mb-2 tracking-tight font-heading gradient-text-gold">
-                  <AnimatedCounter value="15+" />
-                </div>
-                <div className="text-xs sm:text-sm text-slate-700 font-bold">{t.yearsExp}</div>
-              </div>
-
-              <div className="p-4">
-                <div className="text-3xl sm:text-5xl font-black text-[#8C6A21] mb-2 tracking-tight font-heading gradient-text-gold">
-                  <AnimatedCounter value="50,000+" />
-                </div>
-                <div className="text-xs sm:text-sm text-slate-700 font-bold">{t.appsProcessed}</div>
-              </div>
-
-              <div className="p-4">
-                <div className="text-3xl sm:text-5xl font-black text-[#8C6A21] mb-2 tracking-tight font-heading gradient-text-gold">
-                  <AnimatedCounter value="99.8%" />
-                </div>
-                <div className="text-xs sm:text-sm text-slate-700 font-bold">{t.clientSatisfaction}</div>
-              </div>
-
-              <div className="p-4">
-                <div className="text-3xl sm:text-5xl font-black text-[#8C6A21] mb-2 tracking-tight font-heading gradient-text-gold">
-                  <AnimatedCounter value="10+" />
-                </div>
-                <div className="text-xs sm:text-sm text-slate-700 font-bold">{t.govtPartners}</div>
-              </div>
+              {statsList.map((stat, idx) => {
+                const label = typeof stat.label === 'object'
+                  ? (stat.label?.[lang] || stat.label?.en || '')
+                  : (stat.label || '');
+                return (
+                  <div key={stat.id || idx} className="p-4">
+                    <div className="text-3xl sm:text-5xl font-black text-[#8C6A21] mb-2 tracking-tight font-heading gradient-text-gold">
+                      <AnimatedCounter value={stat.value || '0'} />
+                    </div>
+                    <div className="text-xs sm:text-sm text-slate-700 font-bold">
+                      {label}
+                    </div>
+                  </div>
+                );
+              })}
             </div>
 
           </div>

@@ -43,7 +43,6 @@ export default function Navbar({
     { id: 'home', label: t.navHome },
     { id: 'about', label: t.navAbout },
     { id: 'services', label: t.navServices },
-    { id: 'estimator', label: t.navCalculator },
     { id: 'faq', label: t.navFaq },
     { id: 'contact', label: t.navContact }
   ];
@@ -78,19 +77,19 @@ export default function Navbar({
         {/* Brand Logo & Name (Wildhaven style) */}
         <div
           onClick={() => handleNavClick('home')}
-          className="flex items-center gap-3 cursor-pointer group"
+          className="flex items-center gap-3 sm:gap-3.5 cursor-pointer group"
         >
-          <div className="w-9 h-9 rounded-xl overflow-hidden border border-white/30 shadow-xs group-hover:scale-105 transition-transform duration-300 bg-white flex items-center justify-center p-0.5">
+          <div className="w-12 h-12 sm:w-14 sm:h-14 transition-all duration-300 bg-transparent flex items-center justify-center shrink-0">
             <img
-              src={siteData.brand.logo}
+              src={siteData.brand.emblem || siteData.brand.logo}
               alt="Prime Time Logo"
-              className="w-full h-full object-cover rounded-lg"
+              className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300 drop-shadow-md"
             />
           </div>
 
-          <div className="flex flex-col">
+          <div className="flex flex-col justify-center">
             <div
-              className={`text-lg sm:text-xl font-bold tracking-tight flex items-baseline font-heading transition-colors ${
+              className={`text-xl sm:text-2xl font-black tracking-tight flex items-baseline font-heading transition-colors leading-tight ${
                 isScrolled ? 'text-slate-900' : 'text-white'
               }`}
             >
@@ -98,8 +97,8 @@ export default function Navbar({
               <span className="text-[#D4AF37] ms-0.5">.</span>
             </div>
             <div
-              className={`text-[9px] font-bold tracking-widest uppercase transition-colors ${
-                isScrolled ? 'text-[#8C6A21]' : 'text-white/70'
+              className={`text-[9.5px] sm:text-[11px] font-extrabold tracking-wider sm:tracking-widest uppercase transition-colors leading-tight mt-0.5 ${
+                isScrolled ? 'text-[#8C6A21]' : 'text-amber-300/90'
               }`}
             >
               {siteData.brand.subname[lang]}

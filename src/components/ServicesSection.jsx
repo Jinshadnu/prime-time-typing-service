@@ -17,7 +17,6 @@ import {
   Compass,
   FileSpreadsheet,
   Clock,
-  DollarSign,
   CheckCircle,
   X,
   ArrowRight,
@@ -37,8 +36,14 @@ import {
 } from 'lucide-react';
 import { siteData } from '../data/siteData';
 import AnimatedSection from './AnimatedSection';
+import tasheelServicesImg from '../assets/services/tasheel_services.jpg';
 
-export default function ServicesSection({ lang, services = siteData.services, onSelectServiceForInquiry }) {
+export default function ServicesSection({
+  lang,
+  services = siteData.services,
+  categories = siteData.categories,
+  onSelectServiceForInquiry
+}) {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState('popular');
@@ -50,6 +55,23 @@ export default function ServicesSection({ lang, services = siteData.services, on
   const t = siteData.translations[lang];
 
   const activeServices = services && services.length > 0 ? services : siteData.services;
+  const activeCategories = categories && categories.length > 0 ? categories : siteData.categories;
+
+  const getCategoryName = (cat) => {
+    if (!cat) return '';
+    if (typeof cat.name === 'object') {
+      return cat.name?.[lang] || cat.name?.en || '';
+    }
+    return cat.name || '';
+  };
+
+  const getCategoryDesc = (cat) => {
+    if (!cat) return '';
+    if (typeof cat.desc === 'object') {
+      return cat.desc?.[lang] || cat.desc?.en || '';
+    }
+    return cat.desc || '';
+  };
 
   const iconMap = {
     CreditCard,
@@ -81,19 +103,19 @@ export default function ServicesSection({ lang, services = siteData.services, on
 
   // Dynamic category service counts
   const categoryCounts = useMemo(() => {
-    return siteData.categories.reduce((acc, cat) => {
+    return activeCategories.reduce((acc, cat) => {
       acc[cat.id] = activeServices.filter(s => s.categoryId === cat.id).length;
       return acc;
     }, {});
-  }, [activeServices]);
+  }, [activeCategories, activeServices]);
 
   const totalServicesCount = activeServices.length;
 
   // Active department object if a specific category is selected
   const activeDepartment = useMemo(() => {
     if (selectedCategory === 'all') return null;
-    return siteData.categories.find(c => c.id === selectedCategory) || null;
-  }, [selectedCategory]);
+    return activeCategories.find(c => c.id === selectedCategory) || null;
+  }, [selectedCategory, activeCategories]);
 
   // Dynamic filter logic
   let filteredServices = useMemo(() => {
@@ -107,12 +129,12 @@ export default function ServicesSection({ lang, services = siteData.services, on
       const descMatch = descText.toLowerCase().includes(q);
       
       // Also match department name
-      const dept = siteData.categories.find(c => c.id === srv.categoryId);
-      const deptMatch = dept && ((dept.name?.[lang] || '').toLowerCase().includes(q) || (dept.name?.en || '').toLowerCase().includes(q));
+      const dept = activeCategories.find(c => c.id === srv.categoryId);
+      const deptMatch = dept && ((getCategoryName(dept)).toLowerCase().includes(q) || (dept.name?.en || '').toLowerCase().includes(q));
 
       return (selectedCategory === 'all' || matchesCategory) && (titleMatch || descMatch || deptMatch);
     });
-  }, [activeServices, selectedCategory, searchQuery, lang]);
+  }, [activeServices, activeCategories, selectedCategory, searchQuery, lang]);
 
   // Dynamic sort logic
   filteredServices = useMemo(() => {
@@ -234,11 +256,11 @@ export default function ServicesSection({ lang, services = siteData.services, on
                 <span className={`text-[10px] px-2 py-0.5 rounded-full font-black ${
                   selectedCategory === 'all' ? 'bg-slate-950 text-[#F5D77F]' : 'bg-slate-200 text-slate-700'
                 }`}>
-                  {siteData.categories.length}
+                  {activeCategories.length}
                 </span>
               </button>
 
-              {siteData.categories.map((cat) => {
+              {activeCategories.map((cat) => {
                 const IconComp = iconMap[cat.icon] || FileCheck;
                 const isActive = selectedCategory === cat.id;
                 const count = categoryCounts[cat.id] || 0;
@@ -256,7 +278,7 @@ export default function ServicesSection({ lang, services = siteData.services, on
                     }`}
                   >
                     <IconComp className="w-4 h-4 text-[#8C6A21] shrink-0" />
-                    <span className="whitespace-nowrap">{cat.name[lang]}</span>
+                    <span className="whitespace-nowrap">{getCategoryName(cat)}</span>
                     <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-black ${
                       isActive ? 'bg-slate-950 text-[#F5D77F]' : 'bg-slate-200 text-slate-700'
                     }`}>
@@ -381,7 +403,7 @@ export default function ServicesSection({ lang, services = siteData.services, on
         {/* VIEW 1: 26 DEPARTMENT PORTALS (Displayed when in departments mode) */}
         {selectedCategory === 'all' && !searchQuery && browseMode === 'departments' ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {siteData.categories.map((cat, idx) => {
+            {activeCategories.map((cat, idx) => {
               const DeptIcon = iconMap[cat.icon] || FileCheck;
               const count = categoryCounts[cat.id] || 0;
               return (
@@ -400,9 +422,14 @@ export default function ServicesSection({ lang, services = siteData.services, on
                       {/* Department Photo Banner */}
                       <div className="relative w-full h-44 overflow-hidden bg-slate-100">
                         <img
-                          src={cat.image}
-                          alt={cat.name[lang]}
+                          src={cat.image || tasheelServicesImg}
+                          alt={getCategoryName(cat)}
                           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
+                          onError={(e) => {
+                            if (e.currentTarget.src !== tasheelServicesImg) {
+                              e.currentTarget.src = tasheelServicesImg;
+                            }
+                          }}
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent"></div>
 
@@ -418,10 +445,10 @@ export default function ServicesSection({ lang, services = siteData.services, on
                       {/* Content */}
                       <div className="p-5 pb-3">
                         <h3 className="text-base sm:text-[17px] font-bold text-slate-900 mb-2 group-hover:text-[#8C6A21] transition-colors font-heading leading-snug line-clamp-2 min-h-[2.75rem]">
-                          {cat.name[lang]}
+                          {getCategoryName(cat)}
                         </h3>
                         <p className="text-xs text-slate-500 leading-relaxed line-clamp-2 min-h-[2rem]">
-                          {cat.desc?.[lang] || cat.desc?.en}
+                          {getCategoryDesc(cat)}
                         </p>
                       </div>
                     </div>
@@ -464,12 +491,9 @@ export default function ServicesSection({ lang, services = siteData.services, on
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {filteredServices.map((srv, idx) => {
                   const ServiceIcon = iconMap[srv.icon] || FileCheck;
-                  const serviceFeeLabel = srv.estimatedCostStandard 
-                    ? (lang === 'ar' ? `${srv.estimatedCostStandard} درهم` : `AED ${srv.estimatedCostStandard}`) 
-                    : (srv.govtFeeRange?.[lang] || srv.govtFeeRange?.en || '');
                   const whatsappMsg = lang === 'ar'
-                    ? `مرحباً برايم تايم للطباعة، أود الاستفسار عن خدمة: ${srv.title?.[lang] || srv.title?.en} (الرسوم: ${serviceFeeLabel})`
-                    : `Hello Prime Time Typing, I would like to inquire about: ${srv.title?.en || srv.title?.[lang]} (Estimated Fee: ${serviceFeeLabel})`;
+                    ? `مرحباً برايم تايم للطباعة، أود الاستفسار عن خدمة: ${srv.title?.[lang] || srv.title?.en}`
+                    : `Hello Prime Time Typing, I would like to inquire about: ${srv.title?.en || srv.title?.[lang]}`;
                   const reqList = srv.requirements?.[lang] || srv.requirements?.en || (Array.isArray(srv.requirements) ? srv.requirements : []);
 
                   return (
@@ -503,7 +527,7 @@ export default function ServicesSection({ lang, services = siteData.services, on
                                 <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/95 backdrop-blur-md text-slate-800 text-[11px] font-extrabold shadow-sm">
                                   <ServiceIcon className="w-3.5 h-3.5 text-[#8C6A21] shrink-0" />
                                   <span className="truncate max-w-[150px]">
-                                    {siteData.categories.find(c => c.id === srv.categoryId)?.name[lang]}
+                                    {getCategoryName(activeCategories.find(c => c.id === srv.categoryId))}
                                   </span>
                                 </span>
                               </div>
@@ -532,27 +556,19 @@ export default function ServicesSection({ lang, services = siteData.services, on
                             </p>
                           </div>
 
-                          {/* 3. PRICE & TURNAROUND HIGHLIGHT BADGE */}
-                          <div className="mx-5 mb-3 p-3 rounded-xl bg-gradient-to-r from-amber-500/10 via-amber-500/5 to-transparent border border-[#D4AF37]/30 flex items-center justify-between">
-                            <div>
-                              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block">
-                                {lang === 'ar' ? 'الرسوم القياسية / السعر' : 'Standard Fee / Price'}
-                              </span>
-                              <span className="text-sm sm:text-[15px] font-black text-slate-900 font-heading">
-                                {srv.estimatedCostStandard 
-                                  ? (lang === 'ar' ? `${srv.estimatedCostStandard} درهم` : `AED ${srv.estimatedCostStandard}`) 
-                                  : (srv.govtFeeRange?.[lang] || srv.govtFeeRange?.en)}
+                          {/* 3. TURNAROUND HIGHLIGHT BADGE */}
+                          <div className="mx-5 mb-3 px-3.5 py-2.5 rounded-xl bg-gradient-to-r from-amber-500/10 via-amber-500/5 to-slate-50 border border-[#D4AF37]/30 flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                              <div className="w-6 h-6 rounded-lg bg-amber-500/15 text-[#8C6A21] flex items-center justify-center shrink-0">
+                                <Clock className="w-3.5 h-3.5 stroke-[2.2]" />
+                              </div>
+                              <span className="text-[11px] font-bold text-slate-600">
+                                {lang === 'ar' ? 'مدة الإنجاز المتوقعة' : 'Processing Turnaround'}
                               </span>
                             </div>
-                            <div className="text-right [dir=rtl]:text-left">
-                              <span className="text-[10px] font-semibold text-slate-500 flex items-center gap-1 justify-end [dir=rtl]:justify-start">
-                                <Clock className="w-3 h-3 text-[#8C6A21]" />
-                                <span>{lang === 'ar' ? 'المدة' : 'Turnaround'}</span>
-                              </span>
-                              <span className="text-xs font-bold text-slate-700">
-                                {srv.processingTime?.[lang] || srv.processingTime?.en}
-                              </span>
-                            </div>
+                            <span className="text-xs sm:text-[13px] font-black text-slate-900 font-heading">
+                              {srv.processingTime?.[lang] || srv.processingTime?.en}
+                            </span>
                           </div>
 
                           {/* 4. REQUIRED DOCUMENTS CHECKLIST */}
@@ -673,7 +689,7 @@ export default function ServicesSection({ lang, services = siteData.services, on
                   <div>
                     <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-[#D4AF37]/25 border border-[#D4AF37]/60 text-[#F5D77F] text-[11px] font-bold mb-1 backdrop-blur-md shadow-sm">
                       <Sparkles className="w-3 h-3 text-[#F5D77F]" />
-                      <span>{siteData.categories.find(c => c.id === activeModalService.categoryId)?.name[lang]}</span>
+                      <span>{getCategoryName(activeCategories.find(c => c.id === activeModalService.categoryId))}</span>
                     </div>
                     <h3 className="text-lg sm:text-2xl font-black text-white font-heading drop-shadow-md leading-snug">
                       {activeModalService.title[lang]}
@@ -696,30 +712,14 @@ export default function ServicesSection({ lang, services = siteData.services, on
                 </p>
               </div>
 
-              {/* Section 2: Twin Metrics Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                <div className="bg-amber-50/60 p-4 rounded-2xl border border-[#D4AF37]/35 flex items-center gap-3.5 shadow-2xs">
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#F5D77F] to-[#D4AF37] text-slate-950 flex items-center justify-center shrink-0 shadow-sm">
-                    <Clock className="w-5 h-5 stroke-[2.2]" />
-                  </div>
-                  <div>
-                    <div className="text-[11px] text-slate-500 font-extrabold uppercase tracking-wider mb-0.5">{t.processingTime}</div>
-                    <div className="text-sm sm:text-base font-black text-slate-900">{activeModalService.processingTime[lang]}</div>
-                  </div>
+              {/* Section 2: Processing Time Metric */}
+              <div className="bg-amber-50/60 p-4 rounded-2xl border border-[#D4AF37]/35 flex items-center gap-3.5 shadow-2xs">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#F5D77F] to-[#D4AF37] text-slate-950 flex items-center justify-center shrink-0 shadow-sm">
+                  <Clock className="w-5 h-5 stroke-[2.2]" />
                 </div>
-
-                <div className="bg-slate-50/90 p-4 rounded-2xl border border-slate-200 flex items-center gap-3.5 shadow-2xs">
-                  <div className="w-10 h-10 rounded-xl bg-slate-900 text-[#F5D77F] flex items-center justify-center shrink-0 shadow-sm">
-                    <DollarSign className="w-5 h-5 stroke-[2.2]" />
-                  </div>
-                  <div>
-                    <div className="text-[11px] text-slate-500 font-extrabold uppercase tracking-wider mb-0.5">{lang === 'ar' ? 'الرسوم القياسية' : 'Standard Fee'}</div>
-                    <div className="text-sm sm:text-base font-black text-[#8C6A21]">
-                      {activeModalService.estimatedCostStandard 
-                        ? (lang === 'ar' ? `${activeModalService.estimatedCostStandard} درهم` : `AED ${activeModalService.estimatedCostStandard}`) 
-                        : (activeModalService.govtFeeRange?.[lang] || activeModalService.govtFeeRange?.en)}
-                    </div>
-                  </div>
+                <div>
+                  <div className="text-[11px] text-slate-500 font-extrabold uppercase tracking-wider mb-0.5">{t.processingTime}</div>
+                  <div className="text-sm sm:text-base font-black text-slate-900">{activeModalService.processingTime?.[lang] || activeModalService.processingTime?.en}</div>
                 </div>
               </div>
 

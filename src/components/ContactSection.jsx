@@ -12,23 +12,49 @@ import {
 } from 'lucide-react';
 import { siteData } from '../data/siteData';
 import AnimatedSection from './AnimatedSection';
-import { addEnquiry } from '../utils/adminStorage';
+import { addEnquiry, getStoredSettings } from '../utils/adminStorage';
 
-export default function ContactSection({ lang, services = siteData.services, preselectedService }) {
+export default function ContactSection({
+  lang,
+  services = siteData.services,
+  categories = siteData.categories,
+  preselectedService
+}) {
   const activeServices = services && services.length > 0 ? services : siteData.services;
+  const activeCategories = categories && categories.length > 0 ? categories : siteData.categories;
   const t = siteData.translations[lang];
+
+  const getCategoryName = (cat) => {
+    if (!cat) return '';
+    if (typeof cat.name === 'object') {
+      return cat.name?.[lang] || cat.name?.en || '';
+    }
+    return cat.name || '';
+  };
 
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     phone: '',
-    category: siteData.categories[0].id,
+    category: activeCategories[0]?.id || 'tasheel',
     serviceId: activeServices[0]?.id || '',
     message: ''
   });
 
   const [phoneError, setPhoneError] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [settings, setSettings] = useState(() => getStoredSettings());
+
+  useEffect(() => {
+    const handleUpdate = () => {
+      setSettings(getStoredSettings());
+    };
+    window.addEventListener('primetime_admin_data_updated', handleUpdate);
+    return () => window.removeEventListener('primetime_admin_data_updated', handleUpdate);
+  }, []);
+
+  const mapUrl = settings?.mapUrl || siteData.brand.mapUrl || "https://maps.app.goo.gl/mAX4dx7Cygb8LGGD7";
+  const gmapEmbed = settings?.gmapEmbed || siteData.brand.gmapEmbed;
 
   // If a user clicked "Inquire" on a service card, auto-select it!
   useEffect(() => {
@@ -186,9 +212,18 @@ export default function ContactSection({ lang, services = siteData.services, pre
                 </div>
                 <div>
                   <div className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">{t.officeLocation}</div>
-                  <p className="text-sm font-bold text-slate-900 leading-snug mb-3 font-heading">
+                  <p className="text-sm font-bold text-slate-900 leading-snug mb-2 font-heading">
                     {siteData.brand.address[lang]}
                   </p>
+                  <a
+                    href={mapUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 text-xs text-[#8C6A21] hover:underline font-bold mb-3"
+                  >
+                    <span>{lang === 'ar' ? 'عرض على الخريطة' : 'View on Google Maps'}</span>
+                    <MapPin className="w-3 h-3" />
+                  </a>
                   <div className="pt-2 border-t border-slate-200 flex items-center gap-2 text-xs text-slate-600">
                     <Clock className="w-4 h-4 text-[#8C6A21]" />
                     <span>{siteData.brand.workingHours[lang]}</span>
@@ -222,8 +257,8 @@ export default function ContactSection({ lang, services = siteData.services, pre
                           name: '',
                           email: '',
                           phone: '',
-                          category: siteData.categories[0].id,
-                          serviceId: siteData.services[0].id,
+                          category: activeCategories[0]?.id || 'tasheel',
+                          serviceId: activeServices[0]?.id || '',
                           message: ''
                         });
                       }}
@@ -303,9 +338,9 @@ export default function ContactSection({ lang, services = siteData.services, pre
                           onChange={handleCategoryChange}
                           className="w-full bg-slate-50 border border-slate-300 focus:border-[#D4AF37] rounded-xl py-3 px-4 text-sm text-slate-900 focus:outline-none transition-all font-semibold shadow-inner"
                         >
-                          {siteData.categories.map((cat) => (
+                          {activeCategories.map((cat) => (
                             <option key={cat.id} value={cat.id} className="bg-white">
-                              {cat.name[lang]}
+                              {getCategoryName(cat)}
                             </option>
                           ))}
                         </select>
@@ -372,7 +407,7 @@ export default function ContactSection({ lang, services = siteData.services, pre
                 </span>
               </div>
               <a
-                href={siteData.brand.mapUrl || "https://maps.app.goo.gl/1G3BehJ8dzY6jU2H8?g_st=ac"}
+                href={mapUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-xs text-[#8C6A21] hover:underline font-bold flex items-center gap-1"
@@ -385,7 +420,7 @@ export default function ContactSection({ lang, services = siteData.services, pre
             <div className="w-full h-80 rounded-2xl overflow-hidden relative">
               <iframe
                 title="Prime Time Typing Location Map"
-                src={siteData.brand.gmapEmbed}
+                src={gmapEmbed}
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}

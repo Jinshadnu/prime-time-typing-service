@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   Image as ImageIcon,
   Plus,
@@ -8,9 +8,12 @@ import {
   Check,
   ExternalLink,
   Upload,
-  FileText
+  FileText,
+  Loader2,
+  FileCheck
 } from 'lucide-react';
 import DeleteConfirmModal from './DeleteConfirmModal';
+import { uploadImageFromFile, compressAndReadImage } from '../../utils/imageUploadHelper';
 
 export default function MediaLibraryTab({
   media,
@@ -23,6 +26,13 @@ export default function MediaLibraryTab({
   const [copiedId, setCopiedId] = useState(null);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [mediaToDelete, setMediaToDelete] = useState(null);
+
+  // Upload modal state
+  const [uploadSource, setUploadSource] = useState('device'); // 'device' | 'url'
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [filePreview, setFilePreview] = useState(null);
+  const [isUploading, setIsUploading] = useState(false);
+  const fileInputRef = useRef(null);
 
   const [formData, setFormData] = useState({
     title: '',
@@ -37,12 +47,55 @@ export default function MediaLibraryTab({
     setTimeout(() => setCopiedId(null), 2500);
   };
 
-  const handleFormSubmit = (e) => {
+  const handleFileSelect = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setSelectedFile(file);
+    const suggestedTitle = file.name
+      .replace(/\.[^/.]+$/, '')
+      .replace(/[-_]/g, ' ')
+      .replace(/\b\w/g, l => l.toUpperCase());
+    
+    setFormData(prev => ({
+      ...prev,
+      title: prev.title || suggestedTitle
+    }));
+
+    try {
+      const res = await compressAndReadImage(file);
+      setFilePreview(res);
+      setFormData(prev => ({ ...prev, size: res.size }));
+    } catch (_) {}
+  };
+
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.url) return;
-    onAddMedia(formData);
-    setFormData({ title: '', url: '', category: 'General', size: '320 KB' });
-    setIsUploadOpen(false);
+    if (uploadSource === 'device') {
+      if (!selectedFile) return;
+      setIsUploading(true);
+      try {
+        const res = await uploadImageFromFile(selectedFile, formData.category);
+        onAddMedia({
+          title: formData.title || res.title,
+          url: res.url,
+          category: formData.category,
+          size: res.size
+        });
+        setFormData({ title: '', url: '', category: 'General', size: '320 KB' });
+        setSelectedFile(null);
+        setFilePreview(null);
+        setIsUploadOpen(false);
+      } catch (err) {
+        alert('Upload failed: ' + err.message);
+      } finally {
+        setIsUploading(false);
+      }
+    } else {
+      if (!formData.url) return;
+      onAddMedia(formData);
+      setFormData({ title: '', url: '', category: 'General', size: '320 KB' });
+      setIsUploadOpen(false);
+    }
   };
 
   const handleOpenDelete = (item) => {
@@ -173,6 +226,33 @@ export default function MediaLibraryTab({
               </button>
             </div>
 
+            {/* Source Toggle */}
+            <div className="flex items-center gap-2 mb-4 p-1 bg-slate-950 rounded-xl border border-slate-800">
+              <button
+                type="button"
+                onClick={() => setUploadSource('device')}
+                className={`flex-1 py-1.5 text-xs font-bold rounded-lg flex items-center justify-center gap-1.5 transition-all ${
+                  uploadSource === 'device'
+                    ? 'bg-[#D4AF37] text-slate-950 shadow-sm'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                <Upload className="w-3.5 h-3.5" />
+                <span>Upload From Device</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setUploadSource('url')}
+                className={`flex-1 py-1.5 text-xs font-bold rounded-lg flex items-center justify-center gap-1.5 transition-all ${
+                  uploadSource === 'url'
+                    ? 'bg-[#D4AF37] text-slate-950 shadow-sm'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                <span>Direct Image URL</span>
+              </button>
+            </div>
+
             <form onSubmit={handleFormSubmit} className="space-y-4 text-xs">
               <div>
                 <label className="block font-semibold text-slate-300 mb-1">Asset Name / Title *</label>
@@ -200,27 +280,72 @@ export default function MediaLibraryTab({
                 </select>
               </div>
 
-              <div>
-                <label className="block font-semibold text-slate-300 mb-1">Direct Image URL *</label>
-                <input
-                  type="url"
-                  required
-                  placeholder="https://images.unsplash.com/..."
-                  value={formData.url}
-                  onChange={e => setFormData({ ...formData, url: e.target.value })}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-sm text-white focus:outline-none focus:border-[#D4AF37]"
-                />
-              </div>
-
-              {formData.url && (
-                <div className="p-2 bg-slate-950 rounded-xl border border-slate-800 text-center">
-                  <p className="text-[10px] text-slate-500 mb-1">Preview:</p>
-                  <img
-                    src={formData.url}
-                    alt="Preview"
-                    className="max-h-32 mx-auto rounded-lg object-cover"
-                    onError={e => { e.target.alt = "Invalid URL"; }}
+              {uploadSource === 'device' ? (
+                <div>
+                  <label className="block font-semibold text-slate-300 mb-1">Device Image File *</label>
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp,image/gif,image/svg+xml"
+                    onChange={handleFileSelect}
+                    className="hidden"
                   />
+
+                  {!filePreview ? (
+                    <div
+                      onClick={() => fileInputRef.current?.click()}
+                      className="border-2 border-dashed border-slate-700 hover:border-[#D4AF37] bg-slate-950/60 hover:bg-slate-950 p-6 rounded-xl text-center cursor-pointer transition-all duration-200 flex flex-col items-center justify-center gap-2"
+                    >
+                      <Upload className="w-8 h-8 text-[#D4AF37]" />
+                      <p className="text-xs font-semibold text-white">Click to select image from your device</p>
+                      <p className="text-[10px] text-slate-400">JPG, PNG, WebP, SVG, GIF (auto-compressed)</p>
+                    </div>
+                  ) : (
+                    <div className="p-3 bg-slate-950 rounded-xl border border-slate-800 flex items-center gap-3">
+                      <img
+                        src={filePreview.dataUrl}
+                        alt="Preview"
+                        className="w-16 h-16 rounded-lg object-cover bg-slate-900 shrink-0"
+                      />
+                      <div className="flex-1 min-w-0 text-[11px]">
+                        <div className="font-semibold text-white truncate">{selectedFile.name}</div>
+                        <div className="text-slate-400">Size: <span className="text-amber-400 font-mono">{filePreview.size}</span></div>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setSelectedFile(null);
+                            setFilePreview(null);
+                          }}
+                          className="text-[10px] text-red-400 hover:underline mt-1"
+                        >
+                          Change file
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div>
+                  <label className="block font-semibold text-slate-300 mb-1">Direct Image URL *</label>
+                  <input
+                    type="url"
+                    required
+                    placeholder="https://images.unsplash.com/... or /banners/slide1.jpg"
+                    value={formData.url}
+                    onChange={e => setFormData({ ...formData, url: e.target.value })}
+                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-sm text-white focus:outline-none focus:border-[#D4AF37]"
+                  />
+                  {formData.url && (
+                    <div className="mt-2 p-2 bg-slate-950 rounded-xl border border-slate-800 text-center">
+                      <p className="text-[10px] text-slate-500 mb-1">Preview:</p>
+                      <img
+                        src={formData.url}
+                        alt="Preview"
+                        className="max-h-28 mx-auto rounded-lg object-cover"
+                        onError={e => { e.target.alt = "Invalid URL"; }}
+                      />
+                    </div>
+                  )}
                 </div>
               )}
 

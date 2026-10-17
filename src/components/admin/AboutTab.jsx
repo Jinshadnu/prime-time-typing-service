@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Building2,
   Save,
@@ -7,7 +7,9 @@ import {
   Trash2,
   Image as ImageIcon,
   Award,
-  Milestone
+  Milestone,
+  TrendingUp,
+  Upload
 } from 'lucide-react';
 import MediaPickerModal from './MediaPickerModal';
 
@@ -16,27 +18,47 @@ export default function AboutTab({
   onSaveAbout,
   lang = 'en'
 }) {
-  const [formData, setFormData] = useState({
-    badgeEn: 'Trusted Government Typing Hub',
-    badgeAr: 'مركز طباعة حكومي معتمد',
-    headingEn: 'Accurate Typing Solutions at Prime Time Typing',
-    headingAr: 'خدمات طباعة سريعة ودقيقة لدى برايم تايم',
-    desc1En: 'Prime Time Typing Services is a trusted provider of professional typing and corporate services, dedicated to addressing the diverse needs of individuals and businesses across the UAE. Conveniently located Near Meat Mart, Madinat Zayed, Abu Dhabi, Prime Time has built a reputation for reliability, accuracy, and efficiency.',
-    desc1Ar: 'برايم تايم لخدمات الطباعة هو مركزك الموثوق لإنجاز وتخليص كافة المعاملات الحكومية والمؤسسية في دولة الإمارات العربية المتحدة. يقع مركزنا بالقرب من ميت مارت، مدينة زايد، أبوظبي، حيث نفخر بتقديم حلول توثيق تمتاز بالدقة المتناهية والسرعة الفائقة والاحترافية العالية.',
-    desc2En: 'With over 15 years of expertise in delivering seamless documentation and support solutions, we stand as a dependable partner for clients seeking hassle-free services tailored to their unique requirements.',
-    desc2Ar: 'مع خبرة تتجاوز 15 عاماً في تخليص المستندات الرسمية، نلتزم بمرافقة عملائنا من الأفراد والمؤسسات لإنهاء إجراءات الإقامة، وتصاريح العمل، والمعاملات الرقمية بكل سلاسة ويسر.',
-    image: '',
-    missionEn: 'To deliver flawless, transparent, and prompt government application clearances for businesses and individuals.',
-    missionAr: 'تقديم خدمات تخليص معاملات حكومية دقيقة وشفافة وسريعة للأفراد والشركات بأعلى معايير الجودة.',
-    visionEn: 'To be the most preferred and technologically integrated corporate documentation partner in the Emirate of Abu Dhabi.',
-    visionAr: 'أن نكون المركز الرائد والأكثر كفاءة واعتماداً في مجال تخليص المعاملات والخدمات المؤسسية في إمارة أبوظبي.'
-  });
+  const [formData, setFormData] = useState(() => ({
+    badgeEn: aboutData?.badgeEn || 'Trusted Government Typing Hub',
+    badgeAr: aboutData?.badgeAr || 'مركز طباعة حكومي معتمد',
+    headingEn: aboutData?.headingEn || 'Accurate Typing Solutions at Prime Time Typing',
+    headingAr: aboutData?.headingAr || 'خدمات طباعة سريعة ودقيقة لدى برايم تايم',
+    desc1En: aboutData?.desc1En || 'Prime Time Typing Services is a trusted provider of professional typing and corporate services, dedicated to addressing the diverse needs of individuals and businesses across the UAE. Conveniently located Near Meat Mart, Madinat Zayed, Abu Dhabi, Prime Time has built a reputation for reliability, accuracy, and efficiency.',
+    desc1Ar: aboutData?.desc1Ar || 'برايم تايم لخدمات الطباعة هو مركزك الموثوق لإنجاز وتخليص كافة المعاملات الحكومية والمؤسسية في دولة الإمارات العربية المتحدة. يقع مركزنا بالقرب من ميت مارت، مدينة زايد، أبوظبي، حيث نفخر بتقديم حلول توثيق تمتاز بالدقة المتناهية والسرعة الفائقة والاحترافية العالية.',
+    desc2En: aboutData?.desc2En || 'Delivering seamless documentation and support solutions, we stand as a dependable partner for clients seeking hassle-free services tailored to their unique requirements.',
+    desc2Ar: aboutData?.desc2Ar || 'نلتزم بمرافقة عملائنا من الأفراد والمؤسسات لإنهاء إجراءات الإقامة، وتصاريح العمل، والمعاملات الرقمية بكل سلاسة ويسر ووفق أعلى معايير الدقة والسرعة.',
+    image: aboutData?.image || '',
+    missionEn: aboutData?.missionEn || 'To deliver flawless, transparent, and prompt government application clearances for businesses and individuals.',
+    missionAr: aboutData?.missionAr || 'تقديم خدمات تخليص معاملات حكومية دقيقة وشفافة وسريعة للأفراد والشركات بأعلى معايير الجودة.',
+    visionEn: aboutData?.visionEn || 'To be the most preferred and technologically integrated corporate documentation partner in the Emirate of Abu Dhabi.',
+    visionAr: aboutData?.visionAr || 'أن نكون المركز الرائد والأكثر كفاءة واعتماداً في مجال تخليص المعاملات والخدمات المؤسسية في إمارة أبوظبي.',
+    stats: (aboutData?.stats && Array.isArray(aboutData.stats) && aboutData.stats.length > 0)
+      ? aboutData.stats
+      : [
+        { id: 'stat-1', value: '2026', label: { en: 'Since 25th Sep 2026', ar: 'منذ 25 سبتمبر 2026' } },
+        { id: 'stat-2', value: '100%', label: { en: 'Legal Precision', ar: 'دقة قانونية معتمدة' } },
+        { id: 'stat-3', value: '99.8%', label: { en: 'Satisfaction Rate', ar: 'نسبة رضا المتعاملين' } },
+        { id: 'stat-4', value: '10+', label: { en: 'Govt Portals Supported', ar: 'بوابات ودوائر حكومية معتمدة' } }
+      ]
+  }));
+
+  useEffect(() => {
+    if (aboutData && Object.keys(aboutData).length > 0) {
+      setFormData(prev => ({
+        ...prev,
+        ...aboutData,
+        stats: (aboutData.stats && Array.isArray(aboutData.stats) && aboutData.stats.length > 0)
+          ? aboutData.stats
+          : (prev.stats || [])
+      }));
+    }
+  }, [aboutData]);
 
   const [isMediaPickerOpen, setIsMediaPickerOpen] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
 
   const handleSave = (e) => {
-    e.preventDefault();
+    if (e && e.preventDefault) e.preventDefault();
     if (onSaveAbout) onSaveAbout(formData);
     setSaveSuccess(true);
     setTimeout(() => setSaveSuccess(false), 3000);
@@ -44,7 +66,7 @@ export default function AboutTab({
 
   return (
     <div className="space-y-6 animate-in fade-in duration-300 max-w-4xl">
-      
+
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
@@ -67,7 +89,7 @@ export default function AboutTab({
       </div>
 
       <form onSubmit={handleSave} className="space-y-6 text-xs">
-        
+
         {/* Main Headings */}
         <div className="p-5 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-4">
           <h3 className="text-sm font-bold text-white flex items-center gap-2 border-b border-slate-800 pb-3">
@@ -116,6 +138,68 @@ export default function AboutTab({
                 onChange={e => setFormData({ ...formData, headingAr: e.target.value })}
                 className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-sm font-bold text-white focus:outline-none focus:border-[#D4AF37] font-arabic"
               />
+            </div>
+          </div>
+        </div>
+
+        {/* Office Photo & Media */}
+        <div className="p-5 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-4">
+          <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+            <h3 className="text-sm font-bold text-white flex items-center gap-2">
+              <ImageIcon className="w-4 h-4 text-[#D4AF37]" />
+              <span>Office Photo &amp; Visual Asset</span>
+            </h3>
+            <button
+              type="button"
+              onClick={() => setIsMediaPickerOpen(true)}
+              className="px-3.5 py-1.5 text-xs font-bold rounded-xl bg-[#D4AF37] text-slate-950 hover:bg-[#e0bc42] transition-all flex items-center gap-1.5 shadow-md"
+            >
+              <Upload className="w-3.5 h-3.5" />
+              <span>Upload / Choose Photo</span>
+            </button>
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-4 items-start">
+            <div className="w-full sm:w-48 h-32 rounded-xl bg-slate-950 border border-slate-800 overflow-hidden flex items-center justify-center shrink-0">
+              {formData.image ? (
+                <img
+                  src={formData.image}
+                  alt="About Section Preview"
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    e.currentTarget.style.display = 'none';
+                  }}
+                />
+              ) : (
+                <div className="text-center p-3 text-slate-500">
+                  <ImageIcon className="w-8 h-8 mx-auto mb-1 opacity-40 text-[#D4AF37]" />
+                  <span className="text-[10px] block">Default office photo active</span>
+                </div>
+              )}
+            </div>
+
+            <div className="flex-1 w-full space-y-2">
+              <label className="block font-semibold text-slate-300">Custom Image URL</label>
+              <input
+                type="text"
+                value={formData.image || ''}
+                placeholder="https://... or choose from media library (leaves default if empty)"
+                onChange={e => setFormData({ ...formData, image: e.target.value })}
+                className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-[#D4AF37]"
+              />
+              <p className="text-[11px] text-slate-400">
+                Provide a direct URL to a photo of your office, customer lounge, or executive desk. Leave empty to use the built-in Madinat Zayed office photography.
+              </p>
+              {formData.image && (
+                <button
+                  type="button"
+                  onClick={() => setFormData({ ...formData, image: '' })}
+                  className="text-xs text-rose-400 hover:text-rose-300 flex items-center gap-1 pt-1"
+                >
+                  <Trash2 className="w-3.5 h-3.5" />
+                  <span>Reset to default photo</span>
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -221,6 +305,84 @@ export default function AboutTab({
                 className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-[#D4AF37] font-arabic"
               />
             </div>
+          </div>
+        </div>
+
+        {/* Key Statistics & Performance Counters (Dynamic 4-Counter Stats Bar) */}
+        <div className="p-5 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-4">
+          <div className="border-b border-slate-800 pb-3">
+            <h3 className="text-sm font-bold text-white flex items-center gap-2">
+              <TrendingUp className="w-4 h-4 text-emerald-400" />
+              <span>Key Statistics &amp; Performance Counters</span>
+            </h3>
+            <p className="text-[11px] text-slate-400 mt-1">
+              Customize the 4 prominent highlight metrics displayed in the About Us stats bar and floating badges (e.g. 2026, 100%, 99.8%, 10+)
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {(formData.stats || []).map((stat, idx) => (
+              <div key={stat.id || idx} className="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-2.5">
+                <div className="flex items-center justify-between text-[11px] text-slate-400 font-semibold border-b border-slate-800/80 pb-1.5">
+                  <span>Metric #{idx + 1}</span>
+                  <span className="text-amber-400 font-mono text-xs">{stat.value}</span>
+                </div>
+                <div>
+                  <label className="block text-[11px] font-semibold text-slate-400 mb-1">Metric Value / Number *</label>
+                  <input
+                    type="text"
+                    value={stat.value}
+                    placeholder="e.g. 2026, 100%, 99.8%, 10+"
+                    onChange={e => {
+                      const val = e.target.value;
+                      setFormData(prev => {
+                        const copy = [...(prev.stats || [])];
+                        copy[idx] = { ...copy[idx], value: val };
+                        return { ...prev, stats: copy };
+                      });
+                    }}
+                    className="w-full bg-slate-900 border border-slate-800 rounded-lg px-2.5 py-1.5 text-sm font-bold text-amber-300 focus:outline-none focus:border-[#D4AF37]"
+                  />
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  <div>
+                    <label className="block text-[10px] font-semibold text-slate-400 mb-1">Label (English)</label>
+                    <input
+                      type="text"
+                      value={stat.label?.en || ''}
+                      placeholder="e.g. Years Experience"
+                      onChange={e => {
+                        const val = e.target.value;
+                        setFormData(prev => {
+                          const copy = [...(prev.stats || [])];
+                          copy[idx] = { ...copy[idx], label: { ...copy[idx].label, en: val } };
+                          return { ...prev, stats: copy };
+                        });
+                      }}
+                      className="w-full bg-slate-900 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#D4AF37]"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[10px] font-semibold text-slate-400 mb-1">Label (Arabic)</label>
+                    <input
+                      type="text"
+                      dir="rtl"
+                      value={stat.label?.ar || ''}
+                      placeholder="سنوات من الخبرة"
+                      onChange={e => {
+                        const val = e.target.value;
+                        setFormData(prev => {
+                          const copy = [...(prev.stats || [])];
+                          copy[idx] = { ...copy[idx], label: { ...copy[idx].label, ar: val } };
+                          return { ...prev, stats: copy };
+                        });
+                      }}
+                      className="w-full bg-slate-900 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#D4AF37] font-arabic"
+                    />
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
 

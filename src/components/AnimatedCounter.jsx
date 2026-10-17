@@ -26,6 +26,12 @@ export default function AnimatedCounter({ value, duration = 2000, className = ''
     return () => observer.disconnect();
   }, [hasAnimated, value]);
 
+  useEffect(() => {
+    if (hasAnimated) {
+      animateCount();
+    }
+  }, [value]);
+
   const animateCount = () => {
     // Parse target number, prefix, suffix, and formatting
     const rawString = String(value);

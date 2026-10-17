@@ -12,7 +12,7 @@ import {
   Eye,
   EyeOff
 } from 'lucide-react';
-import primeTimeLogo from '../assets/prime_time_logo.jpeg';
+import primeTimeLogo from '../assets/prime_time_logo_transparent.png';
 import {
   getStoredCategories,
   saveCategories,
@@ -38,6 +38,8 @@ import {
   deleteDocument,
   getStoredHomepage,
   saveHomepage,
+  getStoredAbout,
+  saveAbout,
   getStoredBanners,
   saveBanners,
   getStoredFaqs,
@@ -123,6 +125,7 @@ export default function AdminPanel({
   const [services, setServices] = useState(() => getStoredServices());
   const [documents, setDocuments] = useState(() => getStoredDocuments());
   const [homepageData, setHomepageData] = useState(() => getStoredHomepage());
+  const [aboutData, setAboutData] = useState(() => getStoredAbout());
   const [banners, setBanners] = useState(() => getStoredBanners());
   const [faqs, setFaqs] = useState(() => getStoredFaqs());
   const [testimonials, setTestimonials] = useState(() => getStoredTestimonials());
@@ -151,6 +154,7 @@ export default function AdminPanel({
       if (onUpdateServices) onUpdateServices(updatedSrv);
       setDocuments(getStoredDocuments());
       setHomepageData(getStoredHomepage());
+      setAboutData(getStoredAbout());
       setBanners(getStoredBanners());
       setFaqs(getStoredFaqs());
       setTestimonials(getStoredTestimonials());
@@ -178,7 +182,7 @@ export default function AdminPanel({
     const cleanUser = usernameInput.trim().toLowerCase();
     const cleanPass = passwordInput.trim();
 
-    const validPasses = ['1234', 'admin', 'admin123', 'prime@123'];
+    const validPasses = ['Pr!meadm!n@2026', '1234', 'admin', 'admin123', 'prime@123'];
 
     if (cleanUser && validPasses.includes(cleanPass)) {
       setIsAuthenticated(true);
@@ -188,13 +192,13 @@ export default function AdminPanel({
       }
       showToast('Signed in successfully as Administrator', 'success');
     } else {
-      setAuthError('Invalid credentials! Default: Username = admin | Password = 1234');
+      setAuthError('Invalid credentials! Default: Username = admin | Password = Pr!meadm!n@2026');
     }
   };
 
   const handleAutofillDemo = () => {
     setUsernameInput('admin');
-    setPasswordInput('1234');
+    setPasswordInput('Pr!meadm!n@2026');
     setIsAuthenticated(true);
     localStorage.setItem('primetime_admin_session', 'true');
     setAuthError('');
@@ -211,11 +215,11 @@ export default function AdminPanel({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[90] bg-slate-950 flex flex-col overflow-hidden animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-[999] bg-slate-950 flex flex-col overflow-hidden animate-in fade-in duration-200">
       
       {/* Floating Toast Notification */}
       {toast && (
-        <div className="fixed top-20 right-6 z-[120] bg-slate-900 border border-[#D4AF37]/50 text-white px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-3 animate-in slide-in-from-top-4 duration-300">
+        <div className="fixed top-20 right-6 z-[1050] bg-slate-900 border border-[#D4AF37]/50 text-white px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-3 animate-in slide-in-from-top-4 duration-300">
           <div className="w-8 h-8 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center justify-center">
             <CheckCircle className="w-4 h-4" />
           </div>
@@ -348,7 +352,7 @@ export default function AdminPanel({
                 className="w-full py-2.5 px-4 bg-slate-800 hover:bg-slate-700 text-amber-300 font-bold text-xs rounded-xl border border-amber-500/20 flex items-center justify-center gap-2 transition-colors"
               >
                 <Sparkles className="w-3.5 h-3.5" />
-                <span>1-Click Autofill Demo Access (admin / 1234)</span>
+                <span>1-Click Autofill Demo Access (admin / Pr!meadm!n@2026)</span>
               </button>
             </div>
 
@@ -524,9 +528,11 @@ export default function AdminPanel({
           {/* TAB 8: ABOUT US */}
           {activeTab === 'about' && (
             <AboutTab
-              aboutData={homepageData}
+              aboutData={aboutData}
               onSaveAbout={(data) => {
-                showToast('About Us content saved');
+                const updated = saveAbout(data);
+                setAboutData(updated || data);
+                showToast('About Us content saved successfully');
               }}
               lang={adminLang}
             />

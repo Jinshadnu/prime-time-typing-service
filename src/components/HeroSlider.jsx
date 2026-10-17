@@ -13,17 +13,23 @@ import {
 } from 'lucide-react';
 import { siteData } from '../data/siteData';
 import AnimatedSection from './AnimatedSection';
+import slide1Img from '../assets/banners/slide1.jpg';
 
 const SLIDE_DURATION = 5500; // 5.5 seconds per slide (like Wildhaven)
 
 export default function HeroSlider({
   lang,
+  banners = siteData.heroBanners,
   onNavigateSection
 }) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [progress, setProgress] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
-  const slides = siteData?.heroBanners || [];
+
+  const activeBanners = (banners && Array.isArray(banners) && banners.length > 0)
+    ? [...banners].filter(b => b.status !== 'inactive').sort((a, b) => (Number(a.displayOrder) || 0) - (Number(b.displayOrder) || 0))
+    : (siteData?.heroBanners || []);
+  const slides = activeBanners.length > 0 ? activeBanners : (siteData?.heroBanners || []);
   const t = siteData?.translations?.[lang] || siteData?.translations?.en || {};
 
   const nextSlide = useCallback(() => {
@@ -82,6 +88,18 @@ export default function HeroSlider({
 
   const current = slides[currentSlide] || slides[0] || {};
 
+  const currentTitle = typeof current?.title === 'object'
+    ? (current?.title?.[lang] || current?.title?.en || '')
+    : (current?.title || '');
+
+  const currentBadge = typeof current?.badge === 'object'
+    ? (current?.badge?.[lang] || current?.badge?.en || '')
+    : (current?.badge || (lang === 'ar' ? 'مركز معاملات حكومية معتمد • أبوظبي' : 'OFFICIAL GOVERNMENT CLEARANCE • ABU DHABI'));
+
+  const currentDesc = typeof current?.description === 'object'
+    ? (current?.description?.[lang] || current?.description?.en || '')
+    : (current?.description || (typeof current?.desc === 'object' ? (current?.desc?.[lang] || current?.desc?.en) : current?.desc) || '');
+
   return (
     <section id="home" className="relative select-none bg-white">
 
@@ -111,11 +129,16 @@ export default function HeroSlider({
                   />
                 )}
                 <img
-                  src={slide.image}
-                  alt={slide.title?.[lang] || 'Prime Time Typing'}
+                  src={slide.image || slide1Img}
+                  alt={typeof slide.title === 'object' ? (slide.title?.[lang] || slide.title?.en) : (slide.title || 'Prime Time Typing')}
                   className={`w-full h-full object-cover object-center transition-transform duration-[8000ms] ease-out ${
                     isActive ? 'scale-105' : 'scale-100'
                   }`}
+                  onError={(e) => {
+                    if (e.currentTarget.src !== slide1Img) {
+                      e.currentTarget.src = slide1Img;
+                    }
+                  }}
                   loading={idx === 0 ? 'eager' : 'lazy'}
                 />
               </picture>
@@ -140,64 +163,28 @@ export default function HeroSlider({
           <div className="inline-flex items-center gap-1.5 sm:gap-2 mb-2 sm:mb-4 px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-[10px] sm:text-xs font-semibold text-white/90">
             <Sparkles className="w-3 sm:w-3.5 h-3 sm:h-3.5 text-[#D4AF37]" />
             <span>
-              {current?.badge?.[lang] || current?.badge?.en || (lang === 'ar' ? 'مركز معاملات حكومية معتمد • أبوظبي' : 'OFFICIAL GOVERNMENT CLEARANCE • ABU DHABI')}
+              {currentBadge}
             </span>
           </div>
 
           {/* Editorial Display Heading */}
-          <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-7xl font-light tracking-tight text-white leading-[1.12] sm:leading-[1.08] mb-2 sm:mb-4 font-heading drop-shadow-md">
-            {current?.id === 'slide1' ? (
-              lang === 'ar' ? (
-                <>
-                  <span className="block font-light">خدمات الطباعة و</span>
-                  <span className="block font-bold text-white">المعاملات الحكومية</span>
-                </>
-              ) : (
-                <>
-                  <span className="block font-light">Fast & Accurate</span>
-                  <span className="block font-bold text-white">Typing Services</span>
-                </>
-              )
-            ) : current?.id === 'slide2' ? (
-              lang === 'ar' ? (
-                <>
-                  <span className="block font-light">معاملات الإقامة و</span>
-                  <span className="block font-bold text-white">تصاريح العمل</span>
-                </>
-              ) : (
-                <>
-                  <span className="block font-light">Seamless Residency &</span>
-                  <span className="block font-bold text-white">Labour Visa Clearance</span>
-                </>
-              )
-            ) : (
-              lang === 'ar' ? (
-                <>
-                  <span className="block font-light">تأسيس الشركات و</span>
-                  <span className="block font-bold text-white">تصديق الوثائق</span>
-                </>
-              ) : (
-                <>
-                  <span className="block font-light">Complete Business Setup &</span>
-                  <span className="block font-bold text-white">Certificate Attestation</span>
-                </>
-              )
-            )}
+          <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-7xl font-bold tracking-tight text-white leading-[1.12] sm:leading-[1.08] mb-2 sm:mb-4 font-heading drop-shadow-md">
+            {currentTitle}
           </h1>
 
           {/* Subtitle / Description */}
           <p className="text-white/85 text-xs sm:text-base lg:text-lg mb-3.5 sm:mb-8 leading-relaxed max-w-xl font-normal drop-shadow-sm line-clamp-2 sm:line-clamp-none">
-            {current?.description?.[lang] || current?.description?.en || ''}
+            {currentDesc}
           </p>
 
           {/* Action Buttons */}
           <div className="flex flex-row items-center gap-2 sm:gap-4">
             {/* Primary Action Button (Wildhaven Book Now style) */}
             <button
-              onClick={() => handleNavClick('services')}
+              onClick={() => handleNavClick((current?.ctaUrl || '#services').replace('#', ''))}
               className="flex-1 sm:flex-initial flex items-center justify-center gap-2 sm:gap-3 bg-white text-slate-900 px-4 sm:px-7 py-2.5 sm:py-3.5 rounded-full text-xs sm:text-sm font-bold tracking-wider uppercase hover:bg-white/90 transition-all duration-300 shadow-xl active:scale-95 cursor-pointer whitespace-nowrap"
             >
-              <span>{t.heroCtaPrimary}</span>
+              <span>{typeof current?.ctaText === 'object' ? (current?.ctaText?.[lang] || current?.ctaText?.en) : (current?.ctaText || t.heroCtaPrimary)}</span>
               {lang === 'ar' ? (
                 <ArrowLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
               ) : (

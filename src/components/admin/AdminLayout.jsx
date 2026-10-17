@@ -33,7 +33,7 @@ import {
   Clock,
   Key
 } from 'lucide-react';
-import primeTimeLogo from '../../assets/prime_time_logo.jpeg';
+import primeTimeLogo from '../../assets/prime_time_logo_transparent.png';
 
 export default function AdminLayout({
   activeTab,
@@ -54,6 +54,29 @@ export default function AdminLayout({
 
   const isAr = lang === 'ar';
 
+  const tabTitles = {
+    dashboard: { group: 'Overview', title: 'Dashboard' },
+    services: { group: 'Services Management', title: 'All Services' },
+    categories: { group: 'Services Management', title: 'Categories' },
+    subcategories: { group: 'Services Management', title: 'Subcategories' },
+    documents: { group: 'Services Management', title: 'Documents Bank' },
+    homepage: { group: 'Website Content', title: 'Homepage Copy' },
+    banners: { group: 'Website Content', title: 'Hero Banners' },
+    about: { group: 'Website Content', title: 'About Us' },
+    faqs: { group: 'Website Content', title: 'FAQs' },
+    testimonials: { group: 'Website Content', title: 'Testimonials' },
+    blogs: { group: 'Website Content', title: 'Blog & News' },
+    navigation: { group: 'Website Content', title: 'Navigation' },
+    enquiries: { group: 'CRM & Leads', title: 'Enquiries' },
+    customers: { group: 'CRM & Leads', title: 'Customers' },
+    media: { group: 'Assets & Growth', title: 'Media Library' },
+    seo: { group: 'Assets & Growth', title: 'SEO & Tracking' },
+    settings: { group: 'System', title: 'Business Settings' },
+    users: { group: 'System', title: 'Users & Roles' },
+    logs: { group: 'System', title: 'Activity Logs' }
+  };
+  const currentTabInfo = tabTitles[activeTab] || { group: 'Admin', title: 'Dashboard' };
+
   const navItemClass = (tabId) => `
     flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold transition-all
     ${activeTab === tabId
@@ -63,10 +86,10 @@ export default function AdminLayout({
   `;
 
   return (
-    <div className={`min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans ${isAr ? 'rtl' : 'ltr'}`}>
+    <div className={`h-full min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans overflow-hidden ${isAr ? 'rtl' : 'ltr'}`}>
       
       {/* Top Bar */}
-      <header className="h-16 bg-slate-900 border-b border-slate-800/80 px-4 sm:px-6 flex items-center justify-between sticky top-0 z-40 shadow-lg">
+      <header className="h-16 shrink-0 bg-slate-900/95 backdrop-blur-md border-b border-slate-800/80 px-4 sm:px-6 flex items-center justify-between z-40 shadow-sm">
         
         {/* Left: Mobile Toggle & Brand */}
         <div className="flex items-center gap-3">
@@ -77,7 +100,7 @@ export default function AdminLayout({
             {isSidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
 
-          <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => onSelectTab('dashboard')}>
+          <div className="flex items-center gap-2.5 cursor-pointer select-none" onClick={() => onSelectTab('dashboard')}>
             <img
               src={primeTimeLogo}
               alt="Prime Time Logo"
@@ -85,67 +108,79 @@ export default function AdminLayout({
             />
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-black text-white text-sm tracking-tight font-heading">
+                <span className="font-black text-white text-sm tracking-tight font-heading whitespace-nowrap">
                   PRIME TIME
                 </span>
-                <span className="px-1.5 py-0.5 rounded bg-[#D4AF37]/20 text-[#D4AF37] text-[10px] font-bold border border-[#D4AF37]/30 uppercase">
+                <span className="px-1.5 py-0.5 rounded bg-[#D4AF37]/20 text-[#D4AF37] text-[10px] font-bold border border-[#D4AF37]/30 uppercase shrink-0">
                   CMS v5.0
                 </span>
               </div>
-              <p className="text-[10px] text-slate-400">UAE Government Typing Admin Portal</p>
+              <p className="text-[10px] text-slate-400 whitespace-nowrap">UAE Government Typing Admin Portal</p>
             </div>
           </div>
         </div>
 
+        {/* Center: Active Tab / Breadcrumb */}
+        <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-800/60 border border-slate-700/50 text-xs text-slate-300">
+          <span className="text-slate-400 font-medium">{currentTabInfo.group}</span>
+          <span className="text-slate-600">/</span>
+          <span className="font-bold text-white flex items-center gap-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37]"></span>
+            {currentTabInfo.title}
+          </span>
+        </div>
+
         {/* Right: Actions, Language Toggle, Live Website Link & Profile */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5 sm:gap-3">
           
           {/* Live Preview Button */}
           <button
             onClick={onClosePanel}
-            className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 border border-slate-700/60 rounded-xl transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700/80 border border-slate-700/60 rounded-xl transition-all hover:border-[#D4AF37]/40 shadow-xs"
+            title="Return to Live Website"
           >
             <ExternalLink className="w-3.5 h-3.5 text-[#D4AF37]" />
-            <span>{isAr ? 'معاينة الموقع المباشر' : 'Live Website'}</span>
+            <span className="hidden sm:inline">{isAr ? 'معاينة الموقع المباشر' : 'Live Website'}</span>
           </button>
 
           {/* Language Switcher */}
           {onToggleLang && (
             <button
               onClick={onToggleLang}
-              className="px-2.5 py-1 text-xs font-bold rounded-xl bg-slate-800 hover:bg-slate-700 text-[#D4AF37] border border-[#D4AF37]/20 transition-colors"
+              className="px-2.5 py-1.5 text-xs font-bold rounded-xl bg-slate-800 hover:bg-slate-700 text-[#D4AF37] border border-[#D4AF37]/30 transition-colors"
+              title="Toggle Language"
             >
-              {lang === 'en' ? 'العربية (AR)' : 'English (EN)'}
+              {lang === 'en' ? 'العربية' : 'English'}
             </button>
           )}
 
           {/* Notification Bell */}
           <button
             onClick={() => onSelectTab('enquiries')}
-            className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 relative transition-colors"
-            title="Enquiries"
+            className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 relative transition-colors border border-transparent hover:border-slate-700"
+            title="Customer Enquiries"
           >
             <Bell className="w-4 h-4" />
             {unreadEnquiriesCount > 0 && (
-              <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-[#D4AF37] animate-pulse"></span>
+              <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-[#D4AF37] ring-2 ring-slate-900 animate-pulse"></span>
             )}
           </button>
 
           {/* User Profile */}
           <div className="flex items-center gap-2.5 pl-2 sm:border-l sm:border-slate-800">
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#D4AF37] to-amber-600 text-slate-950 flex items-center justify-center font-black text-xs shadow-md">
-              {currentUser.name.charAt(0)}
+            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#D4AF37] to-amber-600 text-slate-950 flex items-center justify-center font-black text-xs shadow-md shrink-0">
+              {currentUser?.name?.charAt(0) || 'A'}
             </div>
             <div className="hidden md:block text-start">
-              <p className="text-xs font-bold text-white leading-tight">{currentUser.name}</p>
-              <p className="text-[10px] text-amber-400/90 font-medium">{currentUser.role}</p>
+              <p className="text-xs font-bold text-white leading-tight">{currentUser?.name || 'Administrator'}</p>
+              <p className="text-[10px] text-amber-400/90 font-medium">{currentUser?.role || 'Admin'}</p>
             </div>
           </div>
 
           {/* Logout Button */}
           <button
             onClick={onLogout}
-            className="p-2 rounded-xl text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-colors"
+            className="p-2 rounded-xl text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-colors border border-transparent hover:border-red-500/20"
             title="Sign Out"
           >
             <LogOut className="w-4 h-4" />
@@ -156,7 +191,15 @@ export default function AdminLayout({
       </header>
 
       {/* Main Layout Body */}
-      <div className="flex-1 flex overflow-hidden">
+      <div className="flex-1 flex overflow-hidden min-h-0 relative">
+        
+        {/* Mobile Backdrop Overlay */}
+        {isSidebarOpen && (
+          <div
+            onClick={() => setIsSidebarOpen(false)}
+            className="fixed inset-0 bg-slate-950/70 backdrop-blur-xs z-20 lg:hidden"
+          />
+        )}
         
         {/* Sidebar */}
         <aside

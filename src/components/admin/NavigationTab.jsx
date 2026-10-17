@@ -16,7 +16,6 @@ export default function NavigationTab({
     { id: 'h-1', labelEn: 'Home', labelAr: 'الرئيسية', url: 'home' },
     { id: 'h-2', labelEn: 'About Us', labelAr: 'من نحن', url: 'about' },
     { id: 'h-3', labelEn: 'Our Services', labelAr: 'خدماتنا', url: 'services' },
-    { id: 'h-4', labelEn: 'Fee Estimator', labelAr: 'حاسبة الرسوم', url: 'calculator' },
     { id: 'h-5', labelEn: 'FAQ', labelAr: 'الأسئلة الشائعة', url: 'faq' },
     { id: 'h-6', labelEn: 'Contact Us', labelAr: 'اتصل بنا', url: 'contact' }
   ]);
